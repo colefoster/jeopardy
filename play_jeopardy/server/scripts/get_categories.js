@@ -21,39 +21,41 @@ else if (process.argv.length == 3 && !isNaN(process.argv[2])){
     getCategories(amount, i*100);
     
 }
-else if (process.argv.length == 4 && !isNaN(process.argv[2])&& process.argv[2] <= 100 && !isNaN(process.argv[3])){
+else if (process.argv.length == 4 && !isNaN(process.argv[2]) && !isNaN(process.argv[3])){
     console.log("Adding " + process.argv[2] + " categories to the database, starting at " + process.argv[3]);
+    let amount = Number(process.argv[2]);
+    let start = Number(process.argv[3]);
+    for(;amount > 100; amount -= 100){
+        console.log("Getting categories " +start + " to " + (start + 100));
+        getCategories(100, start);
+        start += 100;
+    }
 
-    getCategories(process.argv[2], process.argv[3]);
-    setTimeout(function(){
-        removeDuplicateQuestions();
-        removeDuplicateCategories();
-        console.log("Database updated, New Totals:");
-        catModel.find({}, function(err, categories) {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log("Categories in database: " + categories.length);
-            }
-        });
-        questionModel.find({}, function(err, questions) {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log("Questions in database: " + questions.length);
-            }
-        });
-
-        
-        setTimeout(function(){console.log("Script is exiting...");process.exit(0);}, 2 * 1000); //extra time to count database entries
-        
-    }, 10 * 1000);   
+    getCategories(amount, process.argv[3]);
+    removeDuplicateQuestions();
+    removeDuplicateCategories();
+    console.log("Database updated, New Totals:");
+    catModel.find({}, function(err, categories) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("Categories in database: " + categories.length);
+        }
+    });
+    questionModel.find({}, function(err, questions) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("Questions in database: " + questions.length);
+        }
+    });   
     
 }
 else{
     //invalid arguments
     console.log("Invalid arguments - please enter a number of categories to retrieve (max 100) and an offset (optional)");
     console.log("Example: \n> node getClues.js 50\nor\n> node getClues.js 50 100")
+    process.exit(0);    
 }
 
 
