@@ -95,7 +95,7 @@ function getCategories(count = 1, offset = 0){
                     clues_count: url[i].clues_count
                 });
                 saveCategory(category);
-                getQuestionFromCategory(category.id);
+                getQuestionsFromCategory(category.id);
             }             
         });
       }
@@ -109,8 +109,64 @@ function getCategories(count = 1, offset = 0){
 
 }
 
-function getQuestionFromCategory(category_id){
+function getQuestions(amount = 1, offset = 0){
+    https.get(`https://jservice.io/api/clues?count=${amount}&offset=${offset}`, resp => {
+        let data = "";
+        // A chunk of data has been recieved.
+        resp.on("data", chunk => {
+            data += chunk;
+            console.log("Chunk recieved");
+        });
 
+        // The whole response has been received. Print out the result.
+        resp.on("end", () => {
+            console.log("Questions " + offset + " to " + (offset + amount) + " recieved");
+            let questions = '';
+            try{
+                questions = JSON.parse(data);
+            }
+            catch(e){
+                console.log("Error parsing JSON: " + e);
+            }
+            console.log(questions);
+            Object.keys(questions).forEach(function(key) {
+                console.log(questions[key].id)
+                //check if the question already exists in the database
+                questionModel.find({id: questions[key].id}, (err, result) => {
+                    if (err){
+                        console.log(err)
+                    }else if(result.length > 0){
+                        console.log("Question already exists");
+                        return;
+                    }
+                    else{
+                        console.log("adding new question");
+                        let question = new questionModel({
+                            id: questions[key].id,
+                            answer: questions[key].answer,
+                            question: questions[key].question,
+                            value: questions[key].value,
+                            airdate: questions[key].airdate,
+                            category_id: questions[key].category_id,
+                            game_id: questions[key].game_id,
+                            category: {
+                                id: questions[key].category.id,
+                                title: questions[key].category.title,
+                                clues_count: questions[key].category.clues_count
+                                }                       
+                            });
+                        saveQuestion(question);
+
+                        saveCategory(getCategoryByID(question.category_id))
+                    }
+                });
+                
+            });           
+        });
+    })
+}
+function getQuestionsFromCategory(category_id){
+    console.log("Getting questions from category: " + category_id);
     https.get(`https://jservice.io/api/clues?category=${category_id}`, resp => {
         let data = "";
         // A chunk of data has been recieved.
@@ -162,6 +218,31 @@ function getQuestionFromCategory(category_id){
     })
     
 };
+
+function getCategoryByID(id = 1){
+    //this function returns 1 category by id
+    https.get(`https://jservice.io/api/category?id=${id}`, resp => {
+        let data = "";
+        // A chunk of data has been recieved.
+        resp.on("data", chunk => {
+            data += chunk;
+        });
+
+        // The whole response has been received. Print out the result.
+        resp.on("end", () => {
+            let category = '';
+            try{
+                category = JSON.parse(data);
+            }
+            catch(e){
+                console.log("Error parsing JSON: " + e);
+                console.log(data);
+            }
+            return category;
+        });
+    });
+
+}
 function removeDuplicateCategories(){
     console.log("Looking for duplicate categories...");
     //remove duplicate categories
@@ -217,4 +298,4 @@ function removeDuplicateQuestions(){
     });
 }
 
-module.exports = {connectToDB, getCategories, removeDuplicateCategories, removeDuplicateQuestions, catModel, questionModel};
+module.exports = {connectToDB, getCategories, getQuestions, removeDuplicateCategories, removeDuplicateQuestions, catModel, questionModel};

@@ -1,6 +1,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/vs,visualstudio,node,react,python,cypressio,mean
 # Edit at https://www.toptal.com/developers/gitignore?templates=vs,visualstudio,node,react,python,cypressio,mean
 
+
+server/temp
+
 ### CypressIO ###
 # gitignore template for the CypressIO, browser test framework
 # website: https://www.cypress.io/

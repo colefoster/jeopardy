@@ -13,21 +13,26 @@ else if (process.argv.length == 3 && !isNaN(process.argv[2])){
 
     let amount = process.argv[2];
     let i = 0
+    let timeout = 0;
     for(;amount > 100; amount -= 100){
-        getCategories(100, i * 100);
-        i++;
+        setTimeout(() => {getCategories(100, i)}, timeout);
+        timeout += 10000;
+        i+=100;
     }
 
-    getCategories(amount, i*100);
+    getCategories(amount, i);
     
 }
 else if (process.argv.length == 4 && !isNaN(process.argv[2]) && !isNaN(process.argv[3])){
     console.log("Adding " + process.argv[2] + " categories to the database, starting at " + process.argv[3]);
     let amount = Number(process.argv[2]);
     let start = Number(process.argv[3]);
+    let timeout = 5000;
     for(;amount > 100; amount -= 100){
         console.log("Getting categories " +start + " to " + (start + 100));
-        getCategories(100, start);
+        
+        setTimeout(() => {getCategories(100, start)}, timeout);
+        timeout += 10000;
         start += 100;
     }
 

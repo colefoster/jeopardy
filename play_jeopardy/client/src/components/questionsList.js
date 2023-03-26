@@ -25,11 +25,13 @@ const Record = (props) => (
 
 export default function RecordList() {
   const [records,  setRecords] = useState([]);
-  const [searchQuestion, setQuestion] = useState([]);
-  const [searchAnswer, setAnswer] = useState([]);
-  const [searchCategory, setCategory] = useState([]);
-  const [searchValue, setValue] = useState([]);
-  // This method fetches the records from the database.
+  const [searchQuestion, setQuestion] = useState([""]);
+  const [searchAnswer, setAnswer] = useState([""]);
+  const [searchCategory, setCategory] = useState("");
+  const [searchValue, setValue] = useState(0);
+
+
+
   useEffect(() => {
     async function getRecords() {
       const response = await fetch(`http://localhost:5000/api/questions?question=${searchQuestion}&answer=${searchAnswer}&category=${searchCategory}&value=${searchValue}`);
@@ -47,7 +49,7 @@ export default function RecordList() {
     getRecords();
 
     return; 
-  }, [records.length,  setRecords, searchQuestion,  searchAnswer, , searchCategory, , searchValue ]);
+  }, [records.length,  setRecords, searchQuestion,  searchAnswer, searchCategory,  searchValue ]);
 
   // This method will delete a record
   async function deleteRecord(id) {
@@ -61,15 +63,20 @@ export default function RecordList() {
 
   // This method will map out the records on the table
   function recordList() {
-    return records.map((record) => {
-      return (
-        <Record
-          record={record}
-          deleteRecord={() => deleteRecord(record._id)}
-          key={record._id}
-        />
-      );
-    });
+    try{
+      return records.map((record) => {
+        return (
+          <Record
+            record={record}
+            deleteRecord={() => deleteRecord(record._id)}
+            key={record._id}
+          />
+        );
+      });
+    }
+    catch(e){
+      console.log(e);
+    }
   }
 
   const updateQuestion = (query, field) => {

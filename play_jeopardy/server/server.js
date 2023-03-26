@@ -16,10 +16,10 @@ const dbo = require("./db/conn");
 app.get("/api/questions/", (req, res) => {
   console.log((req.query));
   questionModel.find({
-    question: { $regex: req.query.question, $options: "i" },
-    answer: { $regex: req.query.answer, $options: "i" },
-    "category.title": {$regex: req.query.category, $options: "i" },
-    value: (req.query.value).length === 0 ?  {$gte: 0} : req.query.value
+    question: { $regex: sanitize(req.query.question), $options: "i" },
+    answer: { $regex: sanitize(req.query.answer), $options: "i" },
+    "category.title": {$regex: sanitize(req.query.category), $options: "i" },
+    value: (req.query.value.length === 1) ?  {$gte: 0} : req.query.value
 
   },
  
@@ -75,3 +75,11 @@ app.listen(port, () => {
   
   console.log(`Server is running on port: ${port}`);
 });
+
+
+
+function sanitize(str) {
+  if (typeof str !== "string") return str;
+  
+  return str.replaceAll("[-.\\+*?\\[^\\]$(){}=!<>|:\\\\]", "\\\\$0");
+}

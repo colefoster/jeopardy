@@ -13,13 +13,16 @@ def get_sense2vec(word):
     word = word.replace(" ", "_")
 
     sense = s2v.get_best_sense(word)
-    most_similar = s2v.most_similar(sense, n=20)
+    if (sense is None):
+        return output
+    else:
+        most_similar = s2v.most_similar(sense, n=20)
 
-    for each_word in most_similar:
-        append_word = each_word[0].split("|")[0].replace("_", " ").lower()
-        if append_word.lower() != word:
-            output.append(append_word.title())
+        for each_word in most_similar:
+            append_word = each_word[0].split("|")[0].replace("_", " ").lower()
+            if append_word.lower() != word:
+                output.append(append_word.title())
 
-    out = list(OrderedDict.fromkeys(output))
-    return out
+        out = list(OrderedDict.fromkeys(output))
+        return out
 

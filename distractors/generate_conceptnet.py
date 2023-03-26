@@ -13,7 +13,6 @@ def get_conceptnet(word):
     distractor_list = [] 
     url = "http://api.conceptnet.io/query?node=/c/en/%s/n&rel=/r/PartOf&start=/c/en/%s&limit=5"%(word,word)
     obj = requests.get(url).json()
-
     for edge in obj['edges']:
         link = edge['end']['term'] 
 
@@ -23,6 +22,7 @@ def get_conceptnet(word):
             word2 = edge['start']['label']
             if word2 not in distractor_list and original_word.lower() not in word2.lower():
                 distractor_list.append(word2)
+                print(word2)
                    
     return distractor_list
 

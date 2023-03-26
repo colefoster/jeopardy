@@ -16,7 +16,8 @@ const App = () => {
       <Navbar />
       <div style={{ margin: 20 }}>
       <Routes>
-        <Route exact path="/" element={<Home />} />
+        <Route exact path="/" element={<QuestionsList />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/questions" element={<QuestionsList />} />
         <Route path="/edit/:id" element={<Edit />} />
         <Route path="/create" element={<Create />} />
