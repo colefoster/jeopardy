@@ -3,7 +3,7 @@
 
 
 server/temp
-
+clues.json
 ### CypressIO ###
 # gitignore template for the CypressIO, browser test framework
 # website: https://www.cypress.io/

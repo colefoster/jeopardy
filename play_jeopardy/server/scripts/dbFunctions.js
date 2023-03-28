@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 async function connectToDB(){
     //connect to the database
     try{
-        await mongoose.connect("mongodb+srv://admin:cl4HTS2dcCu9fGvG@cluster1.eqlzj2v.mongodb.net/play_jeopardy?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
+        await mongoose.connect("mongodb+srv://root:pass@cluster0.1ia5fim.mongodb.net/play_jeopardy?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
         console.log("Connected to database");
     }
     catch(err){
@@ -17,25 +17,25 @@ async function connectToDB(){
 const catSchema = new mongoose.Schema({
     id: Number,
     title: String,
-    clues_count: Number
+    clues_count: Number,
+    clue_ids: [Number]
 });
-const catModel = mongoose.model("category", catSchema);
+const catModel = mongoose.model("jarchive_categories", catSchema);
 const questionSchema = new mongoose.Schema({
     id: Number,
-    answer: String,
-    question: String,
+    clue: String,
+    response: String,
+    category: String,
+    isDailyDouble: Boolean,
+    round: String,
     value: Number,
     airdate: Date,
-    category_id: Number,
     game_id: Number,
-    category: {
-        id: Number,
-        title: String,
-        clues_count: Number
-    }
+    distractors: [String],
 
 });
-const questionModel = mongoose.model("question", questionSchema);
+const questionModel = mongoose.model("jarchive_questions", questionSchema);
+
 
 
 async function saveCategory(category){
@@ -59,190 +59,7 @@ async function saveQuestion(question){
         console.log("Error saving question to database: " + err);
     }
 }
-function getCategories(count = 1, offset = 0){ 
-    https
-  .get(`https://jservice.io/api/categories?count=${count}&offset=${offset}`, resp => {
-    let data = "";
-    // A chunk of data has been recieved.
-    resp.on("data", chunk => {
-      data += chunk;
-    });
 
-    // The whole response has been received. Print out the result.
-    resp.on("end", () => {
-        let url = '';
-        try{
-            url = JSON.parse(data);
-        }
-        catch(e){
-            console.log("Error parsing JSON: " + e);
-            console.log(data);
-        }
-        
-      for(let i = 0; i < url.length; i++){
-        //Does the category already exist in the database?
-        catModel.find({id: url[i].id}, (err, result) => { 
-            if (err){
-                console.log(err)
-            }else if(result.length > 0){
-                console.log("Category already exists");
-                
-            }
-            else{
-                let category = new catModel({
-                    id: url[i].id,
-                    title: url[i].title,
-                    clues_count: url[i].clues_count
-                });
-                saveCategory(category);
-                getQuestionsFromCategory(category.id);
-            }             
-        });
-      }
-      
-      
-    });
-  })
-  .on("error", err => {
-    console.log("Error: " + err.message);
-  });
-
-}
-
-function getQuestions(amount = 1, offset = 0){
-    https.get(`https://jservice.io/api/clues?count=${amount}&offset=${offset}`, resp => {
-        let data = "";
-        // A chunk of data has been recieved.
-        resp.on("data", chunk => {
-            data += chunk;
-            console.log("Chunk recieved");
-        });
-
-        // The whole response has been received. Print out the result.
-        resp.on("end", () => {
-            console.log("Questions " + offset + " to " + (offset + amount) + " recieved");
-            let questions = '';
-            try{
-                questions = JSON.parse(data);
-            }
-            catch(e){
-                console.log("Error parsing JSON: " + e);
-            }
-            console.log(questions);
-            Object.keys(questions).forEach(function(key) {
-                console.log(questions[key].id)
-                //check if the question already exists in the database
-                questionModel.find({id: questions[key].id}, (err, result) => {
-                    if (err){
-                        console.log(err)
-                    }else if(result.length > 0){
-                        console.log("Question already exists");
-                        return;
-                    }
-                    else{
-                        console.log("adding new question");
-                        let question = new questionModel({
-                            id: questions[key].id,
-                            answer: questions[key].answer,
-                            question: questions[key].question,
-                            value: questions[key].value,
-                            airdate: questions[key].airdate,
-                            category_id: questions[key].category_id,
-                            game_id: questions[key].game_id,
-                            category: {
-                                id: questions[key].category.id,
-                                title: questions[key].category.title,
-                                clues_count: questions[key].category.clues_count
-                                }                       
-                            });
-                        saveQuestion(question);
-
-                        saveCategory(getCategoryByID(question.category_id))
-                    }
-                });
-                
-            });           
-        });
-    })
-}
-function getQuestionsFromCategory(category_id){
-    console.log("Getting questions from category: " + category_id);
-    https.get(`https://jservice.io/api/clues?category=${category_id}`, resp => {
-        let data = "";
-        // A chunk of data has been recieved.
-        resp.on("data", chunk => {
-            data += chunk;
-        });
-
-        // The whole response has been received. Print out the result.
-        resp.on("end", () => {
-            let questions = '';
-            try{
-                questions = JSON.parse(data);
-            }
-            catch(e){
-                console.log("Error parsing JSON: " + e);
-                console.log(data);
-            }
-
-            Object.keys(questions).forEach(function(key) {
-                //check if the question already exists in the database
-                questionModel.find({id: questions[key].id}, (err, result) => {
-                    if (err){
-                        console.log(err)
-                    }else if(result.length > 0){
-                        console.log("Question already exists");
-                        return;
-                    }
-                    else{
-                        let question = new questionModel({
-                            id: questions[key].id,
-                            answer: questions[key].answer,
-                            question: questions[key].question,
-                            value: questions[key].value,
-                            airdate: questions[key].airdate,
-                            category_id: questions[key].category_id,
-                            game_id: questions[key].game_id,
-                            category: {
-                                id: questions[key].category.id,
-                                title: questions[key].category.title,
-                                clues_count: questions[key].category.clues_count
-                                }                       
-                            });
-                            saveQuestion(question);
-                    }
-                });
-                
-            });           
-        });
-    })
-    
-};
-
-function getCategoryByID(id = 1){
-    //this function returns 1 category by id
-    https.get(`https://jservice.io/api/category?id=${id}`, resp => {
-        let data = "";
-        // A chunk of data has been recieved.
-        resp.on("data", chunk => {
-            data += chunk;
-        });
-
-        // The whole response has been received. Print out the result.
-        resp.on("end", () => {
-            let category = '';
-            try{
-                category = JSON.parse(data);
-            }
-            catch(e){
-                console.log("Error parsing JSON: " + e);
-                console.log(data);
-            }
-            return category;
-        });
-    });
-
-}
 function removeDuplicateCategories(){
     console.log("Looking for duplicate categories...");
     //remove duplicate categories
@@ -298,4 +115,5 @@ function removeDuplicateQuestions(){
     });
 }
 
-module.exports = {connectToDB, getCategories, getQuestions, removeDuplicateCategories, removeDuplicateQuestions, catModel, questionModel};
+
+module.exports = {connectToDB, catModel, questionModel,  removeDuplicateCategories, removeDuplicateQuestions};

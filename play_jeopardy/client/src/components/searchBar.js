@@ -19,7 +19,15 @@ const SearchBar = ({ onChange }) => {
                 </th>
                 <th></th>
                 <th>
+                    <label htmlFor="Round">Round: </label>
+                </th>
+                <th></th>
+                <th>
                     <label htmlFor="Value">Value: </label>
+                </th>
+                <th></th>
+                <th>
+                    <label htmlFor="Value">Daily Double: </label>
                 </th>
             </tr>
             <tr>
@@ -38,6 +46,15 @@ const SearchBar = ({ onChange }) => {
                 </td>
                 <td></td>
                 <td>
+                    <select name="Round" id="Round" onChange={(e) => onChange(e.target.value, "Round")}>
+                        <option value="Any">Any</option>
+                        <option value="Jeopardy">Jeopardy</option>
+                        <option value="Double Jeopardy">Double Jeopardy</option>
+                        <option value="Final Jeopardy">Final Jeopardy</option>
+                    </select>
+                </td>
+                <td></td>
+                <td>
                     <select name="Value" id="Value" onChange={(e) => onChange(e.target.value, "Value")}>
                         <option value="0">Any</option>
                         <option value="200">200</option>
@@ -45,6 +62,17 @@ const SearchBar = ({ onChange }) => {
                         <option value="600">600</option>
                         <option value="800">800</option>
                         <option value="1000">1000</option>
+                        <option value="1200">1200</option>
+                        <option value="1600">1600</option>
+                        <option value="2000">2000</option>
+                    </select>
+                </td>
+                <td></td>
+                <td>
+                    <select name="DD" id="DD" onChange={(e) => onChange(e.target.value, "DD")}>
+                        <option value="0">Any</option>
+                        <option value="true">Daily Double</option>
+                        <option value="false">Not Daily Double</option>
                     </select>
                 </td>
             </tr>

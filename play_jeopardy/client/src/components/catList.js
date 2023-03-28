@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import SearchBar from "./searchBar";
-import AirDate from "./airDate";
-import DdIcon from "./DD_Icon";
-
 
 const Record = (props) => (
   <tr>
@@ -13,8 +10,7 @@ const Record = (props) => (
     <td>{props.record.response}</td>
     <td>{props.record.round}</td>
     <td>{props.record.value}</td>
-    <DdIcon isDD= {props.record.isDailyDouble}/>
-    <AirDate date = {props.record.airdate} />
+    <td>{props.record.airdate}</td>
     <td>
       <Link className="btn btn-link" to={`/edit/${props.record._id}`}>Edit</Link> |
       <button className="btn btn-link"
@@ -35,14 +31,12 @@ export default function RecordList() {
   const [searchCategory, setCategory] = useState("");
   const [searchRound, setRound] = useState("");
   const [searchValue, setValue] = useState(0);
-  const [searchDD, setDD] = useState("");
 
 
 
   useEffect(() => {
     async function getRecords() {
-      const response = await fetch(`http://localhost:5000/api/questions?question=`+
-      `${searchQuestion}&answer=${searchAnswer}&category=${searchCategory}&value=${searchValue}&round=${searchRound}&isDailyDouble=${searchDD}`);
+      const response = await fetch(`http://localhost:5000/api/questions?question=${searchQuestion}&answer=${searchAnswer}&category=${searchCategory}&value=${searchValue}&round=${searchRound}`);
       
       if (!response.ok) {
         const message = `An error occured: ${response.statusText}`;
@@ -50,13 +44,14 @@ export default function RecordList() {
         return;
       }
       const records = await response.json();
+      console.log(records);
       setRecords(records);
     }
 
     getRecords();
 
     return; 
-  }, [records.length,  setRecords, searchQuestion,  searchAnswer, searchCategory,  searchValue ,searchRound, searchDD]);
+  }, [records.length,  setRecords, searchQuestion,  searchAnswer, searchCategory,  searchValue ,searchRound]);
 
   // This method will delete a record
   async function deleteRecord(id) {
@@ -107,16 +102,6 @@ export default function RecordList() {
       if(query !== searchRound)
       setRound(query);
     }
-    else if(field === 'DD'){
-      if(query !== searchDD){
-        if(query === 'true')
-          setDD(true);
-        else if(query === 'false')
-          setDD(false);
-        else
-          setDD("");
-      }
-    }
   }
   // This following section will display the table with the records of individuals.
   return (
@@ -132,7 +117,6 @@ export default function RecordList() {
             <th>Answer</th>
             <th>Round</th>
             <th>Value</th>
-            <th>DD</th>
             <th>Airdate</th>
             <th>Actions</th>
           </tr>
