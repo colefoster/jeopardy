@@ -1,10 +1,10 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const { questionModel, connectToDB} = require("./scripts/database_functions.js");
 
 
 require("dotenv").config({ path: "./config.env" });
+const { questionModel, connectToDB} = require("./scripts/database_functions.js");
 const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
@@ -60,7 +60,7 @@ app.get("/api/categories", (req, res) => {
     {title: {$regex: ".*"}} : {title: {$regex: sanitize(req.query.title), $options: "i" }},
     (req.query.clues_count.length === 0 ) ?
     {clues_count: {$gte: 0}} : {clues_count: req.query.clues_count},
-
+    
     {},
     {},
     {}]},
