@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": "18.14",
-    "npm": "9.3"
+    "node": "16.x",
+    "npm": "9.6.2"
   },
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
@@ -20,7 +20,7 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "react-scripts --openssl-legacy-provider start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
