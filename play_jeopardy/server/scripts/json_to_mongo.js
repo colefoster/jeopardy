@@ -48,14 +48,14 @@ async function countCategories(){
 
 
 
-setTimeout(() => {upload();}, 60000);
+setTimeout(() => {upload();}, 69000);
 setTimeout(() => {countQuestions();}, 100);
 setTimeout(() => {countCategories();}, 200);
 
 
 
 function upload(){
-    let data = JSON.parse(fs.readFileSync("clues.json", 'utf8'));
+    let data = JSON.parse(fs.readFileSync("clues_Mar-28.json", 'utf8'));
 
 
     
@@ -65,7 +65,7 @@ function upload(){
 
     prompt("Press enter to start the upload process...");
     
-    for (let q = qCount; q < qCount + 50000; q++) {
+    for (let q = qCount; q < qCount + 100 && q < 463299; q++) {
         
         try{
             questionModel.find({id: q}, function(err, questions) {

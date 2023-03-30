@@ -8,7 +8,8 @@
     "get_cats": "node scripts/get_categories.js",
     "get_qs": "node scripts/get_questions.js",
     "count": "node scripts/count_questions.js",
-    "scrape": "node scripts/j_archive_scraper.js",
+    "scrape_all": "node scripts/j_archive_scraper_get_all.js",
+    "scrape_new": "node scripts/j_archive_scraper_get_new.js",
     "json_to_mongo": "node scripts/json_to_mongo.js",
     "createIcon": "node scripts/createIcon.js"
   },

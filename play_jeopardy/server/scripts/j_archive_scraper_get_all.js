@@ -84,9 +84,9 @@ const fetchGameData = gameId => {
 };
 
 // Use p-map to throttle http requests to j-archive to avoid timeouts
-pMap(new Array(7784), (_, i) => fetchGameData(i + 1), { concurrency: 15 })
+pMap(new Array(7790), (_, i) => fetchGameData(i + 1), { concurrency: 15 })
   .then(games => games.reduce((acc, game) => acc.concat(game), []))
   .then(clues => {
     console.log("DONE!");
-    fs.writeFileSync("clues.json", JSON.stringify(clues));
+    fs.writeFileSync("clues_Mar-28.json", JSON.stringify(clues));
   });
