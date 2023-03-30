@@ -1,10 +1,10 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const mongoose = require("mongoose");
+
 
 require("dotenv").config({ path: "./config.env" });
-const { questionModel, connectToDB} = require("./scripts/dbFunctions.js");
+const { questionModel, connectToDB} = require("./scripts/database_functions.js");
 const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
@@ -15,23 +15,23 @@ const dbo = require("./db/conn");
 // play_jeopardy REST API
 app.get("/api/questions/", (req, res) => {
   console.log((req.query));
-  questionModel.find({
-    question: { $regex: sanitize(req.query.question), $options: "i" },
-    answer: { $regex: sanitize(req.query.answer), $options: "i" },
-    "category.title": {$regex: sanitize(req.query.category), $options: "i" },
-    value: (req.query.value.length === 1) ?  {$gte: 0} : req.query.value
-
-  },
+ 
+  questionModel.find({$and: [
+    {clue: { $regex: sanitize(req.query.question), $options: "i" }},
+    {response: { $regex: sanitize(req.query.answer), $options: "i" }},
+    {category: {$regex: sanitize(req.query.category), $options: "i" }},
+    {value: (req.query.value.length === 1 || req.query.value.length === 0) ?  {$gte: 0} : req.query.value}, 
+    {round: (req.query.round.length === 3 || req.query.round.length === 0) ?  {$regex: ".*"} : req.query.round}, 
+    (req.query.isDailyDouble.length === 1 || req.query.isDailyDouble.length === 0) ? 
+    {$or :[{isDailyDouble: true},{isDailyDouble: false}]} :{isDailyDouble: req.query.isDailyDouble}]},
  
   function(err, questions) {
-    
+    console.log(questions[0]);
     if (err) {
       console.log(err);
       res.send(err);
     } else {
-      if(questions.length > 1000){
-        questions = questions.slice(0, 1000);
-      }
+      
       if(questions.length === 0){
         questionModel.find({value: -1}, function(err, questions) {
           if (err) {
@@ -50,12 +50,21 @@ app.get("/api/questions/", (req, res) => {
 
       
     }
-  })
+  }).limit(100);
 });
 
 app.get("/api/categories", (req, res) => {
   
-  questionModel.find({category_id: 1}, function(err, questions) {
+  questionModel.find({$and: [
+    (req.query.title.length === 0 ) ? 
+    {title: {$regex: ".*"}} : {title: {$regex: sanitize(req.query.title), $options: "i" }},
+    (req.query.clues_count.length === 0 ) ?
+    {clues_count: {$gte: 0}} : {clues_count: req.query.clues_count},
+    
+    {},
+    {},
+    {}]},
+     function(err, questions) {
     if (err) {
       console.log(err);
     } else {
@@ -79,7 +88,7 @@ app.listen(port, () => {
 
 
 function sanitize(str) {
-  if (typeof str !== "string") return str;
+  if (typeof str !== "string") return ".*";
   
   return str.replaceAll("[-.\\+*?\\[^\\]$(){}=!<>|:\\\\]", "\\\\$0");
 }

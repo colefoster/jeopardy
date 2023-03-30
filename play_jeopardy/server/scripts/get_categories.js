@@ -32,7 +32,7 @@ else if (process.argv.length == 4 && !isNaN(process.argv[2]) && !isNaN(process.a
         console.log("Getting categories " +start + " to " + (start + 100));
         
         setTimeout(() => {getCategories(100, start)}, timeout);
-        timeout += 10000;
+        timeout += 1000;
         start += 100;
     }
 
