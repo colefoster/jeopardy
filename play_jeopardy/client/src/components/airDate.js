@@ -5,7 +5,7 @@ function AirDate(props) {
     weekday: 'short',
     month: 'short',
     day: 'numeric',
-    year: '2-digit'
+    year: 'numeric'
   }
 
   

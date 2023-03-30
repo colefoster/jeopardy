@@ -1,7 +1,7 @@
 const fs = require('fs');
 const mongoose = require("mongoose");
 const he = require("he");
-const { connectToDB, questionModel, catModel  } = require("./dbFunctions.js");
+const { connectToDB, questionModel, catModel  } = require("./database_functions.js");
 const prompt = require('prompt-sync')({sigint: true});
 
 connectToDB();
@@ -48,14 +48,14 @@ async function countCategories(){
 
 
 
-setTimeout(() => {upload();}, 69000);
+
 setTimeout(() => {countQuestions();}, 100);
 setTimeout(() => {countCategories();}, 200);
-
+setTimeout(() => {upload();}, 80);
 
 
 function upload(){
-    let data = JSON.parse(fs.readFileSync("clues_Mar-28.json", 'utf8'));
+    let data = JSON.parse(fs.readFileSync("clues.json", 'utf8'));
 
 
     
@@ -65,10 +65,11 @@ function upload(){
 
     prompt("Press enter to start the upload process...");
     
-    for (let q = qCount; q < qCount + 100 && q < 463299; q++) {
+    for (let q = 474914;  q < 474915; q++) {
         
         try{
             questionModel.find({id: q}, function(err, questions) {
+                console.log(questions[q])
                 if (err) {
                     console.log(err);
                 } else {

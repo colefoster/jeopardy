@@ -1,4 +1,4 @@
-const { connectToDB, questionModel } = require("./dbFunctions.js");
+const { connectToDB, questionModel } = require("./database_functions.js");
 const fs = require('fs');
 
 let data = JSON.parse(fs.readFileSync("clues.json", 'utf8'));

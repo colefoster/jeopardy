@@ -3,7 +3,8 @@
 
 
 server/temp
-clues.json
+*.json
+*.txt
 ### CypressIO ###
 # gitignore template for the CypressIO, browser test framework
 # website: https://www.cypress.io/

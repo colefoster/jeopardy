@@ -4,7 +4,7 @@ const axios = require("axios");
 const parseDate = require("date-fns/parse");
 const pMap = require("p-map");
 const prompt = require('prompt-sync')({sigint: true});
-const { connectToDB, questionModel, catModel } = require("./dbFunctions.js");
+const { connectToDB, questionModel, catModel } = require("./database_functions.js");
 
 connectToDB()
 setTimeout(() => {countQuestions();}, 100);
