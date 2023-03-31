@@ -11,6 +11,10 @@ app.use(express.json());
 app.use(require("./routes/record"));
 // get driver connection
 
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
+
 
 // play_jeopardy REST API
 app.get("/api/questions/", (req, res) => {
@@ -22,6 +26,11 @@ app.get("/api/questions/", (req, res) => {
 app.get("/api/categories", (req, res) => {
   searchCategory(req, res);
 });
+
+app.get("/favicon.ico", (req, res) => {
+  res.send("./public/favicon.ico");
+});
+    
 
 app.listen(port, () => {
   connectToDB();
