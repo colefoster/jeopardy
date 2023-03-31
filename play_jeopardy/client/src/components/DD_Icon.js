@@ -1,6 +1,5 @@
 import { ReactComponent as DD_ICON } from "./DD_Icon.svg";
 function DdIcon(props) {
-    console.log(props);
   if(props.isDD){
      return (
       <td>

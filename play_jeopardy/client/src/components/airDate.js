@@ -12,9 +12,7 @@ function AirDate(props) {
     
   let formattedDate = "";
   try{
-    console.log(props);
     let newDate = new Date(props.date);
-    console.log(newDate);
     formattedDate = newDate.toLocaleDateString('en-US', dateOptions);
   }
   catch(e){

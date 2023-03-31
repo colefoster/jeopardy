@@ -1,12 +1,13 @@
 const https = require("https");
 
 const mongoose = require("mongoose");
+require("dotenv").config({ path: "./config.env" });
 
 async function connectToDB(){
     //connect to the database
     try{
-        await mongoose.connect("mongodb+srv://root:pass@cluster0.1ia5fim.mongodb.net/play_jeopardy?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
-        //await mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
+        //await mongoose.connect("mongodb+srv://root:pass@cluster0.1ia5fim.mongodb.net/play_jeopardy?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
+        await mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
         console.log("Connected to database");
     }
     catch(err){

@@ -11,6 +11,9 @@ import CategoriesList from "./components/categoriesList";
 import Edit from "./components/edit";
 import Create from "./components/create";
 
+process.env.SERVER_URL = 'https://play-jeopardy.herokuapp.com';
+
+
 const App = () => {
   return (
     <div>
