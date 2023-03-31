@@ -4,7 +4,7 @@ const cors = require("cors");
 
 
 require("dotenv").config({ path: "./config.env" });
-const { questionModel, connectToDB} = require("./scripts/database_functions.js");
+const {catModel, questionModel, connectToDB} = require("./scripts/database_functions.js");
 const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
