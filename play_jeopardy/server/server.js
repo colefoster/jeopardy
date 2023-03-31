@@ -12,6 +12,15 @@ app.use(require("./routes/record"));
 // get driver connection
 
 app.get("/", (req, res) => {
+  let q = "";
+  questionModel.find({id: 1}, function(err, questions) {
+    if (err) {
+      console.log(err);
+    } else {
+      q = questions[0].clue;
+    }
+  });
+  res.send(q);
   res.send("Hello World!");
 });
 
