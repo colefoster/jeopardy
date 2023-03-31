@@ -8,7 +8,6 @@ import Navbar from "./components/navbar";
 import QuestionsList from "./components/questionsList";
 import Edit from "./components/edit";
 import Create from "./components/create";
-import Home from "./components/home";
 
 const App = () => {
   return (
@@ -17,7 +16,6 @@ const App = () => {
       <div style={{ margin: 20 }}>
       <Routes>
         <Route exact path="/" element={<QuestionsList />} />
-        <Route path="/home" element={<Home />} />
         <Route path="/questions" element={<QuestionsList />} />
         <Route path="/edit/:id" element={<Edit />} />
         <Route path="/create" element={<Create />} />

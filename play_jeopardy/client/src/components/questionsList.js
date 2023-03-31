@@ -40,6 +40,7 @@ export default function RecordList() {
 
 
   useEffect(() => {
+
     async function getRecords() {
       const response = await fetch(`http://localhost:5000/api/questions?question=`+
       `${searchQuestion}&answer=${searchAnswer}&category=${searchCategory}&value=${searchValue}&round=${searchRound}&isDailyDouble=${searchDD}`);
@@ -50,6 +51,7 @@ export default function RecordList() {
         return;
       }
       const records = await response.json();
+      console.log(records);
       setRecords(records);
     }
 
