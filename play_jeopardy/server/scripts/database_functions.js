@@ -5,7 +5,8 @@ const mongoose = require("mongoose");
 async function connectToDB(){
     //connect to the database
     try{
-        await mongoose.connect("mongodb+srv://root:pass@cluster0.1ia5fim.mongodb.net/play_jeopardy?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
+        //await mongoose.connect("mongodb+srv://root:pass@cluster0.1ia5fim.mongodb.net/play_jeopardy?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
+        await mongoose.connect(process.env.MONGODB_URI);
         console.log("Connected to database");
     }
     catch(err){
