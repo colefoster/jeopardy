@@ -12,15 +12,7 @@ app.use(require("./routes/record"));
 // get driver connection
 
 app.get("/", (req, res) => {
-  let q = "";
-  questionModel.find({id: 1}, function(err, questions) {
-    if (err) {
-      console.log(err);
-    } else {
-      q = questions[0].clue;
-    }
-  });
-  res.send(q);
+  
   res.send("Hello World!");
 });
 
@@ -49,25 +41,25 @@ app.listen(port, () => {
 function searchQuestions(req, res) {
   questionModel.find({$and: [
     
-    {clue: (req.query.question.length === 0) ? {$regex: ".*"} : { $regex: sanitize(req.query.question), $options: "i" }}, // no question query parameter
+    {clue: (req.query.question) ?  { $regex: sanitize(req.query.question), $options: "i" } : {$regex: ".*"} }, // no question query parameter
      
     
-    {response: (req.query.answer.length === 0 ) ? {$regex: ".*"} : { $regex: sanitize(req.query.answer), $options: "i" }}, // answer query parameter
+    {response: (req.query.answer) ?  { $regex: sanitize(req.query.answer), $options: "i" }: {$regex: ".*"}}, // answer query parameter
 
     
-    {category: (req.query.category.length === 0 ) ? {$regex: ".*"} : {$regex: sanitize(req.query.category), $options: "i" }}, // no category query parameter
+    {category: (req.query.category) ?  {$regex: sanitize(req.query.category), $options: "i" }: {$regex: ".*"}}, // no category query parameter
      
 
     
-    {value: (req.query.value.length === 1 || req.query.value.length === 3 ) ? {$gte: 0} :  req.query.value}, // no value query parameter or ANY value query parameter
+    {value: (!req.query.value|| req.query.value.length === 1 ) ? {$gte: 0} :  req.query.value}, // no value query parameter or ANY value query parameter
        // value query parameter
     
     
-    {round: (req.query.round.length === 3 || req.query.round.length === 0  ) ? {$regex: ".*"}: {round: req.query.round}}, // no round query parameter, or ANY round query parameter
+    {round: (!req.query.round || req.query.round.length === 3 ) ? {$regex: ".*"}: {round: req.query.round}}, // no round query parameter, or ANY round query parameter
       // round query parameter
       
      
-    (req.query.isDailyDouble.length === 1 || req.query.isDailyDouble.length === 0) ? 
+    (!req.query.isDailyDouble || req.query.isDailyDouble.length === 3) ? 
     {$or :[{isDailyDouble: true},{isDailyDouble: false}]} :{isDailyDouble: req.query.isDailyDouble}]},
     function(err, questions) {
       if (err) {
