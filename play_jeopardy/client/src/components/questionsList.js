@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 import SearchBar from "./questionSearchBar";
 import AirDate from "./airDate";
 import DdIcon from "./DD_Icon";
+require("dotenv").config({ path: "../config.env" });
 
+ const server = process.env.SERVER_URL;
 
 const Record = (props) => (
   <tr>
@@ -37,12 +39,13 @@ export default function RecordList() {
   const [searchValue, setValue] = useState(0);
   const [searchDD, setDD] = useState("");
 
+  
 
 
   useEffect(() => {
 
     async function getRecords() {
-      const response = await fetch(`http://localhost:5000/api/questions?question=`+
+      const response = await fetch(`${server}/api/questions?question=`+
       `${searchQuestion}&answer=${searchAnswer}&category=${searchCategory}&value=${searchValue}&round=${searchRound}&isDailyDouble=${searchDD}`);
       
       if (!response.ok) {

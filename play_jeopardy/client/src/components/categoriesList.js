@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import CategorySearchBar from "./categorySearchBar";
-
-
+require("dotenv").config({ path: "../config.env" });
+const server = process.env.SERVER_URL;
 
 const Record = (props) => (
   <tr>
@@ -32,7 +32,7 @@ export default function RecordList() {
   useEffect(() => {
 
     async function getRecords() {
-      const response = await fetch(`http://localhost:5000/api/categories?title=`+
+      const response = await fetch(`${server}/api/categories?title=`+
       `${searchTitle}&countMin=${searchMin}&countMax=${searchMax}`);
       
       if (!response.ok) {
