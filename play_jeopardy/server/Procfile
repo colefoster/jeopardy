@@ -1,1 +1,1 @@
-web: node play_jeopardy/server/server.js
+web: node server.js
