@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import SearchBar from "./searchBar";
+import SearchBar from "./questionSearchBar";
 import AirDate from "./airDate";
 import DdIcon from "./DD_Icon";
 

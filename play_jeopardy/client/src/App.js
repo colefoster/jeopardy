@@ -4,8 +4,10 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 
 // We import all the components we need in our app
+import Home from "./components/home";
 import Navbar from "./components/navbar";
 import QuestionsList from "./components/questionsList";
+import CategoriesList from "./components/categoriesList";
 import Edit from "./components/edit";
 import Create from "./components/create";
 
@@ -15,8 +17,9 @@ const App = () => {
       <Navbar />
       <div style={{ margin: 20 }}>
       <Routes>
-        <Route exact path="/" element={<QuestionsList />} />
+        <Route exact path="/" element={<Home/>} />
         <Route path="/questions" element={<QuestionsList />} />
+        <Route path ="/categories" element={<CategoriesList />} />
         <Route path="/edit/:id" element={<Edit />} />
         <Route path="/create" element={<Create />} />
       </Routes>

@@ -79,10 +79,14 @@ function searchCategory(req, res) {
     {title: {$regex: ".*"}} // no title query parameter
      : {title: {$regex: sanitize(req.query.title), $options: "i" }},
 
-    (req.query.clues_count.length === 0 ) ?
-    {clues_count: {$gte: 0}}  // no clues_count query parameter
-     : {clues_count: req.query.clues_count}]},
+    (req.query.countMin.length === 0 ) ?
+    {clues_count: {$gte: 0}}  // no countMin query parameter
+     : {clues_count: {$gte: req.query.clues_count}},
 
+
+     (req.query.countMax.length === 0 ) ?
+     {clues_count: {$lte: 1000}}  // no countMax query parameter
+      : {clues_count: {$lte: req.query.countMax}}]},
     function(err, questions) {
       if (err) {
         console.log(err);
