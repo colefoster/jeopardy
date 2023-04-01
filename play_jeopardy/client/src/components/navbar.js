@@ -30,12 +30,12 @@ export default function Navbar() {
           <ul className="navbar-nav ml-auto">
           <li className="nav-item">
               <NavLink className="nav-link" to="/questions">
-                Browse Questions
+                Questions Search
               </NavLink>
             </li>
             <li className="nav-item">
               <NavLink className="nav-link" to="/categories">
-                Browse Categories
+                Categories Search
               </NavLink>
             </li>
             <li className="nav-item">

@@ -6,12 +6,12 @@ function Home(){
         <div>
             <h1>Home</h1>
             <nav>
-                    <Link to="/play"><h1>Play jeopardy</h1></Link>
+                    <Link to="/play"><h1>Play Jeopardy</h1></Link>
 
                 
-                    <Link to="/questions"><h3>Browse Questions</h3></Link>
+                    <Link to="/questions"><h3>Questions Search</h3></Link>
                 
-                    <Link to="/categories"><h3>Browse Categories</h3></Link>
+                    <Link to="/categories"><h3>Categories Search</h3></Link>
                 
                     
                 

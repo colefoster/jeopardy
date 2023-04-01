@@ -119,8 +119,8 @@ export default function RecordList() {
   // This following section will display the table with the records of individuals.
   return (
     <div>
-      <h3>Category Search</h3>
-      <RegexEnabledLabel />
+      <h3>Category Search <RegexEnabledLabel /></h3>
+      
       <CategorySearchBar onChange={updateCatSearch} />
       <table className="table table-striped" style={{ marginTop: 20 }}>
         <CategoryTableHeader onChange={updateCatSort} />
