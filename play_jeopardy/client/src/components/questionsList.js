@@ -3,9 +3,8 @@ import { Link } from "react-router-dom";
 import SearchBar from "./questionSearchBar";
 import AirDate from "./airDate";
 import DdIcon from "./DD_Icon";
-var constants = require('../constants');
 
- 
+var constants = require('../constants');
 const SERVER = constants.SERVER;
 
 const Record = (props) => (

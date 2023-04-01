@@ -39,29 +39,13 @@ app.listen(port, () => {
 
 
 function searchQuestions(req, res) {
-  console.log(process.env);
   questionModel.find({$and: [
-    
-    {clue: (req.query.question) ?  { $regex: sanitize(req.query.question), $options: "i" } : {$regex: ".*"} }, // no question query parameter
-     
-    
+    {clue: (req.query.question) ?  { $regex: sanitize(req.query.question), $options: "i" } : {$regex: ".*"} }, // no question query parameter    
     {response: (req.query.answer) ?  { $regex: sanitize(req.query.answer), $options: "i" }: {$regex: ".*"}}, // answer query parameter
-
-    
     {category: (req.query.category) ?  {$regex: sanitize(req.query.category), $options: "i" }: {$regex: ".*"}}, // no category query parameter
-     
-
-    
     {value: (!req.query.value|| req.query.value.length === 1 ) ? {$gte: 0} :  req.query.value}, // no value query parameter or ANY value query parameter
-       // value query parameter
-    
-    
     {round: (!req.query.round || req.query.round.length === 3 ) ? {$regex: ".*"}: {round: req.query.round}}, // no round query parameter, or ANY round query parameter
-      // round query parameter
-      
-     
-    (!req.query.isDailyDouble || req.query.isDailyDouble.length === 3) ? 
-    {$or :[{isDailyDouble: true},{isDailyDouble: false}]} :{isDailyDouble: req.query.isDailyDouble}]},
+    (!req.query.isDailyDouble || req.query.isDailyDouble.length === 3) ? {$or :[{isDailyDouble: true},{isDailyDouble: false}]} :{isDailyDouble: req.query.isDailyDouble}]},
     function(err, questions) {
       if (err) {
         console.log(err);
@@ -85,6 +69,9 @@ function searchQuestions(req, res) {
 }
 
 function searchCategory(req, res) {
+  console.log(typeof({$gte: 0}));
+  console.log(typeof(Number(req.query.countMin)));
+  console.log(req.query.countMax);
   catModel.find({$and: [
     (req.query.title.length === 0 ) ? 
     {title: {$regex: ".*"}} // no title query parameter
@@ -92,20 +79,21 @@ function searchCategory(req, res) {
 
     (req.query.countMin.length === 0 ) ?
     {clues_count: {$gte: 0}}  // no countMin query parameter
-     : {clues_count: {$gte: req.query.clues_count}},
+     : {clues_count: {$gte: Number(req.query.clues_count)}},
 
 
      (req.query.countMax.length === 0 ) ?
      {clues_count: {$lte: 1000}}  // no countMax query parameter
-      : {clues_count: {$lte: req.query.countMax}}]},
+      : {clues_count: {$lte: Number(req.query.countMax)}}]},
     function(err, questions) {
+      console.log(questions)
       if (err) {
         console.log(err);
       } 
       else {
         res.send (questions);
       }
-    });  
+    }).limit(5);  
 }
 
 function sanitize(str) {
