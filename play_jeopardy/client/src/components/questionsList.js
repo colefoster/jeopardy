@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import SearchBar from "./questionSearchBar";
 import AirDate from "./airDate";
 import DdIcon from "./DD_Icon";
+import QuestionTableHeader from "./questionTableHeader";
 
 var constants = require('../constants');
 const SERVER = constants.SERVER;
@@ -38,15 +39,14 @@ export default function RecordList() {
   const [searchRound, setRound] = useState("");
   const [searchValue, setValue] = useState(0);
   const [searchDD, setDD] = useState("");
-
-  
-
+  const [searchSort, setSort] = useState("");
 
   useEffect(() => {
 
     async function getRecords() {
       const response = await fetch(`${SERVER}/api/questions?question=`+
-      `${searchQuestion}&answer=${searchAnswer}&category=${searchCategory}&value=${searchValue}&round=${searchRound}&isDailyDouble=${searchDD}`);
+      `${searchQuestion}&answer=${searchAnswer}&category=${searchCategory}&value=${searchValue}&round=${searchRound}&isDailyDouble=${searchDD}`+
+      `${(searchSort === "") ? "" : "&sort=" + searchSort}`);
 
       if (!response.ok) {
         const message = `An error occured: ${response.statusText}`;
@@ -60,7 +60,7 @@ export default function RecordList() {
     getRecords();
 
     return; 
-  }, [records.length,  setRecords, searchQuestion,  searchAnswer, searchCategory,  searchValue ,searchRound, searchDD]);
+  }, [records.length,  setRecords, searchQuestion,  searchAnswer, searchCategory,  searchValue ,searchRound, searchDD, searchSort]);
 
   // This method will delete a record
   async function deleteRecord(id) {
@@ -122,25 +122,37 @@ export default function RecordList() {
       }
     }
   }
+
+  const updateSort = (sortBy) => {
+    if(sortBy === searchSort){ //already sorted by this field
+      setSort("-" + sortBy);
+      document.getElementsByName(sortBy + "_header")[0].style.color = "Red";
+    }
+    else if ("-" + sortBy === searchSort){ //already sorted by this field in reverse
+      setSort("");
+      document.getElementsByName(sortBy + "_header")[0].style.color = "black";
+      
+    }
+    else{ //not sorted by this field
+      setSort(sortBy);
+      document.getElementsByName("id_header")[0].style.color = "black";
+      document.getElementsByName("category_header")[0].style.color = "black";
+      document.getElementsByName("clue_header")[0].style.color = "black";
+      document.getElementsByName("response_header")[0].style.color = "black";
+      document.getElementsByName("round_header")[0].style.color = "black";
+      document.getElementsByName("value_header")[0].style.color = "black";
+      document.getElementsByName("isDailyDouble_header")[0].style.color = "black";
+      document.getElementsByName("airdate_header")[0].style.color = "black";
+      document.getElementsByName(sortBy + "_header")[0].style.color = "LawnGreen";
+    }
+  }
   // This following section will display the table with the records of individuals.
   return (
     <div>
       <h3>Questions Search</h3>
       <SearchBar onChange={updateQuestion} />
       <table className="table table-striped" style={{ marginTop: 20 }}>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Category</th>
-            <th>Question</th>
-            <th>Answer</th>
-            <th>Round</th>
-            <th>Value</th>
-            <th>DD</th>
-            <th>Airdate</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
+        <QuestionTableHeader onChange={updateSort}/>
         <tbody>{recordList()}</tbody>
       </table>
     </div>

@@ -2,10 +2,13 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 
+const {catModel, questionModel, connectToDB} = require("./scripts/database_functions.js");
 
 require("dotenv").config({ path: "./config.env" });
-const {catModel, questionModel, connectToDB} = require("./scripts/database_functions.js");
 const port = process.env.PORT || 5000;
+const categoryLimit = Number(process.env.CATEGORY_LIMIT);
+const questionLimit = Number(process.env.QUESTION_LIMIT);
+
 app.use(cors());
 app.use(express.json());
 app.use(require("./routes/record"));
@@ -55,23 +58,20 @@ function searchQuestions(req, res) {
             if (err) {
               console.log(err);
             } else {
-              console.log(placeholder);
               res.send(placeholder);
             }
           });
           console.log("No questions found");
         }else{
-          console.log(questions);
           res.send(questions);
         }       
       }
-    }).limit(50);
+    })
+    .sort(req.query.sort)
+    .limit(questionLimit);
 }
 
 function searchCategory(req, res) {
-  console.log(typeof({$gte: 0}));
-  console.log(typeof(Number(req.query.countMin)));
-  console.log(req.query.countMax);
   catModel.find({$and: [
     (req.query.title.length === 0 ) ? 
     {title: {$regex: ".*"}} // no title query parameter
@@ -79,21 +79,21 @@ function searchCategory(req, res) {
 
     (req.query.countMin.length === 0 ) ?
     {clues_count: {$gte: 0}}  // no countMin query parameter
-     : {clues_count: {$gte: Number(req.query.clues_count)}},
+     : {clues_count: {$gte: (Number(req.query.countMin))}},
 
 
      (req.query.countMax.length === 0 ) ?
      {clues_count: {$lte: 1000}}  // no countMax query parameter
-      : {clues_count: {$lte: Number(req.query.countMax)}}]},
+      : {clues_count: {$lte: (Number(req.query.countMax))}}]},
     function(err, questions) {
-      console.log(questions)
       if (err) {
         console.log(err);
       } 
       else {
         res.send (questions);
       }
-    }).limit(5);  
+    }).limit(categoryLimit)
+    .sort(req.query.sort);  
 }
 
 function sanitize(str) {
