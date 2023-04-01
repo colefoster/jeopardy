@@ -39,6 +39,7 @@ app.listen(port, () => {
 
 
 function searchQuestions(req, res) {
+  console.log(process.env);
   questionModel.find({$and: [
     
     {clue: (req.query.question) ?  { $regex: sanitize(req.query.question), $options: "i" } : {$regex: ".*"} }, // no question query parameter

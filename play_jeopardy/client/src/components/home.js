@@ -13,6 +13,9 @@ function Home(){
                 <li>
                     <Link to="/categories"><h2>Browse Categories</h2></Link>
                 </li>
+                <li>
+                    <h3>{process.env}</h3>
+                </li>
                 </ul>
             </nav>
         </div>
