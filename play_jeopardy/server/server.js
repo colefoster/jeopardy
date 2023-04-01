@@ -35,40 +35,52 @@ app.get("/favicon.ico", (req, res) => {
   res.send("./public/favicon.ico");
 });
     
-
+app.get("/api/isregexenabled/", (req, res) => {
+  if(process.env.REGEX_SANITIZATION_ENABLED === true){
+    res.status(204).send(); //No regex because sanitization is enabled
+  }
+  else{
+    res.status(200).send(); //Yes regex is enabled
+  }
+});
 app.listen(port, () => {
   connectToDB();
 });
 
 
 function searchQuestions(req, res) {
-  questionModel.find({$and: [
-    {clue: (req.query.question) ?  { $regex: sanitize(req.query.question), $options: "i" } : {$regex: ".*"} }, // no question query parameter    
-    {response: (req.query.answer) ?  { $regex: sanitize(req.query.answer), $options: "i" }: {$regex: ".*"}}, // answer query parameter
-    {category: (req.query.category) ?  {$regex: sanitize(req.query.category), $options: "i" }: {$regex: ".*"}}, // no category query parameter
-    {value: (!req.query.value|| req.query.value.length === 1 ) ? {$gte: 0} :  req.query.value}, // no value query parameter or ANY value query parameter
-    {round: (!req.query.round || req.query.round.length === 3 ) ? {$regex: ".*"}: {round: req.query.round}}, // no round query parameter, or ANY round query parameter
-    (!req.query.isDailyDouble || req.query.isDailyDouble.length === 3) ? {$or :[{isDailyDouble: true},{isDailyDouble: false}]} :{isDailyDouble: req.query.isDailyDouble}]},
-    function(err, questions) {
-      if (err) {
-        console.log(err);
-      } else {
-        if(questions.length === 0){
-          questionModel.find({value: -1}, function(err, placeholder) {
-            if (err) {
-              console.log(err);
-            } else {
-              res.send(placeholder);
-            }
-          });
-          console.log("No questions found");
-        }else{
-          res.send(questions);
-        }       
-      }
-    })
-    .sort(req.query.sort)
-    .limit(questionLimit);
+  try{
+    questionModel.find({$and: [
+      {clue: (req.query.question) ?  { $regex: sanitize(req.query.question), $options: "i" } : {$regex: ".*"} }, // no question query parameter    
+      {response: (req.query.answer) ?  { $regex: sanitize(req.query.answer), $options: "i" }: {$regex: ".*"}}, // answer query parameter
+      {category: (req.query.category) ?  {$regex: sanitize(req.query.category), $options: "i" }: {$regex: ".*"}}, // no category query parameter
+      {value: (!req.query.value|| req.query.value.length === 1 ) ? {$gte: 0} :  req.query.value}, // no value query parameter or ANY value query parameter
+      {round: (!req.query.round || req.query.round.length === 3 ) ? {$regex: ".*"}: {round: req.query.round}}, // no round query parameter, or ANY round query parameter
+      (!req.query.isDailyDouble || req.query.isDailyDouble.length === 3) ? {$or :[{isDailyDouble: true},{isDailyDouble: false}]} :{isDailyDouble: req.query.isDailyDouble}]},
+      function(err, questions) {
+        if (err) {
+          console.log(err);
+        } else {
+          if(questions.length === 0){
+            questionModel.find({value: -1}, function(err, placeholder) {
+              if (err) {
+                console.log(err);
+              } else {
+                res.send(placeholder);
+              }
+            });
+            console.log("No questions found");
+          }else{
+            res.send(questions);
+          }       
+        }
+      })
+      .sort(req.query.sort)
+      .limit(questionLimit);
+    }catch(err){
+      console.log(err);
+    }
+  
 }
 
 function searchCategory(req, res) {
@@ -97,7 +109,13 @@ function searchCategory(req, res) {
 }
 
 function sanitize(str) {
-  if (typeof str !== "string") return ".*";
-  
-  return str.replaceAll("[-.\\+*?\\[^\\]$(){}=!<>|:\\\\]", "\\\\$0");
+  if (process.env.REGEX_SANITIZATION_ENABLED === "false"){
+    return str; 
+  }
+  else{
+    
+    if (typeof str !== "string") return ".*";
+    
+    return str.replaceAll("[-.\\+*?\\[^\\]$(){}=!<>|:\\\\]", "\\\\$0");
+  }
 }

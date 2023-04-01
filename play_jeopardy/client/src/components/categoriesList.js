@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import CategorySearchBar from "./categorySearchBar";
 import CategoryTableHeader from "./categoryTableHeader";
+import RegexEnabledLabel from "./regexEnabledLabel";
 require("dotenv").config({ path: "../config.env" });
 
 var constants = require('../constants');
-const SERVER = constants.SERVER;
+
 
 const Record = (props) => (
   <tr>
@@ -36,7 +37,7 @@ export default function RecordList() {
   useEffect(() => {
 
     async function getRecords() {
-      const response = await fetch(`${SERVER}/api/categories?title=`+
+      const response = await fetch(`${constants.SERVER}/api/categories?title=`+
       `${searchTitle}&countMin=${searchMin}&countMax=${searchMax}` +
       `${(searchSort === "") ? "" : "&sort=" + searchSort}`);
 
@@ -119,6 +120,7 @@ export default function RecordList() {
   return (
     <div>
       <h3>Category Search</h3>
+      <RegexEnabledLabel />
       <CategorySearchBar onChange={updateCatSearch} />
       <table className="table table-striped" style={{ marginTop: 20 }}>
         <CategoryTableHeader onChange={updateCatSort} />

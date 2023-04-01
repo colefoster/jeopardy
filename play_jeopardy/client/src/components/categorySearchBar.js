@@ -16,7 +16,7 @@ const CategorySearchBar = ({ onChange }) => {
             <tbody>
             <tr>
             <th>
-                    <label htmlFor="Title">Category Title Includes: </label>
+                    <label htmlFor="Title">Category Title: </label>
                 </th>
                 <th></th>
                 <th>

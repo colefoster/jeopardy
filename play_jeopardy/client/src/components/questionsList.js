@@ -4,9 +4,10 @@ import SearchBar from "./questionSearchBar";
 import AirDate from "./airDate";
 import DdIcon from "./DD_Icon";
 import QuestionTableHeader from "./questionTableHeader";
+import RegexEnabledLabel from "./regexEnabledLabel";
 
 var constants = require('../constants');
-const SERVER = constants.SERVER;
+
 
 const Record = (props) => (
   <tr>
@@ -44,7 +45,7 @@ export default function RecordList() {
   useEffect(() => {
 
     async function getRecords() {
-      const response = await fetch(`${SERVER}/api/questions?question=`+
+      const response = await fetch(`${constants.SERVER}/api/questions?question=`+
       `${searchQuestion}&answer=${searchAnswer}&category=${searchCategory}&value=${searchValue}&round=${searchRound}&isDailyDouble=${searchDD}`+
       `${(searchSort === "") ? "" : "&sort=" + searchSort}`);
 
@@ -149,7 +150,8 @@ export default function RecordList() {
   // This following section will display the table with the records of individuals.
   return (
     <div>
-      <h3>Questions Search</h3>
+      <h3>Questions Search <RegexEnabledLabel /></h3>
+      
       <SearchBar onChange={updateQuestion} />
       <table className="table table-striped" style={{ marginTop: 20 }}>
         <QuestionTableHeader onChange={updateSort}/>

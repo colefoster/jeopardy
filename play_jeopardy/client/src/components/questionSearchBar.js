@@ -14,15 +14,15 @@ const SearchBar = ({ onChange }) => {
             <tbody>
             <tr>
             <th>
-                    <label htmlFor="Category">Category Includes: </label>
+                    <label htmlFor="Category">Category: </label>
                 </th>
                 <th></th>
                 <th>
-                    <label htmlFor="Question">Question Includes: </label>
+                    <label htmlFor="Question">Question: </label>
                 </th>
                 <th></th>
                 <th>
-                    <label htmlFor="Answer">Answer Includes: </label>
+                    <label htmlFor="Answer">Answer: </label>
                 </th>
                 <th></th>
                 
