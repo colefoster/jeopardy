@@ -10,8 +10,8 @@ import QuestionsList from "./components/questionsList";
 import CategoriesList from "./components/categoriesList";
 import Edit from "./components/edit";
 import Create from "./components/create";
+import Play from "./components/play";
 
-process.env.SERVER_URL = 'https://play-jeopardy.herokuapp.com';
 
 
 const App = () => {
@@ -21,6 +21,7 @@ const App = () => {
       <div style={{ margin: 20 }}>
       <Routes>
         <Route exact path="/" element={<Home/>} />
+        <Route path="/play" element={<Play />} />
         <Route path="/questions" element={<QuestionsList />} />
         <Route path ="/categories" element={<CategoriesList />} />
         <Route path="/edit/:id" element={<Edit />} />

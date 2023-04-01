@@ -6,17 +6,15 @@ function Home(){
         <div>
             <h1>Home</h1>
             <nav>
-                <ul>
-                <li>
-                    <Link to="/questions"><h2>Browse Questions</h2></Link>
-                </li>
-                <li>
-                    <Link to="/categories"><h2>Browse Categories</h2></Link>
-                </li>
-                <li>
-                    <h3>{console.log(process.env)}</h3>
-                </li>
-                </ul>
+                    <Link to="/play"><h1>Play jeopardy</h1></Link>
+
+                
+                    <Link to="/questions"><h3>Browse Questions</h3></Link>
+                
+                    <Link to="/categories"><h3>Browse Categories</h3></Link>
+                
+                    
+                
             </nav>
         </div>
     );
