@@ -14,7 +14,7 @@ function Home(){
                     <Link to="/categories"><h2>Browse Categories</h2></Link>
                 </li>
                 <li>
-                    <h3>{process.env}</h3>
+                    <h3>{console.log(process.env)}</h3>
                 </li>
                 </ul>
             </nav>
