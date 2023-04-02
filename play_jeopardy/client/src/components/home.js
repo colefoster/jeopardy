@@ -8,12 +8,9 @@ function Home(){
             <nav>
                     <Link to="/play"><h1>Play Jeopardy</h1></Link>
 
-                
                     <Link to="/questions"><h3>Questions Search</h3></Link>
                 
                     <Link to="/categories"><h3>Categories Search</h3></Link>
-                
-                    
                 
             </nav>
         </div>

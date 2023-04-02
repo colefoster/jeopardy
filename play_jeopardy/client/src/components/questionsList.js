@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import parse from 'html-react-parser';
+
 import SearchBar from "./questionSearchBar";
 import AirDate from "./airDate";
 import DdIcon from "./DD_Icon";
@@ -13,8 +15,8 @@ const Record = (props) => (
   <tr>
     <td>{props.record.id}</td>
     <td>{props.record.category}</td>
-    <td>{props.record.clue}</td>
-    <td>{props.record.response}</td>
+    <td>{parse(props.record.clue)}</td>
+    <td>{parse(props.record.response)}</td>
     <td>{props.record.round}</td>
     <td>{props.record.value}</td>
     <DdIcon isDD= {props.record.isDailyDouble}/>
