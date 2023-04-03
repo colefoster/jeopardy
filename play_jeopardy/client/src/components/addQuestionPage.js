@@ -1,7 +1,7 @@
 import React from 'react'
 import AddQuestionForm from './addQuestionForm'
 
-const EditQuestion = () => {
+const AddQuestionPage = () => {
 
     return (
     <div>
@@ -10,4 +10,4 @@ const EditQuestion = () => {
   )
 };
 
-export default EditQuestion;
+export default AddQuestionPage;

@@ -11,6 +11,7 @@ import CategoriesList from "./components/categoriesList";
 import UserQuestionsList from "./components/userQuestionsList";
 import AddQuestionPage from "./components/addQuestionPage";
 import Play from "./components/play";
+import EditQuestionPage from "./components/editQuestionPage";
 
 
 const App = () => {
@@ -25,6 +26,8 @@ const App = () => {
         <Route path ="/categories" element={<CategoriesList />} />
         <Route path="/create" element={<AddQuestionPage />} />
         <Route path="/userQuestions" element={<UserQuestionsList />} />
+        <Route path="/add" element={<AddQuestionPage />} />
+        <Route path="/edit" element={<EditQuestionPage />} />
       </Routes>
       </div>
     </div>

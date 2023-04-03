@@ -44,6 +44,11 @@ app.post("/api/userquestions", (req, res) => {
   addUserQuestion(req, res);
 });
 
+app.put("/api/userquestions", (req, res) => {
+  console.log(req.body);
+  updateUserQuestion(req, res);
+});
+
 app.get("/favicon.ico", (req, res) => {
   res.send("./public/favicon.ico");
 });
@@ -63,7 +68,6 @@ app.listen(port, () => {
 
 
 function searchQuestions(req, res) {
-  console.log(req.query)
   try{
     questionModel.find({$and: [
       {clue: (req.query.question) ?  { $regex: sanitize(req.query.question), $options: "i" } : {$regex: ".*"} }, // no question query parameter    
@@ -124,10 +128,15 @@ function searchCategory(req, res) {
 }
 
 function searchUserQuestions(req, res) {
+  console.log("Searching for all user questions");
+  userQuestionModel.find({}, function(err, questions) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("Found " + questions.length + " user questions");
+    }
+  });
   console.log(req.query);
-  console.log(req.query.question);
-  console.log(Boolean(req.query.question));
-
   userQuestionModel.find({
     $and: [
       {clue: (req.query.question) ?  { $regex: sanitize(req.query.question), $options: "i" } : {$regex: ".*"} }, // no question query parameter

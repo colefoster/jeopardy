@@ -8,8 +8,8 @@ const AddQuestionForm = () => {
   const [showError, setShowError] = useState(false);
   const [newObject, setNewObject] = useState({
     id: "",
-    clue: "",
-    response: "",
+    question: "",
+    answer: "",
     category: "",
     isDailyDouble: false,
     round: "",
@@ -55,13 +55,19 @@ const AddQuestionForm = () => {
         console.log("success");
         setShowSuccess(true);
         setTimeout(() => setShowSuccess(false), 3000);
+        setTimeout(() =>{window.location = "/userquestions"}, 3200);
+
       }
       else{
         console.log("error");
         setShowError(true);
       setTimeout(() => setShowError(false), 3000);
+      setTimeout(() =>{window.location = "/userquestions"}, 3200);
+
       }
     });
+    //Return user to list of user questions
+    
   }
 
 

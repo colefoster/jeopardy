@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import parse from 'html-react-parser';
 
 import SearchBar from "./questionSearchBar";
@@ -21,16 +20,6 @@ const Record = (props) => (
     <td>{props.record.value}</td>
     <DdIcon isDD= {props.record.isDailyDouble}/>
     <AirDate date = {props.record.airdate} />
-    <td>
-      <Link className="btn btn-link" to={`/edit/${props.record._id}`}>Edit</Link> |
-      <button className="btn btn-link"
-        onClick={() => {
-          props.deleteRecord(props.record._id);
-        }}
-      >
-        Delete
-      </button>
-    </td>
   </tr>
 );
 

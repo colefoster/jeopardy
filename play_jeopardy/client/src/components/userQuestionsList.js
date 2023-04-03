@@ -20,7 +20,7 @@ const Record = (props) => (
     <DdIcon isDD= {props.record.isDailyDouble}/>
     <td></td>
     <td>
-      <Link className="btn btn-link" to={`/edit/${props.record._id}`}>Edit</Link> |
+    <Link className="btn btn-link" to="/edit/" state={{question: props.record}}>Edit</Link> |
       <button className="btn btn-link"
         onClick={() => {
           props.deleteRecord(props.record._id);
