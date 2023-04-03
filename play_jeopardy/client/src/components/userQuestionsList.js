@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import parse from 'html-react-parser';
 
 import SearchBar from "./questionSearchBar";
 import DdIcon from "./DD_Icon";
