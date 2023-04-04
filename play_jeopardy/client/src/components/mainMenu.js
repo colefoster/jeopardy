@@ -1,7 +1,8 @@
 import React from 'react'
 import MenuSlider from './menuSlider'
 import * as Spaces from 'react-spaces'
-import {Tilt} from 'react-tilt';
+import Tilt from 'react-parallax-tilt';
+
 
 export default function mainMenu() {//TODO continue adding buttons, choose new library for buttons
   return (
@@ -9,7 +10,7 @@ export default function mainMenu() {//TODO continue adding buttons, choose new l
         <Spaces.ViewPort>
             <Spaces.Top size="70%">
                 <Spaces.Centered>
-                    <Tilt>
+                    <Tilt tiltReverse={true}>
                     <h1>Jeopardy!</h1>
                     </Tilt>
                     </Spaces.Centered>

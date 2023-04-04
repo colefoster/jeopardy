@@ -12,6 +12,7 @@ import UserQuestionsList from "./components/userQuestionsList";
 import AddQuestionPage from "./components/addQuestionPage";
 import Play from "./components/play";
 import EditQuestionPage from "./components/editQuestionPage";
+import PlayNoGraphics from "./components/playNoGraphics";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
       <Routes>
         <Route exact path="/" element={<Home/>} />
         <Route path="/play" element={<Play />} />
+        <Route path="/playnographics" element={<PlayNoGraphics />} />
         <Route path="/questions" element={<QuestionsList />} />
         <Route path ="/categories" element={<CategoriesList />} />
         <Route path="/create" element={<AddQuestionPage />} />

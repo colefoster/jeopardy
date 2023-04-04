@@ -13,6 +13,7 @@ function Home(){
                     <Spaces.Fill>
                         <h2><b>Home</b></h2>
                     <Link to="/play"><h2><b>Play Jeopardy</b></h2></Link>
+                    <Link to="/playnographics"><h5><b>Play No Graphics/Development version</b></h5></Link>
                     <hr/>
                     <Link to="/questions"><h3>View Questions</h3></Link> 
                     <Link to="/categories"><h3>View Categories</h3></Link>
