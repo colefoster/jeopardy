@@ -1,11 +1,10 @@
 import React from 'react';
+import BackgroundVideo from './backgroundVideo';
 //import { Link } from 'react-router-dom';
 
 function Play(){
     return (
-        <div>
-            <h1>Jeopardy Game</h1>
-        </div>
+        <BackgroundVideo />
     );
 }
 

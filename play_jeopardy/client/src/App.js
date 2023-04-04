@@ -18,7 +18,7 @@ const App = () => {
   return (
     <div>
       <Navbar />
-      <div style={{ margin: 20 }}>
+      
       <Routes>
         <Route exact path="/" element={<Home/>} />
         <Route path="/play" element={<Play />} />
@@ -29,7 +29,7 @@ const App = () => {
         <Route path="/add" element={<AddQuestionPage />} />
         <Route path="/edit" element={<EditQuestionPage />} />
       </Routes>
-      </div>
+      
     </div>
   );
 };

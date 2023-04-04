@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 
 const EditQuestionForm = ({ initialValue, onSave }) => {
-
-  const [id, setId] = useState(initialValue.id);
+  const [id] = useState(initialValue.id);
   const [clue, setClue] = useState(initialValue.clue);
   const [response, setResponse] = useState(initialValue.response);
   const [category, setCategory] = useState(initialValue.category);
@@ -28,49 +27,88 @@ const EditQuestionForm = ({ initialValue, onSave }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        ID:
-        <input type="number" value={id} onChange={(e) => setId(e.target.value)} />
-      </label>
-      <label>
-        Clue:
-        <input type="text" value={clue} onChange={(e) => setClue(e.target.value)} />
-      </label>
-      <label>
-        Response:
-        <input type="text" value={response} onChange={(e) => setResponse(e.target.value)} />
-      </label>
-      <label>
-        Category:
-        <input type="text" value={category} onChange={(e) => setCategory(e.target.value)} />
-      </label>
-      <label>
-        Is Daily Double:
-        <input type="checkbox" checked={isDailyDouble} onChange={(e) => setIsDailyDouble(e.target.checked)} />
-      </label>
-      <label>
-        Round:
-        <select value={round} onChange={(e) => setRound(e.target.value)}>
-          <option value="Jeopardy!">Jeopardy!</option>
-          <option value="Double Jeopardy!">Double Jeopardy!</option>
-          <option value="Final Jeopardy!">Final Jeopardy!</option>
+    <form className="edit-form">
+      <div className="form-group">
+        <label htmlFor="clue">Clue:</label>
+        <input
+          type="text"
+          id="clue"
+          value={clue}
+          onChange={(e) => setClue(e.target.value)}
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="response">Response: </label>
+        <input
+          type="text"
+          id="response"
+          value={response}
+          onChange={(e) => setResponse(e.target.value)}
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="category">Category: </label>
+        <input
+          type="text"
+          id="category"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="isDailyDouble">Daily Double: </label>
+        <input
+          type="checkbox"
+          id="isDailyDouble"
+          checked={isDailyDouble}
+          onChange={(e) => setIsDailyDouble(e.target.checked)}
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="round">Round: </label>
+        <select
+          id="round"
+          value={round}
+          onChange={(e) => setRound(e.target.value)}
+        >
+          <option value="Jeopardy">Jeopardy</option>
+          <option value="Double Jeopardy">Double Jeopardy</option>
+          <option value="Final Jeopardy">Final Jeopardy</option>
         </select>
-      </label>
-      <label>
-        Value:
-        <input type="number" value={value} onChange={(e) => setValue(e.target.value)} />
-      </label>
-      <label>
-        Distractors:
-        <input type="text" value={distractors} onChange={(e) => setDistractors(e.target.value.split(","))} />
-      </label>
-      <label>
-        User ID:
-        <input type="number" value={userId} onChange={(e) => setUserId(e.target.value)} />
-      </label>
-      <button type="submit">Save</button>
-    </form>
+      </div>
+      <div className="form-group">
+        <label htmlFor="value">Value: </label>
+        <input
+          type="number"
+          id="value"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="distractors">Distractors:</label>
+        <input
+          type="text"
+          id="distractors"
+          value={distractors}
+          onChange={(e) => setDistractors(e.target.value)}
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="userId">User ID: </label>
+        <input
+          type="number"
+          id="userId"
+      value={userId}
+      onChange={(e) => setUserId(e.target.value)}
+    />
+  </div>
+  <div className="form-group">
+    <button className="save-button" onClick={handleSubmit}>
+      Save
+    </button>
+  </div>
+</form>
   );
 };
 

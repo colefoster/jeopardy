@@ -1,5 +1,5 @@
 import React from "react";
-import "./AlertCard.css";
+import "./componentStyles.css";
 
 const AlertCard = ({ type, message }) => {
   return (

@@ -4,15 +4,27 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.css";
 
 // We import NavLink to utilize the react router.
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 // Here, we display our Navbar
 export default function Navbar() {
+  const location = useLocation();
+
+  // Define an array of routes where the navbar should be hidden
+  const hiddenRoutes = ["/play", "/another-route-to-hide-navbar-on"];
+
+  // Check if the current route is in the hiddenRoutes array
+  const isHidden = hiddenRoutes.includes(location.pathname);
+
+  // If the current route is in the hiddenRoutes array, return null to hide the navbar
+  if (isHidden) {
+    return null;
+  }
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <NavLink className="navbar-brand" to="/">
-        <img style={{"width" : 25 + '%'}} alt="" src=""></img>
+        <img style={{"width" : 100 + '%'}} alt="" src="https://www.jeopardy.com/themes/jeopardy/logo.png"></img>
         </NavLink>
         <button
           className="navbar-toggler"
@@ -25,27 +37,27 @@ export default function Navbar() {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-
+        
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav ml-auto">
           <li className="nav-item">
               <NavLink className="nav-link" to="/questions">
-                Questions Search
+                <b>Questions Search</b>
               </NavLink>
             </li>
             <li className="nav-item">
               <NavLink className="nav-link" to="/categories">
-                Categories Search
+                <b>Categories Search</b>
               </NavLink>
             </li>
             <li className="nav-item">
               <NavLink className="nav-link" to="/create">
-                Create Custom Question
+                <b>Create Custom Question</b>
               </NavLink>
             </li>
             <li className="nav-item">
               <NavLink className="nav-link" to="/userQuestions">
-                View Custom Questions
+                <b>View Custom Questions</b>
               </NavLink>
             </li>
           </ul>

@@ -128,14 +128,6 @@ function searchCategory(req, res) {
 }
 
 function searchUserQuestions(req, res) {
-  console.log("Searching for all user questions");
-  userQuestionModel.find({}, function(err, questions) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log("Found " + questions.length + " user questions");
-    }
-  });
   console.log(req.query);
   userQuestionModel.find({
     $and: [
@@ -185,44 +177,32 @@ function addUserQuestion(req, res) {
     } 
     else{
       console.log("User Question Saved");
-      return res.status(200).send();
+      return res.status(201).send();
     }
   });
 }
   
 function updateUserQuestion(req, res){
-  let q = userQuestionModel.findOne({id: req.body.id});
-  if(req.body.question){
-    q.clue=req.body.question;
-  }
-  if(req.body.answer){
-    q.response=req.body.answer;
-  }
-  if(req.body.category){
-    q.category=req.body.category;
-  }
-  if(req.body.value){
-    q.value=req.body.value;
-  }
-  if(req.body.round){
-    q.round=req.body.round;
-  }
-  if(req.body.isDailyDouble){
-    q.isDailyDouble=req.body.isDailyDouble;
-  }
-  if(req.body.distractors){
-    q.distractors=req.body.distractors;
-  }
-  q.save(function (err, userQuestion) {
-    if (err){
-      console.log(err);
-      return res.status(500).send();
-    } 
-    else{
-      console.log("User Question Updated");
-      return res.status(200).send();
+  userQuestionModel.updateOne({_id: req.body._id},
+    {
+      clue:req.body.question,
+      response:req.body.answer,
+      category:req.body.category,
+      value:req.body.value,
+      round:req.body.round,
+      distractors:req.body.distractors,
+      isDailyDouble:req.body.isDailyDouble,
+      user_id:req.body.user_id
+    },
+    function(err, question) {
+      if (err) {
+        console.log(err);
+        res.status(500).send();
+      } else {
+        console.log("Update Question Successful");
+        res.status(201).send();
+      }
     }
-  }
   );
 }
 
