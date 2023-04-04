@@ -20,6 +20,7 @@ const Record = (props) => (
     <td>{props.record.value}</td>
     <DdIcon isDD= {props.record.isDailyDouble}/>
     <AirDate date = {props.record.airdate} />
+    <td></td>
   </tr>
 );
 

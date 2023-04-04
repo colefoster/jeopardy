@@ -5,6 +5,10 @@
 server/temp
 *.json
 *.txt
+openai.mjs  
+#lazy way to protect my api key
+
+
 ### CypressIO ###
 # gitignore template for the CypressIO, browser test framework
 # website: https://www.cypress.io/

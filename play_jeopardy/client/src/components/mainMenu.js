@@ -11,7 +11,7 @@ export default function mainMenu() {//TODO continue adding buttons, choose new l
             <Spaces.Top size="70%">
                 <Spaces.Centered>
                     <Tilt tiltReverse={true}>
-                    <h1>Jeopardy!</h1>
+                    <title>Jeopardy!</title>
                     </Tilt>
                     </Spaces.Centered>
                 
