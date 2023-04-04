@@ -5,8 +5,10 @@ const tableStyle = {
     border: '1px solid black',
     borderCollapse: 'separate'
 };
-
+let minValue = 0;
+let maxValue = 500;
 const CategorySearchBar = ({ onChange }) => {
+   
   return (
     <div>
         
@@ -14,15 +16,15 @@ const CategorySearchBar = ({ onChange }) => {
             <tbody>
             <tr>
             <th>
-                    <label htmlFor="Title">Category Title Includes: </label>
+                    <label htmlFor="Title">Category Title: </label>
                 </th>
                 <th></th>
                 <th>
-                    <label htmlFor="Min">Minimum Questions: </label>
+                    <label htmlFor="Min">Min Questions {minValue}</label>
                 </th>
                 <th></th>
                 <th>
-                    <label htmlFor="Max">Maximum Questions: </label>
+                    <label htmlFor="Max">Max Questions {maxValue}</label>
                 </th>
                 </tr>
                 <tr>
@@ -31,11 +33,11 @@ const CategorySearchBar = ({ onChange }) => {
                     </td>
                     <td></td>
                     <td>
-                    <input name="Min"  type="range" min="0" max = "500" value="0" onChange={(e) => onChange(e.target.value, "Min")} />
+                    <input name="Min"  type="range" min="0" max = "500" defaultValue="0" onChange={(e) => {minValue = e.target.value;onChange(e.target.value, "Min")}} />
                     </td>
                     <td></td>
                     <td>
-                    <input name="Max" type="range" min="1" max="500" value="500" onChange={(e) => onChange(e.target.value, "Max")} />
+                    <input name="Max" type="range" min="1" max="500" defaultValue="500" onChange={(e) => {maxValue = e.target.value; onChange(e.target.value, "Max")}} />
                     </td>
 
             </tr>

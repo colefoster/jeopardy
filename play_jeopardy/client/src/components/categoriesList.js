@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import CategorySearchBar from "./categorySearchBar";
+import CategoryTableHeader from "./categoryTableHeader";
+import RegexEnabledLabel from "./regexEnabledLabel";
+require("dotenv").config({ path: "../config.env" });
 
+var constants = require('../constants');
 
 
 const Record = (props) => (
@@ -26,29 +30,30 @@ export default function RecordList() {
   const [records,  setRecords] = useState([]);
   const [searchTitle, setTitle] = useState([""]);
   const [searchMin, setMin] = useState([0]);
-    const [searchMax, setMax] = useState([0]);
+  const [searchMax, setMax] = useState([500]);
+  const [searchSort, setSort] = useState("");
 
 
   useEffect(() => {
 
     async function getRecords() {
-      const response = await fetch(`http://localhost:5000/api/categories?title=`+
-      `${searchTitle}&countMin=${searchMin}&countMax=${searchMax}`);
-      
+      const response = await fetch(`${constants.SERVER}/api/categories?title=`+
+      `${searchTitle}&countMin=${searchMin}&countMax=${searchMax}` +
+      `${(searchSort === "") ? "" : "&sort=" + searchSort}`);
+
       if (!response.ok) {
         const message = `An error occured: ${response.statusText}`;
         window.alert(message);
         return;
       }
       const records = await response.json();
-      console.log(records);
       setRecords(records);
     }
 
     getRecords();
 
     return; 
-  }, [records.length,  setRecords, searchTitle,  searchMin, searchMax]);
+  }, [records.length,  setRecords, searchTitle,  searchMin, searchMax, searchSort]);
 
   // This method will delete a record
   async function deleteRecord(id) {
@@ -92,19 +97,33 @@ export default function RecordList() {
         setMax(query);
       }
   }
+  const updateCatSort = (sortBy) => {
+    if(sortBy === searchSort){ //already sorted by this field
+      setSort("-" + sortBy);
+      document.getElementsByName(sortBy + "_header")[0].style.color = "Red";
+    }
+    else if ("-" + sortBy === searchSort){ //already sorted by this field in reverse
+      setSort("");
+      document.getElementsByName(sortBy + "_header")[0].style.color = "black";
+      
+    }
+    else{ //not sorted by this field
+      setSort(sortBy);
+      document.getElementsByName("id_header")[0].style.color = "black ";
+      document.getElementsByName("title_header")[0].style.color = "black";
+      document.getElementsByName("clues_count_header")[0].style.color = "black";
+      document.getElementsByName(sortBy + "_header")[0].style.color = "LawnGreen";
+    }
+    
+  }
   // This following section will display the table with the records of individuals.
   return (
     <div>
-      <h3>Category Search</h3>
+      <h3>Category Search <RegexEnabledLabel /></h3>
+      
       <CategorySearchBar onChange={updateCatSearch} />
       <table className="table table-striped" style={{ marginTop: 20 }}>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Category Title</th>
-            <th>Number of Questions</th>
-          </tr>
-        </thead>
+        <CategoryTableHeader onChange={updateCatSort} />
         <tbody>{recordList()}</tbody>
       </table>
     </div>

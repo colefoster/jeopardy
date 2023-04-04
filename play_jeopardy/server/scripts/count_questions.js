@@ -1,7 +1,6 @@
 const { connectToDB, questionModel } = require("./database_functions.js");
-const fs = require('fs');
 
-
+//Prints number of questions in database
 
 setTimeout(() => { connectToDB();}, 10) ;
 setTimeout(() => {countQuestions();}, 9000);

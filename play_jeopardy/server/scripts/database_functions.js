@@ -1,18 +1,16 @@
-const https = require("https");
-
 const mongoose = require("mongoose");
-
+require("dotenv").config({ path: "./config.env" });
 async function connectToDB(){
     //connect to the database
     try{
         await mongoose.connect("mongodb+srv://root:pass@cluster0.1ia5fim.mongodb.net/play_jeopardy?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
-        console.log("Connected to database");
+        //await mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
+        console.log("Connected to database");   
     }
     catch(err){
         console.log("Error connecting to database: " + err);
     }
 }
-
 
 const catSchema = new mongoose.Schema({
     id: Number,
@@ -36,30 +34,30 @@ const questionSchema = new mongoose.Schema({
 });
 const questionModel = mongoose.model("jarchive_questions", questionSchema);
 
+const userQuestionSchema = new mongoose.Schema({
+    id: Number,
+    clue: String,
+    response: String,
+    category: String,
+    isDailyDouble: Boolean,
+    round: String,  
+    value: Number,
+    distractors: [String],
+    user_id: Number,
+});
+const userQuestionModel = mongoose.model("user_questions", userQuestionSchema);
 
+function countUserQuestions(){//necessary to determine id of new user questions
+    userQuestionModel.countDocuments({}, function(err, count){
+        if(err){
+            console.log(err);
+        }
+        else{
+            return count;
+        }
+    });
 
-async function saveCategory(category){
-    //save categories to the database
-    try{
-        await category.save();
-        //console.log("Saved category to database");
-    }
-    catch(err){
-        console.log("Error saving category to database: " + err);
-    }
 }
-
-async function saveQuestion(question){
-    //save categories to the database
-    try{
-        await question.save();
-        //console.log("Saved question to database");
-    }
-    catch(err){
-        console.log("Error saving question to database: " + err);
-    }
-}
-
 function removeDuplicateCategories(){
     console.log("Looking for duplicate categories...");
     //remove duplicate categories
@@ -115,5 +113,4 @@ function removeDuplicateQuestions(){
     });
 }
 
-
-module.exports = {connectToDB, catModel, questionModel,  removeDuplicateCategories, removeDuplicateQuestions};
+module.exports = {connectToDB, catModel, questionModel, userQuestionModel, countUserQuestions, removeDuplicateCategories, removeDuplicateQuestions};
