@@ -21,7 +21,7 @@
     "react-router-dom": "^6.2.1",
     "react-scripts": "4.0.3",
     "react-spaces": "^0.4.1",
-    "react-tilt": "^1.0.2",
+    "react-tilt --legacy-peer-deps": "^1.0.2",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
