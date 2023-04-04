@@ -6,16 +6,16 @@ let video = intro;
 
 function BackgroundVideo() {
     console.log("BackgroundVideo() called");
-  
+  const handleVideoEnd = () => {
+    video = loop;
+  };
 
   return (
     <video
       autoPlay
       muted
       playsInline
-      onEnded={() => {
-        ;
-      }}
+      onEnded={handleVideoEnd}
       style={{
         position: "fixed",
         width: "100%",
