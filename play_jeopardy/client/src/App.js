@@ -13,7 +13,6 @@ import AddQuestionPage from "./components/addQuestionPage";
 import Play from "./components/play";
 import EditQuestionPage from "./components/editQuestionPage";
 
-
 const App = () => {
   return (
     <div>
