@@ -1,17 +1,17 @@
 import React from "react";
-import loop from "./video/background_loop.webm";
 import intro from "./video/background_intro.webm";
 
-let video = intro;
+
 
 function BackgroundVideo() {
-    console.log("BackgroundVideo() called");
   const handleVideoEnd = () => {
-    video = loop;
+    var myVideo = document.getElementById('bg-video');
+    myVideo.currentTime = 7.5;
+    myVideo.play();
   };
 
   return (
-    <video
+    <video id="bg-video"
       autoPlay
       muted
       playsInline
@@ -24,7 +24,7 @@ function BackgroundVideo() {
         zIndex: "-1",
       }}
     >
-      <source src={video} type="video/mp4" />
+      <source src={intro} type="video/mp4" />
     </video>
   );
 }
