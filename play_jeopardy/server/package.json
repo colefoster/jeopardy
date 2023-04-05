@@ -10,7 +10,7 @@
     "scrape_all": "node scripts/j_archive_scraper_get_all.js",
     "scrape_new": "node scripts/j_archive_scraper_get_new.js",
     "json_to_mongo": "node scripts/json_to_mongo.js",
-    "remove_duplicate_clue_ids": "node scripts/remove_duplicate_clue_ids.js", 
+    "remove_duplicate_clue_ids": "node scripts/remove_duplicate_clue_ids.js",
     "openai": "node scripts/open_AI_API.js"
   },
   "keywords": [],
@@ -22,6 +22,7 @@
     "cors": "^2.8.5",
     "date-fns": "^2.0.0-alpha.7",
     "dotenv": "^8.2.0",
+    "excel4node": "^1.8.1",
     "express": "^4.17.1",
     "he": "^1.2.0",
     "mongodb": "^3.6.6",

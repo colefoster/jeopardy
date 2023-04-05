@@ -4,8 +4,7 @@
 
 server/temp
 *.json
-*.txt
-open_AI_API.js  
+*.txt  
 #lazy way to protect my api key
 
 
