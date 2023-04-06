@@ -3,7 +3,7 @@ import EditQuestionForm from 'components/EditQuestionForm'
 import {useLocation} from "react-router-dom";
 import AlertCard from "components/AlertCard";
 
-var constants = require('constants');
+//var constants = require('../constants');
 
 
 
@@ -16,7 +16,7 @@ const EditQuestionPage = () => {
 
 
     async function sendPutRequest(data) {
-        const response = await fetch(constants.SERVER + "/api/userquestions", {
+        const response = await fetch( "/api/userquestions", {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

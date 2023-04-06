@@ -7,8 +7,7 @@ import DdIcon from "components/DD_Icon";
 import QuestionTableHeader from "components/QuestionTableHeader";
 import RegexEnabledLabel from "components/RegexEnabledLabel";
 
-var constants = require('constants');
-
+var server = require('server_address');
 
 const Record = (props) => (
   <tr>
@@ -37,16 +36,17 @@ const QuestionsPage=()=> {
   useEffect(() => {
 
     async function getRecords() {
-      const response = await fetch(`${constants.SERVER}/api/questions?question=`+
+      const response = await fetch(`${server.URL}/api/questions?question=`+
       `${searchQuestion}&answer=${searchAnswer}&category=${searchCategory}&value=${searchValue}&round=${searchRound}&isDailyDouble=${searchDD}`+
       `${(searchSort === "") ? "" : "&sort=" + searchSort}`);
-
+      console.log(server.URL);
       if (!response.ok) {
         const message = `An error occured: ${response.statusText}`;
         window.alert(message);
         return;
       }
       const records = await response.json();
+      
       setRecords(records);
     }
 
@@ -55,15 +55,7 @@ const QuestionsPage=()=> {
     return; 
   }, [records.length,  setRecords, searchQuestion,  searchAnswer, searchCategory,  searchValue ,searchRound, searchDD, searchSort]);
 
-  // This method will delete a record
-  async function deleteRecord(id) {
-    await fetch(`http://localhost:5000/${id}`, {
-      method: "DELETE"
-    });
-
-    const newRecords = records.filter((el) => el._id !== id);
-    setRecords(newRecords);
-  }
+ 
 
   // This method will map out the records on the table
   function List() {
@@ -72,7 +64,6 @@ const QuestionsPage=()=> {
         return (
           <Record
             record={record}
-            deleteRecord={() => deleteRecord(record._id)}
             key={record._id}
           />
         );
@@ -139,7 +130,6 @@ const QuestionsPage=()=> {
       document.getElementsByName(sortBy + "_header")[0].style.color = "LawnGreen";
     }
   }
-  // This following section will display the table with the records of individuals.
   return (
     <div>
       <h3>Questions Search <RegexEnabledLabel /></h3>

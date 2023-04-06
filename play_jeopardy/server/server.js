@@ -90,6 +90,7 @@ function searchQuestions(req, res) {
             });
             console.log("No questions found");
           }else{
+            console.log(questions.length + " questions found");
             res.send(questions);
           }       
         }

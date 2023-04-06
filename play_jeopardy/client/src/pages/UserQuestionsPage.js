@@ -6,7 +6,7 @@ import DdIcon from "../components/DD_Icon";
 import QuestionTableHeader from "../components/QuestionTableHeader";
 import RegexEnabledLabel from "../components/RegexEnabledLabel";
 
-var constants = require('../constants');
+var constants = require('../server_address');
 
 
 const Record = (props) => (
