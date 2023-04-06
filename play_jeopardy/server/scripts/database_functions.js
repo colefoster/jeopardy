@@ -3,8 +3,8 @@ require("dotenv").config({ path: "./config.env" });
 async function connectToDB(){
     //connect to the database
     try{
-        await mongoose.connect("mongodb+srv://root:pass@cluster0.1ia5fim.mongodb.net/play_jeopardy?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
-        //await mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
+        await mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
+        //await mongoose.connect(, {useNewUrlParser: true, useUnifiedTopology: true});
         console.log("Connected to database");   
     }
     catch(err){
@@ -19,6 +19,8 @@ const catSchema = new mongoose.Schema({
     clue_ids: [Number]
 });
 const catModel = mongoose.model("jarchive_categories", catSchema);
+
+
 const questionSchema = new mongoose.Schema({
     id: Number,
     clue: String,
@@ -34,6 +36,7 @@ const questionSchema = new mongoose.Schema({
 });
 const questionModel = mongoose.model("jarchive_questions", questionSchema);
 
+
 const userQuestionSchema = new mongoose.Schema({
     id: Number,
     clue: String,
@@ -46,6 +49,29 @@ const userQuestionSchema = new mongoose.Schema({
     user_id: Number,
 });
 const userQuestionModel = mongoose.model("user_questions", userQuestionSchema);
+
+
+const gameSchema = new mongoose.Schema({
+    id: Number,
+    categories: [String],
+    questions: [String],
+    user_id: Number,
+    date: Date,
+    score: Number,
+    isComplete: Boolean,
+});
+const gameModel = mongoose.model("games", gameSchema);
+
+function countGames(){
+    gameModel.countDocuments({}, function(err, count){
+        if(err){
+            console.log(err);
+        }
+        else{
+            return count;
+        }
+    });
+}
 
 function countUserQuestions(){//necessary to determine id of new user questions
     userQuestionModel.countDocuments({}, function(err, count){
@@ -113,4 +139,4 @@ function removeDuplicateQuestions(){
     });
 }
 
-module.exports = {connectToDB, catModel, questionModel, userQuestionModel, countUserQuestions, removeDuplicateCategories, removeDuplicateQuestions};
+module.exports = {connectToDB, gameModel, catModel, questionModel, userQuestionModel, countUserQuestions, removeDuplicateCategories, removeDuplicateQuestions};

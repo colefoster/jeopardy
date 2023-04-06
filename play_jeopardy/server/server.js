@@ -1,12 +1,12 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-
+var Alea = require('alea')
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-const {catModel, questionModel, userQuestionModel, connectToDB, countUserQuestions} = require("./scripts/database_functions.js");
+const {gameModel, catModel, questionModel, userQuestionModel, connectToDB, countUserQuestions} = require("./scripts/database_functions.js");
 
 require("dotenv").config({ path: "./config.env" });
 const port = process.env.PORT || 5000;
@@ -15,21 +15,17 @@ const questionLimit = Number(process.env.QUESTION_LIMIT);
 
 app.use(cors());
 app.use(express.json());
-app.use(require("./routes/record"));
-// get driver connection
 
-app.get("/", (req, res) => {
-  
-  res.send("Hello World!");
-});
 
 
 // play_jeopardy REST API
-app.get("/api/questions/", (req, res) => {
-  searchQuestions(req, res);
-  
+app.get("/api/game", (req, res) => {
+  generateGame(req, res);
 });
 
+app.get("/api/questions/", (req, res) => {
+  searchQuestions(req, res);
+});
 
 app.get("/api/categories", (req, res) => {
   searchCategory(req, res);
@@ -40,12 +36,10 @@ app.get("/api/userquestions", (req, res) => {
 });
 
 app.post("/api/userquestions", (req, res) => {
-  console.log(req.body);
   addUserQuestion(req, res);
 });
 
 app.put("/api/userquestions", (req, res) => {
-  console.log(req.body);
   updateUserQuestion(req, res);
 });
 
@@ -66,7 +60,35 @@ app.listen(port, () => {
   connectToDB();
 });
 
+function generateGame(req, res) {
+  var game = {
+    seed: req.query.seed,
+    categories: [process.env.GAME_SIZE_CATEGORIES || 6],
+    questions: [process.env.GAME_SIZE_CATEGORIES || 6][process.env.GAME_SIZE_QUESTIONS || 5],
+    generation_date: Date.now().toLocaleString()
+  };
 
+  game.categories = getCategoriesBySeed(game.seed); 
+
+  for (var i = 0; i < 6; i++) {
+
+  }
+
+
+
+
+  
+  res.send(game);  
+}
+
+function getCategoriesBySeed(seed = Date.now(), numCategories=6) {
+  var categories = [numCategories];
+  var rng = new Alea(seed);
+
+
+  return [rng(), rng(), rng(), rng(), rng(), rng()];
+}
+  
 function searchQuestions(req, res) {
   try{
     questionModel.find({$and: [
@@ -158,7 +180,6 @@ function searchUserQuestions(req, res) {
     .limit(questionLimit);
 }
 
-
 function addUserQuestion(req, res) {
   const userQuestion = new userQuestionModel({
     id:countUserQuestions(),
@@ -218,3 +239,4 @@ function sanitize(str) {
     return str.replaceAll("[-.\\+*?\\[^\\]$(){}=!<>|:\\\\]", "\\\\$0");
   }
 }
+
