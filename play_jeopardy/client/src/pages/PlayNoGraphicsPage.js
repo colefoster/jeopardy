@@ -22,10 +22,10 @@ Repeat until all questions are answered
 
 import React from 'react'
 
-function PlayNoGraphics() {
+function PlayNoGraphicsPage() {
   return (
     <div>PlayNoGraphics</div>
   )
 }
 
-export default PlayNoGraphics
+export default PlayNoGraphicsPage

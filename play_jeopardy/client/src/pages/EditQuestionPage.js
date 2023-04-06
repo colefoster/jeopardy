@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import EditQuestionForm from './editQuestionForm'
+import EditQuestionForm from 'components/EditQuestionForm'
 import {useLocation} from "react-router-dom";
-import AlertCard from "./alertCard";
+import AlertCard from "components/AlertCard";
 
-var constants = require('../constants');
+var constants = require('constants');
 
 
 

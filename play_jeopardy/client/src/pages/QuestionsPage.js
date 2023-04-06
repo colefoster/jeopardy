@@ -1,38 +1,30 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import parse from 'html-react-parser';
 
-import SearchBar from "./questionSearchBar";
-import DdIcon from "./DD_Icon";
-import QuestionTableHeader from "./questionTableHeader";
-import RegexEnabledLabel from "./regexEnabledLabel";
+import SearchBar from "components/QuestionSearchBar";
+import AirDate from "components/AirDate";
+import DdIcon from "components/DD_Icon";
+import QuestionTableHeader from "components/QuestionTableHeader";
+import RegexEnabledLabel from "components/RegexEnabledLabel";
 
-var constants = require('../constants');
+var constants = require('constants');
 
 
 const Record = (props) => (
   <tr>
     <td>{props.record.id}</td>
     <td>{props.record.category}</td>
-    <td>{props.record.clue}</td>
-    <td>{props.record.response}</td>
+    <td>{parse(props.record.clue)}</td>
+    <td>{parse(props.record.response)}</td>
     <td>{props.record.round}</td>
     <td>{props.record.value}</td>
     <DdIcon isDD= {props.record.isDailyDouble}/>
+    <AirDate date = {props.record.airdate} />
     <td></td>
-    <td>
-    <Link className="btn btn-link" to="/edit/" state={{question: props.record}}>Edit</Link> |
-      <button className="btn btn-link"
-        onClick={() => {
-          props.deleteRecord(props.record._id);
-        }}
-      >
-        Delete
-      </button>
-    </td>
   </tr>
 );
 
-function UserQuestionsList() {
+const QuestionsPage=()=> {
   const [records,  setRecords] = useState([]);
   const [searchQuestion, setQuestion] = useState([""]);
   const [searchAnswer, setAnswer] = useState([""]);
@@ -45,7 +37,7 @@ function UserQuestionsList() {
   useEffect(() => {
 
     async function getRecords() {
-      const response = await fetch(`${constants.SERVER}/api/userquestions?question=`+
+      const response = await fetch(`${constants.SERVER}/api/questions?question=`+
       `${searchQuestion}&answer=${searchAnswer}&category=${searchCategory}&value=${searchValue}&round=${searchRound}&isDailyDouble=${searchDD}`+
       `${(searchSort === "") ? "" : "&sort=" + searchSort}`);
 
@@ -74,7 +66,7 @@ function UserQuestionsList() {
   }
 
   // This method will map out the records on the table
-  function recordList() {
+  function List() {
     try{
       return records.map((record) => {
         return (
@@ -150,16 +142,15 @@ function UserQuestionsList() {
   // This following section will display the table with the records of individuals.
   return (
     <div>
-      <h3>User Questions Search <RegexEnabledLabel /></h3>
+      <h3>Questions Search <RegexEnabledLabel /></h3>
       
       <SearchBar onChange={updateQuestion} />
       <table className="table table-striped" style={{ marginTop: 20 }}>
         <QuestionTableHeader onChange={updateSort}/>
-        <tbody>{recordList()}</tbody>
+        <tbody>{List()}</tbody>
       </table>
     </div>
   );
 }
 
-
-export default UserQuestionsList;
+export default QuestionsPage;

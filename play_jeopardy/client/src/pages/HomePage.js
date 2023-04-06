@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import * as Spaces from 'react-spaces';
 
-function Home(){
+function HomePage(){
     return (
         <div>
             
@@ -28,4 +28,4 @@ function Home(){
     );
 }
 
-export default Home;
+export default HomePage;

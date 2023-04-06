@@ -5,7 +5,6 @@
 server/temp
 *.json
 *.txt  
-#lazy way to protect my api key
 
 
 ### CypressIO ###

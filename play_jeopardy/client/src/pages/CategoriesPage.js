@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import CategorySearchBar from "./categorySearchBar";
-import CategoryTableHeader from "./categoryTableHeader";
-import RegexEnabledLabel from "./regexEnabledLabel";
-require("dotenv").config({ path: "../config.env" });
+import CategorySearchBar from "components/CategorySearchBar";
+import CategoryTableHeader from "components/CategoryTableHeader";
+import RegexEnabledLabel from "components/RegexEnabledLabel";
 
-var constants = require('../constants');
+var constants = require('constants');
 
 
 const Record = (props) => (
@@ -26,7 +25,7 @@ const Record = (props) => (
   </tr>
 );
 
-export default function RecordList() {
+const CategoriesPage=()=> {
   const [records,  setRecords] = useState([]);
   const [searchTitle, setTitle] = useState([""]);
   const [searchMin, setMin] = useState([0]);
@@ -66,7 +65,7 @@ export default function RecordList() {
   }
 
   // This method will map out the records on the table
-  function recordList() {
+  function List() {
     try{
       return records.map((record) => {
         return (
@@ -124,8 +123,9 @@ export default function RecordList() {
       <CategorySearchBar onChange={updateCatSearch} />
       <table className="table table-striped" style={{ marginTop: 20 }}>
         <CategoryTableHeader onChange={updateCatSort} />
-        <tbody>{recordList()}</tbody>
+        <tbody>{List()}</tbody>
       </table>
     </div>
   );
 }
+export default CategoriesPage;

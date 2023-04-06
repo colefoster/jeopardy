@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import AlertCard from "./alertCard";
-import constants from "../constants";
+import AlertCard from "components/AlertCard";
+import constants from "constants";
 import Axios from "axios"; //for sending post request
 
 const AddQuestionForm = () => {

@@ -1,12 +1,12 @@
 import React from 'react';
-import MainMenu from './mainMenu';
-import Delayed from './delayed';
+import MainMenu from 'components/MainMenu';
+import Delayed from 'components/Delayed';
 
 
-import BackgroundVideo from './backgroundVideo';
+import BackgroundVideo from 'components/BackgroundVideo';
 //import { Link } from 'react-router-dom';
 
-function Play(){
+function PlayPage(){
     return (
     <div>
         <BackgroundVideo />
@@ -18,4 +18,4 @@ function Play(){
     );
 }
 
-export default Play;
+export default PlayPage;
