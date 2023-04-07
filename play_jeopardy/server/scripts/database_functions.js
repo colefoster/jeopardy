@@ -1,11 +1,17 @@
 const mongoose = require("mongoose");
 require("dotenv").config({ path: "./config.env" });
+
+let gameCount = 0;
+let userQuestionCount = 0;
+let categoryCount= 0;
+
 async function connectToDB(){
     //connect to the database
     try{
+        console.log("Connecting to database...");
         await mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
-        //await mongoose.connect(, {useNewUrlParser: true, useUnifiedTopology: true});
-        console.log("Connected to database");   
+        
+        console.log("Connected to database\n\tReady to serve api requests on port " + process.env.PORT + "!");   
     }
     catch(err){
         console.log("Error connecting to database: " + err);
@@ -53,9 +59,9 @@ const userQuestionModel = mongoose.model("user_questions", userQuestionSchema);
 
 const gameSchema = new mongoose.Schema({
     id: Number,
+    seed: String,
     categories: [String],
-    questions: [String],
-    user_id: Number,
+    questions: [[mongoose.Schema.Types.questionModel]],
     date: Date,
     score: Number,
     isComplete: Boolean,
@@ -68,6 +74,18 @@ function countGames(){
             console.log(err);
         }
         else{
+            console.log(typeof count)
+            return count;
+        }
+    });
+}
+function countCategories(){
+    catModel.countDocuments({}, function(err, count){
+        if(err){
+            console.log(err);
+        }
+        else{
+            console.log(typeof count)
             return count;
         }
     });
@@ -139,4 +157,4 @@ function removeDuplicateQuestions(){
     });
 }
 
-module.exports = {connectToDB, gameModel, catModel, questionModel, userQuestionModel, countUserQuestions, removeDuplicateCategories, removeDuplicateQuestions};
+module.exports = {countGames, countCategories ,countUserQuestions, connectToDB, gameModel, catModel, questionModel, userQuestionModel, countUserQuestions, removeDuplicateCategories, removeDuplicateQuestions};

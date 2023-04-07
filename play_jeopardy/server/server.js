@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-const {gameModel, catModel, questionModel, userQuestionModel, connectToDB, countUserQuestions} = require("./scripts/database_functions.js");
+const {gameModel, catModel, questionModel, userQuestionModel, countGames, connectToDB, countUserQuestions} = require("./scripts/database_functions.js");
 
 require("dotenv").config({ path: "./config.env" });
 const port = process.env.PORT || 5000;
@@ -60,35 +60,141 @@ app.listen(port, () => {
   connectToDB();
 });
 
-function generateGame(req, res) {
-  var game = {
-    seed: req.query.seed,
-    categories: [process.env.GAME_SIZE_CATEGORIES || 6],
-    questions: [process.env.GAME_SIZE_CATEGORIES || 6][process.env.GAME_SIZE_QUESTIONS || 5],
-    generation_date: Date.now().toLocaleString()
-  };
-
-  game.categories = getCategoriesBySeed(game.seed); 
-
-  for (var i = 0; i < 6; i++) {
-
-  }
-
-
-
-
+async function generateGame(req, res) {
   
-  res.send(game);  
-}
+  nCats = Number(process.env.GAME_SIZE_CATEGORIES) || 6;
+  nQs = Number(process.env.GAME_SIZE_QUESTIONS) || 5;
+  
+  let seed = req.query.seed || Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
-function getCategoriesBySeed(seed = Date.now(), numCategories=6) {
-  var categories = [numCategories];
   var rng = new Alea(seed);
+  let tempQsArray = [];
+  let tempQs = [];
+  let tempCats = [];
+  await catModel.find({$and: [{$or: [{id: Math.floor(rng() * 78176)}, {id: Math.floor(rng() * 78176)}, {id: Math.floor(rng() * 78176)},{id: Math.floor(rng() * 78176)},
+  {id: Math.floor(rng() * 78176)}, {id: Math.floor(rng() * 78176)}, {id: Math.floor(rng() * 78176)}, {id: Math.floor(rng() * 78176)},
+  {id: Math.floor(rng() * 78176)}, {id: Math.floor(rng() * 78176)}, {id: Math.floor(rng() * 78176)}, {id: Math.floor(rng() * 78176)}]}, 
+  {clues_count: {$gte: nQs}}]}, function(err, categories) {
+    if (err){
+      console.log(err);
+    }
+    else{
+      console.log(categories);
+      tempCats = categories.splice(0, nCats);    
+    }
+  })
+  .then(function(tempCats){
+    for (let i = 0; i < nCats; i++){
+      if(tempCats[i].clues_count === nQs){
+        questionModel.find({category: tempCats[i].title}, function(err, questions_group_of_nQs) {
+          if (err){
+            console.log(err);
+          }
+          else{
+            tempQs = questions_group_of_nQs;
+            
+          }
+        }).sort({value: 1}).limit(nQs).then( function(tempQs){
+          
 
+          tempQsArray.push(tempQs);
+          if(tempQsArray.length === nCats){
+            let newId = countGames();
+            let newGame = new gameModel({
+              id: newId,
+              seed: seed,
+              categories: tempCats,
+              questions: tempQsArray,
+              date: Date.now(),
+              score: 0,
+              isComplete: false
+            });
+            res.send(newGame);
+            newGame.save(function(err, newGame){
+              if(err){
+                console.log(err);
+              }
+              else{
+                console.log("New game created saved to database");
+              }
+            });
+          }
+        });
+        
+      }
+      else{ //more than nQs questions in category, grab one of each value, selecting randomly if there are multiple questions with the same value 
+        let tempQs = [];
+        for(let j = 0; j < nQs; j++){
+          questionModel.find({$and:[{category: tempCats[i].title}, {$or:[{ value: j * 200}, {$and:[{value:j*400}, {round:"Double Jeopardy"}]}]}]}, function(err, qs_specific_values) {
+            if (err){
+              console.log(err);
+            }
+            else{
+              if(qs_specific_values.length === 0){
+              }
+              else if(qs_specific_values.length === 1){
+                tempQs.push(qs_specific_values[0]);
+              }
+              else{
 
-  return [rng(), rng(), rng(), rng(), rng(), rng()];
-}
+                let r = Math.floor(rng() * qs_specific_values.length);
+
+                tempQs.push(qs_specific_values[r]);
+              }
+            }            
+          });
+        }
+        tempQsArray.push(tempQs);
+        if(tempQsArray.length === nCats){
+          let newId = countGames();
+          let newGame = new gameModel({
+            id: newId,
+            seed: seed,
+            categories: tempCats,
+            questions: tempQsArray,
+            date: Date.now().toLocaleString(),
+            score: 0,
+            isComplete: false
+          });
+          res.send(newGame);
+          newGame.save(function(err, newGame){
+            if(err){
+              console.log(err);
+            }
+            else{
+              console.log("New game created saved to database");
+            }
+          });
+        }
+        
+      }
+    }
+  }).finally(function(results){
+    console.log("finally");
+    //console.log("Found " + results.length + " categories");
+
+  });
+
   
+  for(let i = 0; i < nCats; i++){
+  }
+  
+
+
+
+
+   
+}
+
+function getCategoriesBySeed(seed, numCategories=6) {
+  
+}
+
+function getQuestionsByCategory(category, numQuestions=5) {
+
+  
+}
+
 function searchQuestions(req, res) {
   try{
     questionModel.find({$and: [
@@ -182,7 +288,7 @@ function searchUserQuestions(req, res) {
 
 function addUserQuestion(req, res) {
   const userQuestion = new userQuestionModel({
-    id:countUserQuestions(),
+    id:countUserQuestions+1,
     clue: req.body.question,
     response: req.body.answer,
     category: req.body.category,

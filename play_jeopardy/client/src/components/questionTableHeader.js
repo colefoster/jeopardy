@@ -18,7 +18,6 @@ const QuestionTableHeader = ({ onChange }) => {
             <th><button name="isDailyDouble_header" style={buttonStyle} onClick={() => {onChange("isDailyDouble")}}>DD</button></th>
             <th><button name="airdate_header" style={buttonStyle} onClick={() => {onChange("clues_count")}}>Airdate</button></th>
             <th>Actions</th>
-
           </tr>
         </thead>
   );
