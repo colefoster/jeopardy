@@ -68,131 +68,109 @@ async function generateGame(req, res) {
   let seed = req.query.seed || Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
   var rng = new Alea(seed);
-  let tempQsArray = [];
-  let tempQs = [];
-  let tempCats = [];
+
+  
   await catModel.find({$and: [{$or: [{id: Math.floor(rng() * 78176)}, {id: Math.floor(rng() * 78176)}, {id: Math.floor(rng() * 78176)},{id: Math.floor(rng() * 78176)},
+  {id: Math.floor(rng() * 78176)}, {id: Math.floor(rng() * 78176)}, {id: Math.floor(rng() * 78176)}, {id: Math.floor(rng() * 78176)},
   {id: Math.floor(rng() * 78176)}, {id: Math.floor(rng() * 78176)}, {id: Math.floor(rng() * 78176)}, {id: Math.floor(rng() * 78176)},
   {id: Math.floor(rng() * 78176)}, {id: Math.floor(rng() * 78176)}, {id: Math.floor(rng() * 78176)}, {id: Math.floor(rng() * 78176)}]}, 
   {clues_count: {$gte: nQs}}]}, function(err, categories) {
     if (err){
       console.log(err);
     }
-    else{
-      console.log(categories);
-      tempCats = categories.splice(0, nCats);    
-    }
-  })
-  .then(function(tempCats){
-    for (let i = 0; i < nCats; i++){
-      if(tempCats[i].clues_count === nQs){
-        questionModel.find({category: tempCats[i].title}, function(err, questions_group_of_nQs) {
-          if (err){
-            console.log(err);
-          }
-          else{
-            tempQs = questions_group_of_nQs;
-            
-          }
-        }).sort({value: 1}).limit(nQs).then( function(tempQs){
-          
-
-          tempQsArray.push(tempQs);
-          if(tempQsArray.length === nCats){
-            let newId = countGames();
-            let newGame = new gameModel({
-              id: newId,
-              seed: seed,
-              categories: tempCats,
-              questions: tempQsArray,
-              date: Date.now(),
-              score: 0,
-              isComplete: false
-            });
-            res.send(newGame);
-            newGame.save(function(err, newGame){
-              if(err){
-                console.log(err);
-              }
-              else{
-                console.log("New game created saved to database");
-              }
-            });
-          }
-        });
-        
-      }
-      else{ //more than nQs questions in category, grab one of each value, selecting randomly if there are multiple questions with the same value 
-        let tempQs = [];
-        for(let j = 0; j < nQs; j++){
-          questionModel.find({$and:[{category: tempCats[i].title}, {$or:[{ value: j * 200}, {$and:[{value:j*400}, {round:"Double Jeopardy"}]}]}]}, function(err, qs_specific_values) {
+  }).limit(nCats)
+  .then(function(categories){
+    let tempQsArray = [];
+    for (let i = 0; i < categories.length; i++){
+      try{  //if there are nQs questions in the category, grab them all
+        if(categories[i].clues_count === nQs){//(This line is getting empty tempCats[i] objects)
+          questionModel.find({category: categories[i].title}, function(err, questions_group_of_nQs) {
             if (err){
               console.log(err);
             }
-            else{
-              if(qs_specific_values.length === 0){
-              }
-              else if(qs_specific_values.length === 1){
-                tempQs.push(qs_specific_values[0]);
-              }
-              else{
-
-                let r = Math.floor(rng() * qs_specific_values.length);
-
-                tempQs.push(qs_specific_values[r]);
-              }
-            }            
-          });
-        }
-        tempQsArray.push(tempQs);
-        if(tempQsArray.length === nCats){
-          let newId = countGames();
-          let newGame = new gameModel({
-            id: newId,
-            seed: seed,
-            categories: tempCats,
-            questions: tempQsArray,
-            date: Date.now().toLocaleString(),
-            score: 0,
-            isComplete: false
-          });
-          res.send(newGame);
-          newGame.save(function(err, newGame){
-            if(err){
-              console.log(err);
-            }
-            else{
-              console.log("New game created saved to database");
+            
+          }).sort({value: 1}).limit(nQs).then( function(questions_group_of_nQs){
+            
+            tempQsArray.push(questions_group_of_nQs);
+            //console.log("Pushing question to tempQsArray: " + questions_group_of_nQs + "")
+            if(tempQsArray.length === nCats){
+              //console.log("TempQsArray: " + tempQsArray + "");
+              let newGame = new gameModel({
+                id: countGames(),
+                seed: seed,
+                categories: categories,
+                questions: tempQsArray,
+                date: Date.now(),
+                score: 0,
+                isComplete: false
+              });
+              res.send(newGame);
+              newGame.save(function(err, newGame){
+                if(err){
+                  console.log(err);
+                }
+                else{
+                  let c = "";
+                  for(let i = 0; i < newGame.categories.length; i++){
+                    c += newGame.categories[i].title + ", ";
+                  }
+                  console.log("Game " + newGame.id + " (" + c + ") generated and saved.");
+                }
+              });
             }
           });
         }
-        
+        else{ //else if more than nQs questions in category, grab one of each value, selecting randomly if there are multiple questions with the same value 
+          
+          
+          let targetValue = 0;
+          let subArray = [];
+          for(let j = 0; j < nQs; j++){
+            targetValue = ((j%5)+1) * 200;
+            questionModel.find({$and:[{category: categories[i].title}, {$or:[{ value: targetValue}, {$and:[{value:targetValue + targetValue}, {round:"Double Jeopardy"}]}]}]}, function(err, qs_specific_values) {
+              if (err){
+                console.log(err);
+              }
+            }).then(function(qs_specific_values){
+              subArray.push(qs_specific_values[Math.floor(rng() * qs_specific_values.length)]);
+              if(subArray.length === nQs){
+                tempQsArray.push(subArray);
+                if(tempQsArray.length === nCats){
+                  let newGame = new gameModel({
+                    id: countGames(),
+                    seed: seed,
+                    categories: categories,
+                    questions: tempQsArray,
+                    date: Date.now(),
+                    score: 0,
+                    isComplete: false
+                  });
+                  res.send(newGame);
+                  newGame.save(function(err, newGame){
+                    if(err){
+                      console.log(err);
+                    }
+                    else{
+                      let c = "";
+                      for(let i = 0; i < newGame.categories.length; i++){
+                        c += newGame.categories[i].title + ", ";
+                      }
+                      console.log("Game " + newGame.id + " (" + c + ") generated and saved.");
+                    }
+                  });
+                }
+              }
+            });
+          }
+          
+        }
+      }
+      catch(err){
+        console.log("Error in generating game");
+        console.log(err);
       }
     }
-  }).finally(function(results){
-    console.log("finally");
-    //console.log("Found " + results.length + " categories");
-
-  });
-
-  
-  for(let i = 0; i < nCats; i++){
-  }
-  
-
-
-
-
-   
-}
-
-function getCategoriesBySeed(seed, numCategories=6) {
-  
-}
-
-function getQuestionsByCategory(category, numQuestions=5) {
-
-  
+  });  
 }
 
 function searchQuestions(req, res) {
@@ -216,9 +194,7 @@ function searchQuestions(req, res) {
                 res.send(placeholder);
               }
             });
-            console.log("No questions found");
           }else{
-            console.log(questions.length + " questions found");
             res.send(questions);
           }       
         }

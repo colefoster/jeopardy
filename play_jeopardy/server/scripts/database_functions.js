@@ -1,22 +1,21 @@
 const mongoose = require("mongoose");
 require("dotenv").config({ path: "./config.env" });
 
-let gameCount = 0;
-let userQuestionCount = 0;
-let categoryCount= 0;
 
 async function connectToDB(){
     //connect to the database
     try{
         console.log("Connecting to database...");
         await mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
-        
+        countGames();
+        countUserQuestions();
         console.log("Connected to database\n\tReady to serve api requests on port " + process.env.PORT + "!");   
     }
     catch(err){
         console.log("Error connecting to database: " + err);
     }
 }
+
 
 const catSchema = new mongoose.Schema({
     id: Number,
@@ -60,7 +59,7 @@ const userQuestionModel = mongoose.model("user_questions", userQuestionSchema);
 const gameSchema = new mongoose.Schema({
     id: Number,
     seed: String,
-    categories: [String],
+    categories: [mongoose.Schema.Types.Mixed],
     questions: [[mongoose.Schema.Types.questionModel]],
     date: Date,
     score: Number,
@@ -68,16 +67,26 @@ const gameSchema = new mongoose.Schema({
 });
 const gameModel = mongoose.model("games", gameSchema);
 
-function countGames(){
+let numGames = 0;
+function countGames(){ //These count functions use a delayed state, they cant return the value immediately
+    //because all async functions (including all mongoose functions) return a promise
+    //This implementation calls the function on intial load, which counts the games, lets the promise resolve and updates the value
+    //Since we are just running it to init it we dont care that the value is 0/wrong
+    //After that it will return the correct value, counting (asynchronously and after the return) again each time it is called 
     gameModel.countDocuments({}, function(err, count){
         if(err){
             console.log(err);
         }
         else{
-            console.log(typeof count)
-            return count;
+            if(count - numGames > 0){ 
+                numGames = count;
+            }
+            else{
+                numGames = count + 1;
+            }
         }
     });
+    return numGames;
 }
 function countCategories(){
     catModel.countDocuments({}, function(err, count){
@@ -85,23 +94,28 @@ function countCategories(){
             console.log(err);
         }
         else{
-            console.log(typeof count)
             return count;
         }
     });
 }
-
-function countUserQuestions(){//necessary to determine id of new user questions
+let userQuestions = 0;
+function countUserQuestions(){//necessary to determine id of new user questions, see above comment for details
     userQuestionModel.countDocuments({}, function(err, count){
         if(err){
             console.log(err);
         }
         else{
-            return count;
+            if(count - numGames > 0){ 
+                userQuestions = count;
+            }
+            else{
+                userQuestions = count + 1;
+            }
         }
     });
-
+return userQuestions;
 }
+
 function removeDuplicateCategories(){
     console.log("Looking for duplicate categories...");
     //remove duplicate categories
@@ -128,7 +142,6 @@ function removeDuplicateCategories(){
         }
     }); 
 }
-
 function removeDuplicateQuestions(){
     //remove duplicate questions
     console.log("Looking for duplicate questions...");
