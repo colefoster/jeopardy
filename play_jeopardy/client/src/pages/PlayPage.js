@@ -4,18 +4,25 @@ import Delayed from 'components/Delayed';
 
 
 import BackgroundVideo from 'components/BackgroundVideo';
-//import { Link } from 'react-router-dom';
 
-function PlayPage(){
+function PlayPage(props){
+  if(props.intro === "on"){
     return (
     <div>
         <BackgroundVideo />
         
-        <Delayed waitBeforeShow={5400}>
+        <Delayed waitBeforeShow={5600}>
           <MainMenu />
         </Delayed>
     </div>
     );
+  } else {
+    return (
+      <div>
+        <MainMenu />
+      </div>
+    );
+  }
 }
 
 export default PlayPage;
