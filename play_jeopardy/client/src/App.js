@@ -6,14 +6,14 @@ import { Route, Routes } from "react-router-dom";
 // We import all the components we need in our app
 import Navbar from "components/Navbar";
 
-import HomePage from "pages/HomePage";
+import OldHomePage from "pages/OldHomePage";
 import QuestionsPage from "pages/QuestionsPage";
 import CategoriesPage from "pages/CategoriesPage";
 import UserQuestionsPage from "pages/UserQuestionsPage";
 import AddQuestionPage from "pages/AddQuestionPage";
+import HomePage from "pages/HomePage";
 import PlayPage from "pages/PlayPage";
 import EditQuestionPage from "pages/EditQuestionPage";
-import PlayNoGraphicsPage from "pages/PlayNoGraphicsPage";
 
 const App = () => {
   return (
@@ -21,9 +21,9 @@ const App = () => {
       <Navbar />
       
       <Routes>
-        <Route exact path="/" element={<HomePage/>} />
-        <Route path="/play" element={<PlayPage intro="off"/>} />
-        <Route path="/playnographics" element={<PlayNoGraphicsPage />} />
+        <Route exact path="/" element={<HomePage intro="off"/>} />
+        <Route path="/home" element={<OldHomePage/>} />
+        <Route path="/play" element={<PlayPage />} />
         <Route path="/questions" element={<QuestionsPage />} />
         <Route path ="/categories" element={<CategoriesPage />} />
         <Route path="/create" element={<AddQuestionPage />} />

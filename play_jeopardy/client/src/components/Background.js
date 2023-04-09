@@ -35,14 +35,23 @@ const Background = () => {
                         },
                         onHover: {
                             enable: true,
-                            mode: "repulse",
+                            mode: "connect",
+                            
                         },
                         resize: true,
                     },
                     modes: {
                         push: {
-                            quantity: 4,
+                            quantity: 1,
                         },
+                        connect: {
+                            distance: 200, //how far each particle will search for other particles
+                            radius:200,//radius around mouse to affect
+                            links: {
+                                opacity: 0.5,
+                            },
+                          },
+
                         repulse: {
                             distance: 200,
                             duration: 0.4,
@@ -51,24 +60,24 @@ const Background = () => {
                 },
                 particles: {
                     color: {
-                        value: "#ffffff",
+                        value: ["#ffffff","#060CE9", "#8D2AB5", "#115FF4"]
                     },
                     links: {
                         color: "#ffffff",
                         distance: 150,
-                        enable: true,
+                        enable: false,
                         opacity: 0.5,
                         width: 1,
                     },
                     collisions: {
-                        enable: true,
+                        enable: false,
                         mode:"bounce"
                     },
                     move: {
                         direction: "none",
                         enable: true,
                         outModes: {
-                            default: "bounce",
+                            default: "out",
                         },
                         random: false,
                         speed: 3,

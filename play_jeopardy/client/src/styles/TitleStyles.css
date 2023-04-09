@@ -1,0 +1,10 @@
+h1{
+    font-family: 'Jep-Bold';
+    font-weight:bold;
+    font-style:normal;
+    font-size: 15.5rem;
+    color: white;
+    text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
+    z-index: 2;
+}
+    

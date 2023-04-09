@@ -1,28 +1,20 @@
 import React from 'react';
-import MainMenu from 'components/MainMenu';
-import Delayed from 'components/Delayed';
+import JeopardyBoard from 'components/JeopardyBoard';
+import Background from 'components/Background';
 
-
-import BackgroundVideo from 'components/BackgroundVideo';
 
 function PlayPage(props){
-  if(props.intro === "on"){
+  
     return (
-    <div>
-        <BackgroundVideo />
-        
-        <Delayed waitBeforeShow={5600}>
-          <MainMenu />
-        </Delayed>
-    </div>
+        <>
+        <Background />
+        <JeopardyBoard />
+            
+
+            
+        </>
     );
-  } else {
-    return (
-      <div>
-        <MainMenu />
-      </div>
-    );
-  }
+  
 }
 
 export default PlayPage;

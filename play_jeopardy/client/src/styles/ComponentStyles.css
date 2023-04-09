@@ -1,16 +1,8 @@
-title{
-  font-family: 'Jep-Bold';
-  font-weight:bold;
-  font-style:normal;
-  font-size: 15.5rem;
-  color: #fff;
-  
-  }
-  
+
   @font-face {
     font-family: "Jep Bold";
-    src: url("fonts/jep-bold.woff2") format("woff2"),
-    url("fonts/jep-bold.woff") format("woff"),
+    src: url("../fonts/jep-bold.woff2") format("woff2"),
+    url("../fonts/jep-bold.woff") format("woff"),
     
     }
 
