@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import parse from 'html-react-parser';
 
-import SearchBar from "components/QuestionSearchBar";
-import AirDate from "components/AirDate";
-import DdIcon from "components/DD_Icon";
-import QuestionTableHeader from "components/QuestionTableHeader";
-import RegexEnabledLabel from "components/RegexEnabledLabel";
+import SearchBar from "../components/QuestionSearchBar";
+import AirDate from "../components/AirDate";
+import DdIcon from "../components/DD_Icon";
+import QuestionTableHeader from "../components/QuestionTableHeader";
+import RegexEnabledLabel from "../components/RegexEnabledLabel";
 
-var server = require('server_address');
+import URL from "../server_address";
 
 const Record = (props) => (
   <tr>
@@ -36,7 +36,7 @@ const QuestionsPage=()=> {
   useEffect(() => {
 
     async function getRecords() {
-      const response = await fetch(`${server.URL}/api/questions?question=`+
+      const response = await fetch(`${URL}/api/questions?question=`+
       `${searchQuestion}&answer=${searchAnswer}&category=${searchCategory}&value=${searchValue}&round=${searchRound}&isDailyDouble=${searchDD}`+
       `${(searchSort === "") ? "" : "&sort=" + searchSort}`);
       

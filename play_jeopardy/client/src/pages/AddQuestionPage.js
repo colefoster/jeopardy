@@ -1,5 +1,5 @@
 import React from 'react'
-import AddQuestionForm from 'components/AddQuestionForm'
+import AddQuestionForm from '../components/AddQuestionForm'
 
 const AddQuestionPage = () => {
 

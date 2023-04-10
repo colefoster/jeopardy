@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import CategorySearchBar from "components/CategorySearchBar";
-import CategoryTableHeader from "components/CategoryTableHeader";
-import RegexEnabledLabel from "components/RegexEnabledLabel";
+import CategorySearchBar from "../components/CategorySearchBar";
+import CategoryTableHeader from "../components/CategoryTableHeader";
+import RegexEnabledLabel from "../components/RegexEnabledLabel";
 
-var constants = require('constants');
+import URL from "../server_address";
 
 
 const Record = (props) => (
@@ -36,7 +36,7 @@ const CategoriesPage=()=> {
   useEffect(() => {
 
     async function getRecords() {
-      const response = await fetch(`${constants.SERVER}/api/categories?title=`+
+      const response = await fetch(`${URL}/api/categories?title=`+
       `${searchTitle}&countMin=${searchMin}&countMax=${searchMax}` +
       `${(searchSort === "") ? "" : "&sort=" + searchSort}`);
 

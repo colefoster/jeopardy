@@ -1,9 +1,9 @@
 import React from 'react';
-import MainMenu from 'components/MainMenu';
-import Delayed from 'components/Delayed';
-import Background from 'components/Background';
+import MainMenu from '../components/MainMenu';
+import Delayed from '../components/Delayed';
+import Background from '../components/Background';
 
-import BackgroundVideo from 'components/BackgroundVideo';
+import BackgroundVideo from '../components/BackgroundVideo';
 
 function HomePage(props){
   if(props.intro === "on"){

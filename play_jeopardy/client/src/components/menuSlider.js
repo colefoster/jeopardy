@@ -2,7 +2,7 @@ import React from "react"
 import { Link } from 'react-router-dom';
 import { useKeenSlider } from "keen-slider/react"
 import "keen-slider/keen-slider.min.css"
-import "styles/MenuSliderStyles.css"
+import "../styles/MenuSliderStyles.css"
 
 const MainMenu = () => {
   const [sliderRef] = useKeenSlider({

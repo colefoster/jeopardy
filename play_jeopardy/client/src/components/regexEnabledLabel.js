@@ -1,10 +1,10 @@
 import React from 'react';
-import constants from 'constants';
+import URL from '../server_address';
 
 let response;
 contactServer();
 async function contactServer(){
-    response = await fetch(`${constants.SERVER}/api/isregexenabled/`);
+    response = await fetch(`${URL}/api/isregexenabled/`);
 }
 
 const RegexEnabledLabel =  () =>{
