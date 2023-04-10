@@ -11,15 +11,13 @@ const Category = (props) => {
     
   return (
     <>
-    <Spaces.Top size="16.66667%" key={title + "-header"} style={{
-        backgroundColor: "#" + Math.floor(Math.random()*16777215).toString(16)
-    }}>
-    <div className="category-title" key={title+ "title"}>{title}</div>
+    <Spaces.Top size="16.7%" className='categoryNameBox' key={title + "-header"}>
+    <div className="category-title" key={title+ "title"}>
+        <h2>{title}</h2>
+        </div>
     </Spaces.Top>
     {questions.map((question, index) =>
-        <Spaces.Top size="16.66667%" key={index + "_space"} style={{
-            backgroundColor: "#" + Math.floor(Math.random()*16777215).toString(16)
-        }}>
+        <Spaces.Top size="16.7%" key={index + "_space"} className="questionBox">
         <Question
             value={question.value}
             question={question.question}

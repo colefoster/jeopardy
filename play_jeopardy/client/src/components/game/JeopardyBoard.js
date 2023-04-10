@@ -19,14 +19,13 @@ const JeopardyBoard = () => {
     }, [startNewGameCallback]);
     return (
         <>
+        <Spaces.Fill className='jeopardyBoard'>
             {categories.map((category, index) =>
-                <Spaces.Left size="16.66667%" key={index + "_space"} style={{
-                    backgroundColor: "#" + Math.floor(Math.random()*16777215).toString(16)
-                }}>
+                <Spaces.Left size="16.66667%" className='categoryColumn' key={index + "_space"}>
                 <Category title={category.title} questions={questions[index]} key={category.title + "-column"} />
                 </Spaces.Left>
             )}
-        
+        </Spaces.Fill>
         </>
     );
 };

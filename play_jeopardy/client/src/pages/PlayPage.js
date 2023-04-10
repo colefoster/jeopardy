@@ -9,16 +9,12 @@ function PlayPage(props){
    
     return (
         <>
-        <Background enabled={false}/>
+        <Background enabled={true}/>
             <Spaces.ViewPort>
             <BorderSpacer />
-            <Spaces.Fill style={{
-            backgroundColor: "green",
-            opacity: 1,
-            }}>
-                <JeopardyBoard />
+            
+            <JeopardyBoard />
                 
-            </Spaces.Fill>
             
             </Spaces.ViewPort>
         </>

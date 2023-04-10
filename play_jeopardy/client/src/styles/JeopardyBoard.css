@@ -1,5 +1,34 @@
-h1{position:relative;  z-index:999;   overflow: auto;}
-h2{position:relative;z-index:2; }
+@font-face {
+    font-family: "Question Clue";
+    src: url('../fonts/Clue\(Korinna-Regular\).woff2') format("woff2"),
+    url('../fonts/Clue\(Korinna-Regular\).woff') format("woff"),
+    
+}
+@font-face {
+    font-family: "Category Name";
+    src: url('../fonts/Cat\(Swiss921\ BT\).woff2') format("woff2"),
+    url('../fonts/Cat\(Swiss921\ BT\).woff') format("woff"),
+    
+}
+.questionBox{
+    border: 1px solid black; 
+    background: linear-gradient(to bottom, #060ce9 0%, #22099e 50%, #060ce9 100%);
 
-.box{
+}
+
+.categoryNameBox{
+    font-family: 'Category Name';
+    font-size: 0rem;
+    vertical-align: middle;
+    color: white;
+    text-align: center;
+    border: 1px solid black;
+
+    
+    background: linear-gradient(to bottom, #060ce9 0%, #22099e 50%, #060ce9 100%);  
+}
+.categoryColumn{
     border: 1px solid black; }
+
+.jeopardyBoard{
+    border: 3px solid black; }
