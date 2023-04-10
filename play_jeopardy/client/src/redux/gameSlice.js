@@ -1,53 +1,77 @@
 import { createSlice } from '@reduxjs/toolkit';
-//import SERVER from 'server_address';
+
+import SERVER from 'server_address';
+
+// Define a separate function to fetch a new game from the server
+async function fetchNewGame() {
+  const response = await fetch(SERVER.URL + `/api/game`);
+  if (!response.ok) {
+    const message = `An error occured: ${response.statusText}`;
+    window.alert(message); 
+    return null;
+  }
+
+  const game = await response.json();
+  return game;
+}
+
 export const gameSlice = createSlice({
   name: 'game',
   initialState: {
-    categories: [],
+    categories: [{
+      id: Number,
+      title: String,
+      clues_count: Number,
+      clues: [String],
+    }],
     questions: [{
-      category: '',
-      question: '',
-      answer: '',
-      value: 0,
-      answered: false,
+      id: Number,
+      question: String,
+      answer: String,
+      category: String,
+      isDailyDouble: Boolean,
+      round: String,
+      value: Number,
       revealed: false,
-
+      distractors: [String],
     }],
-    players: [{
-      name: '',
-      score: 0,
-    }],
-    questionsAnswered: 0
-
+    players: [{ name: 'default', score: 0 }],
+    questionsAnswered: 0,
   },
   reducers: {
-    startNewGame: (state, action) => {
-      
-      state.categories = action.payload.categories;
-      state.questions = action.payload.questions;
-      state.players = action.payload.players;
-      state.questionsAnswered = 0;
-    },
-    getGameInfo: (state, action) => {
-      return action.payload;
+    setGameInfo: (state, action) => {
+      const { categories, questions, players, questionsAnswered,  } = action.payload;
+      return { ...state, categories, questions, players, questionsAnswered };
     },
     answerQuestion: (state, action) => {
-      const { categoryIndex, questionIndex } = action.payload;
-      state[categoryIndex].questions[questionIndex].answered = true;
+      const { categoryId, questionId } = action.payload;
+      const category = state.categories[categoryId];
+      const question = category.questions[questionId];
+      question.answered = true;
+      state.questionsAnswered++;
     },
     revealQuestion: (state, action) => {
-      const { categoryIndex, questionIndex } = action.payload;
-      state[categoryIndex].questions[questionIndex].revealed = true;
+      const { categoryId, questionId } = action.payload;
+      const category = state.categories[categoryId];
+      const question = category.questions[questionId];
+      question.revealed = true;
     },
     updateScore: (state, action) => {
-      const { categoryIndex, questionIndex, score } = action.payload;
-      state[categoryIndex].questions[questionIndex].score = score;
+      const { playerId, score } = action.payload;
+      const player = state.players[playerId];
+      player.score = score;
     },
-
-
   },
 });
 
-export const { getGameInfo, startNewGame, answerQuestion, revealQuestion, updateScore} = gameSlice.actions;
+export const { setGameInfo, answerQuestion, revealQuestion, updateScore } = gameSlice.actions;
+
+// Define a separate thunk function to fetch a new game and dispatch the setGameInfo action
+export const startNewGame = () => async (dispatch) => {
+  const game = await fetchNewGame();
+  if (game) {
+    dispatch(setGameInfo(game));
+  }
+};
 
 export default gameSlice.reducer;

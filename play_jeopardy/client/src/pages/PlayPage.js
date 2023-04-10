@@ -1,18 +1,26 @@
 import React from 'react';
-import JeopardyBoard from '../components/JeopardyBoard';
+import JeopardyBoard from '../components/game/JeopardyBoard';
 import Background from '../components/Background';
-import { useDispatch } from 'react-redux';
-import { startNewGame} from 'redux/gameSlice';
+import * as Spaces from 'react-spaces'
+import BorderSpacer from 'components/BorderSpacer';
+
 
 function PlayPage(props){
-    //const game = useSelector((state) => state.game);
-    const dispatch = useDispatch()
-
-    dispatch(startNewGame());
+   
     return (
         <>
-            <Background />
-            <JeopardyBoard />
+        <Background enabled={false}/>
+            <Spaces.ViewPort>
+            <BorderSpacer />
+            <Spaces.Fill style={{
+            backgroundColor: "green",
+            opacity: 1,
+            }}>
+                <JeopardyBoard />
+                
+            </Spaces.Fill>
+            
+            </Spaces.ViewPort>
         </>
     );
   

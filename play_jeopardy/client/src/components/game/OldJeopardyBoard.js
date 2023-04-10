@@ -1,10 +1,10 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 // eslint-disable-next-line
-import { updateScore, revealQuestion, answerQuestion, getGameInfo } from '../redux/gameSlice'
+import { updateScore, revealQuestion, answerQuestion, getGameInfo } from '../../redux/gameSlice'
 
 import * as Spaces from 'react-spaces'
-import '../styles/JeopardyBoard.css'
+import '../../styles/JeopardyBoard.css'
 const JeopardyBoard = () => {
 
   useDispatch();
