@@ -3,7 +3,6 @@
 
 
 server/temp
-*.json
 *.txt  
 
 
