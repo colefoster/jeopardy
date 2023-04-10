@@ -1,6 +1,6 @@
 import React from "react";
-import intro from "videos/background_intro.webm";
-//import introMP4 from "./video/background_intro.mp4";
+import intro from "../videos/background_intro.webm";
+//import introMP4 from "../video/background_intro.mp4";
 
 
 function BackgroundVideo() {

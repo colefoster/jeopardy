@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import AlertCard from "components/AlertCard";
-
-import URL from '../server_address'
+import constants from "constants";
 import Axios from "axios"; //for sending post request
+
+import SERVER from '../server_address'
 
 const AddQuestionForm = () => {
   const [showSuccess, setShowSuccess] = useState(false);
@@ -48,7 +49,7 @@ const AddQuestionForm = () => {
     event.preventDefault();
     Axios({
       method: "post",
-      url: URL + "/api/userquestions",
+      url: SERVER.URL + "/api/userquestions",
       data: newObject
     }).then(function(response){
       console.log(response);

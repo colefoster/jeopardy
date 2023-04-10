@@ -4,16 +4,16 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 
 // We import all the components we need in our app
-import Navbar from "components/Navbar";
+import Navbar from "./components/Navbar";
 
-import OldHomePage from "pages/OldHomePage";
-import QuestionsPage from "pages/QuestionsPage";
-import CategoriesPage from "pages/CategoriesPage";
-import UserQuestionsPage from "pages/UserQuestionsPage";
-import AddQuestionPage from "pages/AddQuestionPage";
-import HomePage from "pages/HomePage";
-import PlayPage from "pages/PlayPage";
-import EditQuestionPage from "pages/EditQuestionPage";
+import OldHomePage from "./pages/OldHomePage"
+import QuestionsPage from "./pages/QuestionsPage";
+import CategoriesPage from "./pages/CategoriesPage";
+import UserQuestionsPage from "./pages/UserQuestionsPage";
+import AddQuestionPage from "./pages/AddQuestionPage";
+import HomePage from "./pages/HomePage";
+import PlayPage from "./pages/PlayPage";
+import EditQuestionPage from "./pages/EditQuestionPage";
 
 const App = () => {
   return (

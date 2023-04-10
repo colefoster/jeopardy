@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import CategorySearchBar from "components/CategorySearchBar";
-import CategoryTableHeader from "components/CategoryTableHeader";
-import RegexEnabledLabel from "components/RegexEnabledLabel";
+import CategorySearchBar from "../components/CategorySearchBar";
+import CategoryTableHeader from "../components/CategoryTableHeader";
+import RegexEnabledLabel from "../components/RegexEnabledLabel";
 
 import SERVER from '../server_address'
 

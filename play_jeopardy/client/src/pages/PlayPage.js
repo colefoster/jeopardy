@@ -1,6 +1,6 @@
 import React from 'react';
-import JeopardyBoard from 'components/JeopardyBoard';
-import Background from 'components/Background';
+import JeopardyBoard from '../components/JeopardyBoard';
+import Background from '../components/Background';
 import { useDispatch } from 'react-redux';
 import { startNewGame} from 'redux/gameSlice';
 

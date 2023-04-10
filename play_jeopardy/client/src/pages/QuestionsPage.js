@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import parse from 'html-react-parser';
 
-import SearchBar from "components/QuestionSearchBar";
-import AirDate from "components/AirDate";
-import DdIcon from "components/DD_Icon";
-import QuestionTableHeader from "components/QuestionTableHeader";
-import RegexEnabledLabel from "components/RegexEnabledLabel";
+import SearchBar from "../components/QuestionSearchBar";
+import AirDate from "../components/AirDate";
+import DdIcon from "../components/DD_Icon";
+import QuestionTableHeader from "../components/QuestionTableHeader";
+import RegexEnabledLabel from "../components/RegexEnabledLabel";
 
 import SERVER from '../server_address'
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import EditQuestionForm from 'components/EditQuestionForm'
+import EditQuestionForm from '../components/EditQuestionForm'
 import {useLocation} from "react-router-dom";
 import AlertCard from "components/AlertCard";
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import MenuSlider from 'components/MenuSlider'
+import MenuSlider from '../components/MenuSlider'
 import * as Spaces from 'react-spaces'
 import Tilt from 'react-parallax-tilt';
 import { Link } from 'react-router-dom';
