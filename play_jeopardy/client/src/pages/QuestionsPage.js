@@ -39,7 +39,7 @@ const QuestionsPage=()=> {
       const response = await fetch(`${server.URL}/api/questions?question=`+
       `${searchQuestion}&answer=${searchAnswer}&category=${searchCategory}&value=${searchValue}&round=${searchRound}&isDailyDouble=${searchDD}`+
       `${(searchSort === "") ? "" : "&sort=" + searchSort}`);
-      console.log(server.URL);
+      
       if (!response.ok) {
         const message = `An error occured: ${response.statusText}`;
         window.alert(message);
