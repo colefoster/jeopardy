@@ -1,15 +1,16 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+// eslint-disable-next-line
 import { updateScore, revealQuestion, answerQuestion, getGameInfo } from '../redux/gameSlice'
 
 import * as Spaces from 'react-spaces'
 import '../styles/JeopardyBoard.css'
 const JeopardyBoard = () => {
 
-  const dispatch = useDispatch();
+  useDispatch();
   const game = useSelector((state) => state.game);
   const categories = game.categories;
-  const questions = game.questions;
+  //const questions = game.questions;
 
 
 
