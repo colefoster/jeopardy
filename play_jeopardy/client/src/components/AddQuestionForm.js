@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import AlertCard from "components/AlertCard";
-import constants from "constants";
 import Axios from "axios"; //for sending post request
 
 import SERVER from '../server_address'
