@@ -4,8 +4,7 @@ import CategorySearchBar from "components/CategorySearchBar";
 import CategoryTableHeader from "components/CategoryTableHeader";
 import RegexEnabledLabel from "components/RegexEnabledLabel";
 
-var constants = require('constants');
-
+import SERVER from '../server_address'
 
 const Record = (props) => (
   <tr>
@@ -36,7 +35,7 @@ const CategoriesPage=()=> {
   useEffect(() => {
 
     async function getRecords() {
-      const response = await fetch(`${constants.SERVER}/api/categories?title=`+
+      const response = await fetch(`${SERVER.URL}/api/categories?title=`+
       `${searchTitle}&countMin=${searchMin}&countMax=${searchMax}` +
       `${(searchSort === "") ? "" : "&sort=" + searchSort}`);
 

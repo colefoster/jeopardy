@@ -24,6 +24,7 @@ app.get("/api/game", (req, res) => {
 });
 
 app.get("/api/questions/", (req, res) => {
+  console.log(req.query);
   searchQuestions(req, res);
 });
 

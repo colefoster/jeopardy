@@ -6,7 +6,7 @@ import DdIcon from "../components/DD_Icon";
 import QuestionTableHeader from "../components/QuestionTableHeader";
 import RegexEnabledLabel from "../components/RegexEnabledLabel";
 
-var constants = require('../server_address');
+import SERVER from '../server_address'
 
 
 const Record = (props) => (
@@ -45,7 +45,7 @@ function UserQuestionsList() {
   useEffect(() => {
 
     async function getRecords() {
-      const response = await fetch(`${constants.SERVER}/api/userquestions?question=`+
+      const response = await fetch(`${SERVER.URL}/api/userquestions?question=`+
       `${searchQuestion}&answer=${searchAnswer}&category=${searchCategory}&value=${searchValue}&round=${searchRound}&isDailyDouble=${searchDD}`+
       `${(searchSort === "") ? "" : "&sort=" + searchSort}`);
 
