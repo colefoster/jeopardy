@@ -7,7 +7,7 @@ import DdIcon from "../components/DD_Icon";
 import QuestionTableHeader from "../components/QuestionTableHeader";
 import RegexEnabledLabel from "../components/RegexEnabledLabel";
 
-import URL from "../server_address";
+import SERVER from '../server_address'
 
 const Record = (props) => (
   <tr>
@@ -34,9 +34,8 @@ const QuestionsPage=()=> {
   const [searchSort, setSort] = useState("");
 
   useEffect(() => {
-
     async function getRecords() {
-      const response = await fetch(`${URL}/api/questions?question=`+
+      const response = await fetch(SERVER.URL + `/api/questions?question=`+
       `${searchQuestion}&answer=${searchAnswer}&category=${searchCategory}&value=${searchValue}&round=${searchRound}&isDailyDouble=${searchDD}`+
       `${(searchSort === "") ? "" : "&sort=" + searchSort}`);
       
