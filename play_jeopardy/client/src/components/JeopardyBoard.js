@@ -1,5 +1,6 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+// eslint-disable-next-line
 import { updateScore, revealQuestion, answerQuestion, getGameInfo } from '../redux/gameSlice'
 
 import * as Spaces from 'react-spaces'
