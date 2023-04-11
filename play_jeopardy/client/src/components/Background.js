@@ -14,7 +14,26 @@ const Background = (props) => {
 
     }, []);
 
+    
     if(!props.enabled) return null
+    else if(props.mode === 'picture'){ 
+        const backgroundStyle = {
+            backgroundImage: `url("https://parade.com/.image/c_limit%2Ccs_srgb%2Cq_auto:good%2Cw_1240/MTkwNTgxMTE3NzUxOTkzNDY5/jeopardy-board.webp")`,
+            backgroundSize: '100% 100%',
+            backgroundPosition: 'center center',
+            backgroundRepeat: 'no-repeat',
+            width: '100%',
+            height: '100%',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            zIndex: 0,
+          };
+        return (
+             <div style={backgroundStyle}></div>
+
+            );
+        } else {
     return (
          <Particles
             id="tsparticles"
@@ -110,7 +129,7 @@ const Background = (props) => {
                 detectRetina: true,
             }}
         />
-    );
+    );}
 };
 
 export default Background;

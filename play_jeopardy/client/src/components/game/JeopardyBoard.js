@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useDispatch, useSelector } from 'react-redux';
-import * as Spaces from 'react-spaces'
-
+//import Tilt from 'react-parallax-tilt'
+import * as Spaces from 'react-spaces';
 import { startNewGame } from '../../redux/gameSlice';
 import Category from './Category';
 const JeopardyBoard = () => {
@@ -19,10 +19,13 @@ const JeopardyBoard = () => {
     }, [startNewGameCallback]);
     return (
         <>
+         
         <Spaces.Fill className='jeopardyBoard'>
             {categories.map((category, index) =>
                 <Spaces.Left size="16.668%" className='categoryColumn' key={index + "_space"}>
+                    
                 <Category title={category.title} questions={questions[index]} key={category.title + "-column"} />
+                
                 </Spaces.Left>
             )}
         </Spaces.Fill>

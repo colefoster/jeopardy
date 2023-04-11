@@ -32,7 +32,7 @@ export const gameSlice = createSlice({
       isDailyDouble: Boolean,
       round: String,
       value: Number,
-      revealed: false,
+      flipped: false,
       distractors: [String],
     }],
     players: [{ name: 'default', score: 0 }],
@@ -44,17 +44,12 @@ export const gameSlice = createSlice({
       return { ...state, categories, questions, players, questionsAnswered };
     },
     answerQuestion: (state, action) => {
-      const { categoryId, questionId } = action.payload;
-      const category = state.categories[categoryId];
-      const question = category.questions[questionId];
-      question.answered = true;
+      
       state.questionsAnswered++;
     },
     revealQuestion: (state, action) => {
-      const { categoryId, questionId } = action.payload;
-      const category = state.categories[categoryId];
-      const question = category.questions[questionId];
-      question.revealed = true;
+      
+      
     },
     updateScore: (state, action) => {
       const { playerId, score } = action.payload;

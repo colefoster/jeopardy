@@ -19,15 +19,44 @@
     
     font-family: 'Dollar-Amount';
     color: #f9c145;
-    font-size: 5em;
+    font-size: calc(3vh + 3vw);
     text-shadow:3px 4px #000000;
     display: flex;
     align-items: center;
     justify-content: center;
-
+    position: relative;
     background: linear-gradient(to bottom, #060ce9 0%, #22099e 50%, #060ce9 100%);
 }
-
+.questionBox .flip {
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+  }
+  
+  .questionBox .front,
+  .questionBox .back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    backface-visibility: hidden;
+  }
+  
+  .questionBox .front {
+    z-index: 2;
+    transform: rotateY(0deg);
+  }
+  
+  .questionBox .back {
+    transform: rotateY(180deg);
+  }
+  
+  .questionBox.flip .front {
+    transform: rotateY(-180deg);
+  }
+  
+  .questionBox.flip .back {
+    transform: rotateY(0deg);
+  }
+  
 .categoryNameBox{
     font-family: 'Category-Name';
     color: rgb(255, 255, 255);
@@ -46,3 +75,7 @@
 
 .jeopardyBoard{
     border: 3px solid black; }
+
+    
+      
+      
