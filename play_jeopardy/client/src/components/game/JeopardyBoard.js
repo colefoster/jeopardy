@@ -17,6 +17,7 @@ const JeopardyBoard = () => {
     useEffect(() => {
         startNewGameCallback();
     }, [startNewGameCallback]);
+    
     return (
         <>
          

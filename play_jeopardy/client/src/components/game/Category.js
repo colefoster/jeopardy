@@ -14,7 +14,8 @@ const Category = (props) => {
     
 
     const HandleReveal = (questionRow) => {
-        alert("Reveal Question: \n"+ questions[questionRow].clue+"\nAnswer:\n"+questions[questionRow].response  );
+        console.log(questions);
+        alert("Category: \n" + title + "("+props.clues_count+")\nQuestion: \n"+ questions[questionRow].clue+"\nAnswer:\n"+questions[questionRow].response  );
     }
     
   return (
