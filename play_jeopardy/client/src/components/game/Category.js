@@ -12,18 +12,17 @@ const Category = (props) => {
   return (
     <>
     <Spaces.Top size="16.7%" className='categoryNameBox' key={title + "-header"}>
-    <div className="category-title" key={title+ "title"}>
-        <h2>{title}</h2>
-        </div>
+        {title}
     </Spaces.Top>
     {questions.map((question, index) =>
         <Spaces.Top size="16.7%" key={index + "_space"} className="questionBox">
         <Question
             value={question.value}
-            question={question.question}
-            answer={question.answer}
+            question={question.clue}
+            answer={question.response}
             revealed={question.revealed}
             key={question.value + "-question"}
+            index={index}
         />
         </Spaces.Top>
     )}    

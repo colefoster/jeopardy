@@ -21,7 +21,7 @@ const JeopardyBoard = () => {
         <>
         <Spaces.Fill className='jeopardyBoard'>
             {categories.map((category, index) =>
-                <Spaces.Left size="16.66667%" className='categoryColumn' key={index + "_space"}>
+                <Spaces.Left size="16.668%" className='categoryColumn' key={index + "_space"}>
                 <Category title={category.title} questions={questions[index]} key={category.title + "-column"} />
                 </Spaces.Left>
             )}

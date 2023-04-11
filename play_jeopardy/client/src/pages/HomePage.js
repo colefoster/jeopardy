@@ -20,7 +20,7 @@ function HomePage(props){
   } else {
     return (
       <>
-        <Background />
+        <Background enabled={true}/>
         <MainMenu />
       </>
     );

@@ -1,29 +1,43 @@
 @font-face {
-    font-family: "Question Clue";
-    src: url('../fonts/Clue\(Korinna-Regular\).woff2') format("woff2"),
-    url('../fonts/Clue\(Korinna-Regular\).woff') format("woff"),
-    
+    font-family: "Question-Clue";
+    src: local('Question-Clue'), url('../fonts/Clue-Korinna-Regular.woff2') format("woff2");
+    src: local('Question-Clue'), url('../fonts/Clue-Korinna-Regular.woff') format("woff");
 }
 @font-face {
-    font-family: "Category Name";
-    src: url('../fonts/Cat\(Swiss921\ BT\).woff2') format("woff2"),
-    url('../fonts/Cat\(Swiss921\ BT\).woff') format("woff"),
-    
+    font-family: "Category-Name";
+    src: local('Category-Name'),url('../fonts/Cat-Swiss921-BT.woff2') format("woff2");
+    src: local('Category-Name'),url('../fonts/Cat-Swiss921-BT.woff') format("woff");
+}
+@font-face {
+    font-family: "Dollar-Amount";
+    src: local('Dollar-Amount'),url('../fonts/Dollar-swiss911-uc.woff2') format("woff2");
+    src: local('Dollar-Amount'),url(../fonts/Dollar-swiss911-uc.woff) format("woff");
 }
 .questionBox{
-    border: 1px solid black; 
-    background: linear-gradient(to bottom, #060ce9 0%, #22099e 50%, #060ce9 100%);
+    
+    border: 2px solid black; 
+    
+    font-family: 'Dollar-Amount';
+    color: #f9c145;
+    font-size: 5em;
+    text-shadow:3px 4px #000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
+    background: linear-gradient(to bottom, #060ce9 0%, #22099e 50%, #060ce9 100%);
 }
 
 .categoryNameBox{
-    font-family: 'Category Name';
-    font-size: 0rem;
-    vertical-align: middle;
-    color: white;
+    font-family: 'Category-Name';
+    color: rgb(255, 255, 255);
     text-align: center;
-    border: 1px solid black;
-
+    font-size: calc(0.9vh + 0.9vw);
+    border: 2px solid black;
+    border-bottom: 8px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     
     background: linear-gradient(to bottom, #060ce9 0%, #22099e 50%, #060ce9 100%);  
 }
