@@ -3,8 +3,7 @@ import '../../styles/JeopardyBoard.css'
 import Tilt from 'react-parallax-tilt'
 import parse from 'html-react-parser';
 import AutosizeInput from 'react-input-autosize';
-import { AwesomeButton } from 'react-awesome-button';
-import AwesomeButtonStyles from 'react-awesome-button/src/styles/styles.scss';
+
 import * as Spaces from 'react-spaces';
 import Swal from 'sweetalert2'
 import 'sweetalert2/src/sweetalert2.scss'
@@ -121,9 +120,8 @@ const Question = (props) => {
          
         }}
       />
-      <AwesomeButton
+      <button
             
-            cssModule={AwesomeButtonStyles}
             style={{
               display: flipped ? 'block' : 'none',
           fontSize: '1.5em',
@@ -134,10 +132,10 @@ const Question = (props) => {
           width: '8vw',
 
             }}
-            type="primary"
+            
             onPress={checkAnswer}>
             Check
-      </AwesomeButton>
+      </button>
 
       </div>
 
