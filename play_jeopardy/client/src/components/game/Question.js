@@ -133,7 +133,7 @@ const Question = (props) => {
 
             }}
             
-            onPress={checkAnswer}>
+            onClick={checkAnswer}>
             Check
       </button>
 
