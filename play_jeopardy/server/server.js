@@ -125,17 +125,7 @@ async function generateGame(req, res) {
   newGame.save(function (err, newGame) {
     if (err) {
       console.log(err);
-    } else {
-      let c = "";
-      for (let i = 0; i < newGame.categories.length; i++) {
-        c += newGame.categories[i].title + ", ";
-      }
-      let q = "";
-      for (let i = 0; i < newGame.questions.length; i++) {
-        q += newGame.questions[i][0].category + ", ";
-      }
-      console.log("Category Order: " + c + "\nQuestions Cat O:" + q);
-    }
+    } 
   });
 }
 

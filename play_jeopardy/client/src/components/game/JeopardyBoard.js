@@ -25,7 +25,7 @@ const JeopardyBoard = () => {
             {categories.map((category, index) =>
                 <Spaces.Left size="16.668%" className='categoryColumn' key={index + "_space"}>
                     
-                <Category title={category.title} questions={questions[index]} key={category.title + "-column"} />
+                <Category title={category.title} index={index} questions={questions[index]} key={category.title + "-column"} answeredQuestions={[]} />
                 
                 </Spaces.Left>
             )}

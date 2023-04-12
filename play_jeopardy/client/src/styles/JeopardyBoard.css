@@ -13,14 +13,115 @@
     src: local('Dollar-Amount'),url('../fonts/Dollar-swiss911-uc.woff2') format("woff2");
     src: local('Dollar-Amount'),url(../fonts/Dollar-swiss911-uc.woff) format("woff");
 }
-.questionBox{
+.card {
+    font-family: 'Question-Clue';
+    font-weight: 600;
+    font-size: calc(3.4vh + 3.4vw);
+    letter-spacing: 0.02em;
+    line-height: calc(9vh);
+    position: fixed;
+    text-shadow:9px 8px 6px #000000;
+    top: 50%;
+    left: 50%;
+    color:#ffffff;
+    transform: translate(-50%, -50%);
+
+    width: 90%;
+    height: 75%;
+    background: linear-gradient(to bottom, #060ce9 0%, #22099e 50%, #060ce9 100%); 
+    box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+  }
+  .card-content {
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    width: 85%;
+    transform: translate(-50%, -50%);
+  }
+  .card-content::before {
+    content: "Click to Flip";
     
+    font: 1em sans-serif;
+    position: absolute;
+    bottom: -60px;
+    left:50%;
+    transform: translateX(-50%);
+    background-color: black;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1; /* Ensure the hover text appears on top of other elements */
+    white-space: normal; /* Allow the browser to wrap text normally */
+    z-index: 9999;
+  }
+  .card-content:hover::before {
+    opacity: 1;
+  }
+  /* To center the content inside the card */
+ 
+  
+  .close {
+    font-family: 'Question-Clue';
+    font-weight: 600;
+    font-size: calc(3.4vh + 3.4vw);
+    position: absolute;
+    top: 1%;
+    right: 5%;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+    opacity: 1;
+  }
+  
+  .close::before {
+    font: 1em sans-serif;
+    content: "Click to Close";
+    position: absolute;
+    top:-50%;
+    left: 250%;
+    transform: translateX(-50%);
+    background-color: black;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1; /* Ensure the hover text appears on top of other elements */
+    white-space: normal; /* Allow the browser to wrap text normally */
+  }
+  
+  .close:hover::before {
+    opacity: 1;
+  }
+  
+  /* Example styles for the card content */
+  .card-title {
+    position: relative;
+    
+  }
+  
+  .card-text {
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+.questionBox{
+    overflow: visible;
     border: 2px solid black; 
     
     font-family: 'Dollar-Amount';
     color: #f9c145;
     font-size: calc(3vh + 3vw);
-    text-shadow:3px 4px #000000;
+    text-shadow:4px 2px #000000;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -39,7 +140,9 @@
     left: 0;
     backface-visibility: hidden;
   }
-  
+  .questionBox:hover{
+    cursor: pointer;
+  }
   .questionBox .front {
     z-index: 2;
     transform: rotateY(0deg);
@@ -71,9 +174,12 @@
     background: linear-gradient(to bottom, #060ce9 0%, #22099e 50%, #060ce9 100%);  
 }
 .categoryColumn{
-    border: 1px solid black; }
+    border: 1px solid black; 
+    overflow: visible;
+}
 
 .jeopardyBoard{
+    overflow: visible;
     border: 3px solid black; }
 
     

@@ -40,8 +40,8 @@ export const gameSlice = createSlice({
   },
   reducers: {
     setGameInfo: (state, action) => {
-      const { categories, questions, players, questionsAnswered,  } = action.payload;
-      return { ...state, categories, questions, players, questionsAnswered };
+      const { categories, questions, players, questionsAnswered, flipped } = action.payload;
+      return { ...state, categories, questions, players, questionsAnswered , flipped};
     },
     answerQuestion: (state, action) => {
       
@@ -65,7 +65,9 @@ export const { setGameInfo, answerQuestion, revealQuestion, updateScore } = game
 export const startNewGame = () => async (dispatch) => {
   const game = await fetchNewGame();
   if (game) {
+    game.flipped = false;
     dispatch(setGameInfo(game));
+    
   }
 };
 
