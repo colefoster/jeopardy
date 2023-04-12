@@ -30,40 +30,21 @@
     height: 75%;
     background: linear-gradient(to bottom, #060ce9 0%, #22099e 50%, #060ce9 100%); 
     box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.2);
-    z-index: 9999;
+    z-index: 3;
   }
   .card-content {
-    position: absolute;
+    position: relative;
     text-align: center;
+    display: flex;
+    align-items: center;
     top: 50%;
     left: 50%;
-    width: 85%;
+    font-size: clamp(3vw + 3vh, 3.2vw + 3.2vh, 3.5vw + 3.5vh);
+    width: 90%;
+    height:90%;
     transform: translate(-50%, -50%);
+    cursor: pointer;
   }
-  .card-content::before {
-    content: "Click to Flip";
-    
-    font: 1em sans-serif;
-    position: absolute;
-    bottom: -60px;
-    left:50%;
-    transform: translateX(-50%);
-    background-color: black;
-    color: white;
-    padding: 5px;
-    border-radius: 5px;
-    font-size: 12px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: 1; /* Ensure the hover text appears on top of other elements */
-    white-space: normal; /* Allow the browser to wrap text normally */
-    z-index: 9999;
-  }
-  .card-content:hover::before {
-    opacity: 1;
-  }
-  /* To center the content inside the card */
- 
   
   .close {
     font-family: 'Question-Clue';
@@ -79,6 +60,7 @@
     transition: all 0.3s ease;
     z-index: 10;
     opacity: 1;
+    color: #ffffff;
   }
   
   .close::before {
@@ -88,7 +70,6 @@
     top:-50%;
     left: 250%;
     transform: translateX(-50%);
-    background-color: black;
     color: white;
     padding: 5px;
     border-radius: 5px;
@@ -117,7 +98,7 @@
 .questionBox{
     overflow: visible;
     border: 2px solid black; 
-    
+    cursor: pointer;
     font-family: 'Dollar-Amount';
     color: #f9c145;
     font-size: calc(3vh + 3vw);

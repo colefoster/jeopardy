@@ -16,6 +16,7 @@ const JeopardyBoard = () => {
 
     useEffect(() => {
         startNewGameCallback();
+        
     }, [startNewGameCallback]);
     
     return (
@@ -25,7 +26,7 @@ const JeopardyBoard = () => {
             {categories.map((category, index) =>
                 <Spaces.Left size="16.668%" className='categoryColumn' key={index + "_space"}>
                     
-                <Category title={category.title} index={index} questions={questions[index]} key={category.title + "-column"} answeredQuestions={[]} />
+                <Category title={category.title} index={index} questions={questions[index]} key={category.title + "-column"}  />
                 
                 </Spaces.Left>
             )}
