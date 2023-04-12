@@ -128,15 +128,15 @@ const Question = (props) => {
               display: flipped ? 'block' : 'none',
           fontSize: '1.5em',
           position: 'relative',
-          bottom: '-25px',
+          bottom: '-20px',
           left: '43%',
-          height: '5vh',
+          height: '4vh',
           width: '8vw',
 
             }}
             type="primary"
             onPress={checkAnswer}>
-            Check Answer
+            Check
       </AwesomeButton>
 
       </div>
@@ -149,8 +149,9 @@ const Question = (props) => {
             &#x2716;
         </div>
         <div ref={questionTextRef} className="card-content">
+          <div>
           {parse(String(props.question).toUpperCase().replace(/\\'/g, "'").replace((/\([^)]+\)|<[^>]*>/g), ''))}
-        </div>
+        </div></div>
       </div>
 
 
@@ -170,9 +171,10 @@ const Question = (props) => {
           alignItems: 'center',
           cursor: 'pointer',
         }}>
+          <div>
           {parse(String(props.answer).toUpperCase().replace(/\\'/g, "'").replace((/\([^)]+\)|<[^>]*>/g), ''))//replace all instances of \' with just '
           } 
-        </div>
+        </div></div>
       </div>
 
 
