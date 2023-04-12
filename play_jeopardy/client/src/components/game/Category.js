@@ -24,7 +24,7 @@ const Category = (props) => {
                 </Tilt>
             </Spaces.Top>
             {questions.map((question, index) =>
-                <Spaces.Top size="16.7%" key={index + "_space"} className="questionBox" onClick={() => handleReveal(index)} >
+                <Spaces.Top size="16.8%" key={index + "_space"} className="questionBox" onClick={() => handleReveal(index)} >
                     <Question
                         value={question.value}
                         category={title}
