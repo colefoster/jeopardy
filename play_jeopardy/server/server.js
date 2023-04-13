@@ -1,12 +1,17 @@
 const express = require("express");
+const session = require('express-session');
 const app = express();
 const cors = require("cors");
+
+
 var Alea = require('alea')
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-const {gameModel, catModel, questionModel, userQuestionModel, countGames, connectToDB, countUserQuestions} = require("./scripts/database_functions.js");
+const {gameModel, catModel, questionModel, userQuestionModel, 
+  userModel,
+  countGames, connectToDB, countUserQuestions} = require("./scripts/database_functions.js");
 
 require("dotenv").config({ path: "./config.env" });
 const port = process.env.PORT || 5000;
@@ -278,3 +283,80 @@ function sanitize(str) {
   }
 }
 
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+    userModel.findOne({ username: username }, function(err, user) {
+      if (err) { return done(err); }
+      if (!user) { return done(null, false, { message: 'Incorrect username.' }); }
+      if (!user.validPassword(password)) { return done(null, false, { message: 'Incorrect password.' }); }
+      return done(null, user);
+    });
+  }
+));
+
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
+});
+
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(session({ 
+  secret: 'your-secret-key',
+  resave: false,
+  saveUninitialized: false 
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+app.post('/login',
+  passport.authenticate('local', { successRedirect: '/',
+                                   failureRedirect: '/login',
+                                   failureFlash: false })
+);
+
+app.post('/signup', function(req, res, next) {
+  const { username, email, password } = req.body;
+
+  // Check if the username and email are already taken
+  userModel.findOne({ $or: [{ username }, { email }] }, function(err, user) {
+    if (err) {
+      return next(err);
+    }
+    if (user) {
+      return res.status(400).json({ message: 'Username or email already taken' });
+    }
+
+    // Create a new user object
+    const newUser = new userModel({ username, email, password });
+
+    // Save the user to the database
+    newUser.save(function(err) {
+      if (err) {
+        return next(err);
+      }
+
+      // Log in the user
+      req.login(newUser, function(err) {
+        if (err) {
+          return next(err);
+        }
+        return res.json({ message: 'User created and logged in' });
+      });
+    });
+  });
+});
+
+app.get('/logout', function(req, res) {
+  req.logout();
+  res.redirect('/');
+});

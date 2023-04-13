@@ -1,12 +1,13 @@
 const mongoose = require("mongoose");
 require("dotenv").config({ path: "./config.env" });
+const bcrypt = require('bcrypt');
 
 
 async function connectToDB(){
     //connect to the database
     try{
         console.log("Connecting to database...");
-        await mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
+        await mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false});
         countGames();
         countUserQuestions();
         console.log("Connected to database\n\tReady to serve api requests on port " + process.env.PORT + "!");   
@@ -66,6 +67,51 @@ const gameSchema = new mongoose.Schema({
     isComplete: Boolean,
 });
 const gameModel = mongoose.model("games", gameSchema);
+
+const userSchema = new mongoose.Schema({
+    username: {
+      type: String,
+      required: true,
+      unique: true
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true
+    },
+    password: {
+      type: String,
+      required: true
+    }
+  });
+  
+  userSchema.pre('save', function(next) {
+    const user = this;
+  
+    if (!user.isModified('password')) {
+      return next();
+    }
+  
+    bcrypt.genSalt(10, function(err, salt) {
+      if (err) {
+        return next(err);
+      }
+  
+      bcrypt.hash(user.password, salt, function(err, hash) {
+        if (err) {
+          return next(err);
+        }
+  
+        user.password = hash;
+        next();
+      });
+    });
+  });
+  
+  userSchema.methods.validPassword = function(password) {
+    return bcrypt.compareSync(password, this.password);
+  };
+  const userModel = mongoose.model("users", userSchema);
 
 let numGames = 0;
 function countGames(){ //These count functions use a delayed state, they cant return the value immediately
@@ -170,4 +216,7 @@ function removeDuplicateQuestions(){
     });
 }
 
-module.exports = {countGames, countCategories ,countUserQuestions, connectToDB, gameModel, catModel, questionModel, userQuestionModel, countUserQuestions, removeDuplicateCategories, removeDuplicateQuestions};
+module.exports = {countGames, countCategories ,countUserQuestions, connectToDB,
+     gameModel, catModel, questionModel, userQuestionModel, 
+     userModel,
+     countUserQuestions, removeDuplicateCategories, removeDuplicateQuestions};
