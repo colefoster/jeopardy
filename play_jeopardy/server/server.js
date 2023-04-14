@@ -25,7 +25,6 @@ app.use(express.json());
 
 // play_jeopardy REST API
 app.get("/api/game", (req, res) => {
-  console.log(passport);
   generateGame(req, res);
 });
 
