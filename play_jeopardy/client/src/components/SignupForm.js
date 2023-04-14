@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import axios from 'axios';
 import SERVER from '../server_address'
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 function SignupForm() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const navigate = useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -17,8 +19,20 @@ function SignupForm() {
       });
       console.log(response.data);
       // redirect to the home page
+      Swal.fire({
+        icon: 'success',
+        title:  'formFilledOutCorrectly = true :)',
+        text:  'Thanks for signing up! Welcome to \'Play Jeopardy\'!'});
+
+      navigate('/');
     } catch (error) {
       console.error(error);
+      Swal.fire({
+        icon: 'error',
+        title:  'formFilledOutCorrectly = false :(',
+        text:  'You probably made a tiny typo, or perhaps you\'re quickly trying out the sign-up functionality',
+      });
+
     }
   };
 

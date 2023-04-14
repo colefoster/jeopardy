@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate  } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 
 function LoginForm() {
@@ -21,6 +22,11 @@ function LoginForm() {
       // redirect to the home page
     } catch (error) {
       console.error(error);
+      Swal.fire({
+        icon: 'error',
+        title:  'That Username and Password Combo doesn\'t exist!',
+        text:  'You probably made a tiny typo, or you\'re quickly trying out the login functionality ;)',
+      });
     }
   };
 

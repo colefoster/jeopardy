@@ -6,17 +6,17 @@ const navigate = useNavigate();
 
   return (
     <button onClick={() => navigate(-1)} style={{
-        color: 'black',
-        backgroundColor: 'white',
+        background: 'transparent',
+        color: 'white',
         border: 'none',
-        fontSize: '1.5em',
+        fontSize: 'calc(5vw + 5vh)',
         position: 'absolute',
-        left: '1vw',
-        top: '1vh',
-        height: '4vh',
-        width: '8vw',
+        left: '2vw',
+        top: '2vh',
         zIndex: '20',
-    }}>Back</button>
+    }}>
+      &#x2190;
+    </button>
   );
 };
 
