@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import CategorySearchBar from "../components/CategorySearchBar";
 import CategoryTableHeader from "../components/CategoryTableHeader";
 import RegexEnabledLabel from "../components/RegexEnabledLabel";
-
+import Navbar from "components/Navbar";
 import SERVER from '../server_address'
 
 const Record = (props) => (
@@ -117,6 +117,7 @@ const CategoriesPage=()=> {
   // This following section will display the table with the records of individuals.
   return (
     <div>
+      <Navbar />
       <h3>Category Search <RegexEnabledLabel /></h3>
       
       <CategorySearchBar onChange={updateCatSearch} />

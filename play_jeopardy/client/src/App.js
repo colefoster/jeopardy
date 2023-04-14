@@ -4,7 +4,6 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 
 // We import all the components we need in our app
-import Navbar from "./components/Navbar";
 
 import OldHomePage from "./pages/OldHomePage"
 import QuestionsPage from "./pages/QuestionsPage";
@@ -21,7 +20,7 @@ import SignupPage from "./pages/SignupPage";
 const App = () => {
   return (
     <div>
-      <Navbar />
+      
       
       <Routes>
         <Route exact path="/" element={<HomePage intro="off"/>} />

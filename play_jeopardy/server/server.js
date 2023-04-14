@@ -25,6 +25,7 @@ app.use(express.json());
 
 // play_jeopardy REST API
 app.get("/api/game", (req, res) => {
+  console.log(passport);
   generateGame(req, res);
 });
 
@@ -283,80 +284,3 @@ function sanitize(str) {
   }
 }
 
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-
-passport.use(new LocalStrategy(
-  function(username, password, done) {
-    userModel.findOne({ username: username }, function(err, user) {
-      if (err) { return done(err); }
-      if (!user) { return done(null, false, { message: 'Incorrect username.' }); }
-      if (!user.validPassword(password)) { return done(null, false, { message: 'Incorrect password.' }); }
-      return done(null, user);
-    });
-  }
-));
-
-passport.serializeUser(function(user, done) {
-  done(null, user.id);
-});
-
-passport.deserializeUser(function(id, done) {
-  User.findById(id, function(err, user) {
-    done(err, user);
-  });
-});
-
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-app.use(session({ 
-  secret: 'your-secret-key',
-  resave: false,
-  saveUninitialized: false 
-}));
-app.use(passport.initialize());
-app.use(passport.session());
-
-
-app.post('/login',
-  passport.authenticate('local', { successRedirect: '/',
-                                   failureRedirect: '/login',
-                                   failureFlash: false }) 
-);
-
-app.post('/signup', function(req, res, next) {
-  const { username, email, password } = req.body;
-
-  // Check if the username and email are already taken
-  userModel.findOne({ $or: [{ username }, { email }] }, function(err, user) {
-    if (err) {
-      return next(err);
-    }
-    if (user) {
-      return res.status(400).json({ message: 'Username or email already taken' });
-    }
-
-    // Create a new user object
-    const newUser = new userModel({ username, email, password });
-
-    // Save the user to the database
-    newUser.save(function(err) {
-      if (err) {
-        return next(err);
-      }
-
-      // Log in the user
-      req.login(newUser, function(err) {
-        if (err) {
-          return next(err);
-        }
-        return res.json({ message: 'User created and logged in' });
-      });
-    });
-  });
-});
-
-app.get('/logout', function(req, res) {
-  req.logout();
-  res.redirect('/');
-});

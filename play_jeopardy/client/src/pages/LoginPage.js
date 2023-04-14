@@ -4,6 +4,7 @@ import Background from 'components/Background';
 import * as Spaces from 'react-spaces'
 import Tilt from 'react-parallax-tilt';
 import BackButton from 'components/BackButton';
+import SignedInStatusLabel from 'components/SignedInStatusLabel';
 
 function LoginPage(props){
    
@@ -11,6 +12,7 @@ function LoginPage(props){
         <>
         <Background enabled={true} mode={'picture'}/>
         <BackButton />
+        <SignedInStatusLabel />
         <div>
             <Spaces.Fixed  height={400}>
                 

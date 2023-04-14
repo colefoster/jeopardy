@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import EditQuestionForm from '../components/EditQuestionForm'
 import {useLocation} from "react-router-dom";
 import AlertCard from "components/AlertCard";
-
+import Navbar from 'components/Navbar';
 import SERVER from '../server_address'
 
 const EditQuestionPage = () => {
@@ -39,6 +39,9 @@ const EditQuestionPage = () => {
 
     return (
     <div>
+    <Navbar />
+
+
         {showSuccess && (
       <AlertCard type="success" message="Request successful!" />
     )}

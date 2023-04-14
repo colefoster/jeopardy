@@ -6,6 +6,7 @@ import AirDate from "../components/AirDate";
 import DdIcon from "../components/DD_Icon";
 import QuestionTableHeader from "../components/QuestionTableHeader";
 import RegexEnabledLabel from "../components/RegexEnabledLabel";
+import Navbar from "components/Navbar";
 
 import SERVER from '../server_address'
 
@@ -131,6 +132,7 @@ const QuestionsPage=()=> {
   }
   return (
     <div>
+      <Navbar />
       <h3>Questions Search <RegexEnabledLabel /></h3>
       
       <SearchBar onChange={updateQuestion} />

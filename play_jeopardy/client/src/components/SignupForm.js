@@ -17,6 +17,7 @@ function SignupForm() {
         email,
         password,
       });
+      console.log(response);
       console.log(response.data);
       // redirect to the home page
       Swal.fire({

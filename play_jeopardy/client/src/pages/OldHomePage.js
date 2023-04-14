@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import * as Spaces from 'react-spaces';
-
+import Navbar from '../components/Navbar';
 function HomePage(){
     return (
         <div>
+            <Navbar />
             <nav>
                 <Spaces.ViewPort>
                     <Spaces.Top size="15%"></Spaces.Top>
