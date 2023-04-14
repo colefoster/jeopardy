@@ -4,29 +4,34 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 
 // We import all the components we need in our app
-import Home from "./components/home";
-import Navbar from "./components/navbar";
-import QuestionsList from "./components/questionsList";
-import CategoriesList from "./components/categoriesList";
-import UserQuestionsList from "./components/userQuestionsList";
-import AddQuestionPage from "./components/addQuestionPage";
-import Play from "./components/play";
-import EditQuestionPage from "./components/editQuestionPage";
-import PlayNoGraphics from "./components/playNoGraphics";
+
+import OldHomePage from "./pages/OldHomePage"
+import QuestionsPage from "./pages/QuestionsPage";
+import CategoriesPage from "./pages/CategoriesPage";
+import UserQuestionsPage from "./pages/UserQuestionsPage";
+import AddQuestionPage from "./pages/AddQuestionPage";
+import HomePage from "./pages/HomePage";
+import PlayPage from "./pages/PlayPage";
+import EditQuestionPage from "./pages/EditQuestionPage";
+import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
+
 
 const App = () => {
   return (
     <div>
-      <Navbar />
+      
       
       <Routes>
-        <Route exact path="/" element={<Home/>} />
-        <Route path="/play" element={<Play />} />
-        <Route path="/playnographics" element={<PlayNoGraphics />} />
-        <Route path="/questions" element={<QuestionsList />} />
-        <Route path ="/categories" element={<CategoriesList />} />
+        <Route exact path="/" element={<HomePage intro="off"/>} />
+        <Route path="/home" element={<OldHomePage/>} />
+        <Route path="/play" element={<PlayPage />} />
+        <Route path="/questions" element={<QuestionsPage />} />
+        <Route path ="/categories" element={<CategoriesPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
         <Route path="/create" element={<AddQuestionPage />} />
-        <Route path="/userQuestions" element={<UserQuestionsList />} />
+        <Route path="/userQuestions" element={<UserQuestionsPage />} />
         <Route path="/add" element={<AddQuestionPage />} />
         <Route path="/edit" element={<EditQuestionPage />} />
       </Routes>

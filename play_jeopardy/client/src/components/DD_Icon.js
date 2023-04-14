@@ -1,4 +1,4 @@
-import { ReactComponent as DD_ICON } from "./DD_Icon.svg";
+import { ReactComponent as DD_ICON } from "../images/DD_Icon.svg";
 function DdIcon(props) {
   if(props.isDD){
      return (

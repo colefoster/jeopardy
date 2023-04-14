@@ -1,16 +1,22 @@
 const mongoose = require("mongoose");
 require("dotenv").config({ path: "./config.env" });
+const bcrypt = require('bcrypt');
+
+
 async function connectToDB(){
     //connect to the database
     try{
-        await mongoose.connect("mongodb+srv://root:pass@cluster0.1ia5fim.mongodb.net/play_jeopardy?retryWrites=true&w=majority", {useNewUrlParser: true, useUnifiedTopology: true});
-        //await mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true});
-        console.log("Connected to database");   
+        console.log("Connecting to database...");
+        await mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false});
+        countGames();
+        countUserQuestions();
+        console.log("Connected to database\n\tReady to serve api requests on port " + process.env.PORT + "!");   
     }
     catch(err){
         console.log("Error connecting to database: " + err);
     }
 }
+
 
 const catSchema = new mongoose.Schema({
     id: Number,
@@ -19,6 +25,8 @@ const catSchema = new mongoose.Schema({
     clue_ids: [Number]
 });
 const catModel = mongoose.model("jarchive_categories", catSchema);
+
+
 const questionSchema = new mongoose.Schema({
     id: Number,
     clue: String,
@@ -34,6 +42,7 @@ const questionSchema = new mongoose.Schema({
 });
 const questionModel = mongoose.model("jarchive_questions", questionSchema);
 
+
 const userQuestionSchema = new mongoose.Schema({
     id: Number,
     clue: String,
@@ -47,8 +56,86 @@ const userQuestionSchema = new mongoose.Schema({
 });
 const userQuestionModel = mongoose.model("user_questions", userQuestionSchema);
 
-function countUserQuestions(){//necessary to determine id of new user questions
-    userQuestionModel.countDocuments({}, function(err, count){
+
+const gameSchema = new mongoose.Schema({
+    id: Number,
+    seed: String,
+    categories: [mongoose.Schema.Types.Mixed],
+    questions: [[mongoose.Schema.Types.questionModel]],
+    date: Date,
+    score: Number,
+    isComplete: Boolean,
+});
+const gameModel = mongoose.model("games", gameSchema);
+
+const userSchema = new mongoose.Schema({
+    username: {
+      type: String,
+      required: true,
+      unique: true
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true
+    },
+    password: {
+      type: String,
+      required: true
+    }
+  });
+  
+  userSchema.pre('save', function(next) {
+    const user = this;
+  
+    if (!user.isModified('password')) {
+      return next();
+    }
+  
+    bcrypt.genSalt(10, function(err, salt) {
+      if (err) {
+        return next(err);
+      }
+  
+      bcrypt.hash(user.password, salt, function(err, hash) {
+        if (err) {
+          return next(err);
+        }
+  
+        user.password = hash;
+        next();
+      });
+    });
+  });
+  
+  userSchema.methods.validPassword = function(password) {
+    return bcrypt.compareSync(password, this.password);
+  };
+  const userModel = mongoose.model("users", userSchema);
+
+let numGames = 0;
+function countGames(){ //These count functions use a delayed state, they cant return the value immediately
+    //because all async functions (including all mongoose functions) return a promise
+    //This implementation calls the function on intial load, which counts the games, lets the promise resolve and updates the value
+    //Since we are just running it to init it we dont care that the value is 0/wrong
+    //After that it will return the correct value, counting (asynchronously and after the return) again each time it is called 
+    gameModel.countDocuments({}, function(err, count){
+        if(err){
+            console.log(err);
+        }
+        else{
+            if(count - numGames > 0){ 
+                numGames = count;
+            }
+            else{
+                numGames = count + 1;
+            }
+        }
+    });
+    return numGames;
+}
+function countCategories(){
+    catModel.countDocuments({}, function(err, count){
         if(err){
             console.log(err);
         }
@@ -56,8 +143,25 @@ function countUserQuestions(){//necessary to determine id of new user questions
             return count;
         }
     });
-
 }
+let userQuestions = 0;
+function countUserQuestions(){//necessary to determine id of new user questions, see above comment for details
+    userQuestionModel.countDocuments({}, function(err, count){
+        if(err){
+            console.log(err);
+        }
+        else{
+            if(count - numGames > 0){ 
+                userQuestions = count;
+            }
+            else{
+                userQuestions = count + 1;
+            }
+        }
+    });
+return userQuestions;
+}
+
 function removeDuplicateCategories(){
     console.log("Looking for duplicate categories...");
     //remove duplicate categories
@@ -84,7 +188,6 @@ function removeDuplicateCategories(){
         }
     }); 
 }
-
 function removeDuplicateQuestions(){
     //remove duplicate questions
     console.log("Looking for duplicate questions...");
@@ -113,4 +216,7 @@ function removeDuplicateQuestions(){
     });
 }
 
-module.exports = {connectToDB, catModel, questionModel, userQuestionModel, countUserQuestions, removeDuplicateCategories, removeDuplicateQuestions};
+module.exports = {countGames, countCategories ,countUserQuestions, connectToDB,
+     gameModel, catModel, questionModel, userQuestionModel, 
+     userModel,
+     countUserQuestions, removeDuplicateCategories, removeDuplicateQuestions};

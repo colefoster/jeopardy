@@ -10,26 +10,40 @@
     "scrape_all": "node scripts/j_archive_scraper_get_all.js",
     "scrape_new": "node scripts/j_archive_scraper_get_new.js",
     "json_to_mongo": "node scripts/json_to_mongo.js",
-    "createIcon": "node scripts/createIcon.js"
+    "remove_duplicate_clue_ids": "node scripts/remove_duplicate_clue_ids.js",
+    "openai": "node scripts/open_AI_API.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "alea": "^1.0.1",
     "axios": "^1.3.4",
+    "bcrypt": "^5.1.0",
     "cheerio": "^1.0.0-rc.2",
     "cors": "^2.8.5",
     "date-fns": "^2.0.0-alpha.7",
     "dotenv": "^8.2.0",
+    "excel4node": "^1.8.1",
     "express": "^4.17.1",
+    "express-session": "^1.17.3",
     "he": "^1.2.0",
     "mongodb": "^3.6.6",
     "mongoose": "^5.12.4",
+    "openai": "^3.2.1",
     "p-map": "^1.2.0",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
+    "prompt": "^1.3.0",
     "prompt-sync": "^4.2.0",
+    "react-scripts": "4.0.3",
     "utf8": "^3.0.0"
   },
   "devDependencies": {
-    "@svgr/core": "^7.0.0"
+    "@svgr/core": "^7.0.0",
+    "react-error-overlay": "^6.0.9"
+  },
+  "resolutions": {
+    "react-error-overlay": "6.0.9"
   }
 }

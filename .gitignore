@@ -3,10 +3,7 @@
 
 
 server/temp
-*.json
-*.txt
-openai.mjs  
-#lazy way to protect my api key
+*.txt  
 
 
 ### CypressIO ###

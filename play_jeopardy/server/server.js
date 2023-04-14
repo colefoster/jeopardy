@@ -1,12 +1,17 @@
 const express = require("express");
+const session = require('express-session');
 const app = express();
 const cors = require("cors");
 
+
+var Alea = require('alea')
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-const {catModel, questionModel, userQuestionModel, connectToDB, countUserQuestions} = require("./scripts/database_functions.js");
+const {gameModel, catModel, questionModel, userQuestionModel, 
+  userModel,
+  countGames, connectToDB, countUserQuestions} = require("./scripts/database_functions.js");
 
 require("dotenv").config({ path: "./config.env" });
 const port = process.env.PORT || 5000;
@@ -15,21 +20,18 @@ const questionLimit = Number(process.env.QUESTION_LIMIT);
 
 app.use(cors());
 app.use(express.json());
-app.use(require("./routes/record"));
-// get driver connection
 
-app.get("/", (req, res) => {
-  
-  res.send("Hello World!");
-});
 
 
 // play_jeopardy REST API
-app.get("/api/questions/", (req, res) => {
-  searchQuestions(req, res);
-  
+app.get("/api/game", (req, res) => {
+  generateGame(req, res);
 });
 
+app.get("/api/questions/", (req, res) => {
+  console.log(req.query);
+  searchQuestions(req, res);
+});
 
 app.get("/api/categories", (req, res) => {
   searchCategory(req, res);
@@ -40,12 +42,10 @@ app.get("/api/userquestions", (req, res) => {
 });
 
 app.post("/api/userquestions", (req, res) => {
-  console.log(req.body);
   addUserQuestion(req, res);
 });
 
 app.put("/api/userquestions", (req, res) => {
-  console.log(req.body);
   updateUserQuestion(req, res);
 });
 
@@ -66,6 +66,73 @@ app.listen(port, () => {
   connectToDB();
 });
 
+async function generateGame(req, res) {
+  const nCats = Number(process.env.GAME_SIZE_CATEGORIES) || 6;
+  const nQs = Number(process.env.GAME_SIZE_QUESTIONS) || 5;
+  const seed = req.query.seed || Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  const rng = new Alea(seed);
+  const categoriesArray = [];
+  const questionsMatrix = [...Array(nCats)].map(() => Array(nQs));
+  const promises = [];
+
+  for (let currentCategoryIndex = 0; currentCategoryIndex < nCats; currentCategoryIndex++) {
+    const categoryPromise = new Promise(async (resolve, reject) => {
+      try {
+        const category = await catModel.findOne({
+          $and: [
+            {
+              $or: [
+                { id: Math.floor(rng() * 78176) },
+                { id: Math.floor(rng() * 78176) },
+                { id: Math.floor(rng() * 78176) },
+                { id: Math.floor(rng() * 78176) },
+                { id: Math.floor(rng() * 78176) },
+                { id: Math.floor(rng() * 78176) }
+              ]
+            },
+            { clues_count: { $gte: nQs } }
+          ]
+        });
+        categoriesArray[currentCategoryIndex] = category;
+
+        const questions = await questionModel.find({ category: category.title });
+        const questionsArray = [];
+        for (let currentRowIndex = 0; currentRowIndex < nQs; currentRowIndex++) {
+          const targetValue = ((currentRowIndex + 1) * 200);
+          const sameRowQuestions = questions.filter(q => (q.value === targetValue) || ((q.value === 2 * targetValue) && (q.round === "Double Jeopardy")));
+          questionsArray.push(sameRowQuestions[Math.floor(rng() * sameRowQuestions.length)]);
+        }
+
+        questionsMatrix[currentCategoryIndex] = questionsArray;
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+
+    promises.push(categoryPromise);
+  }
+
+  await Promise.all(promises);
+
+  const newGame = new gameModel({
+    id: countGames(),
+    seed,
+    categories: categoriesArray,
+    questions: questionsMatrix,
+    date: Date.now(),
+    score: 0,
+    isComplete: false
+  });
+
+  res.send(newGame);
+
+  newGame.save(function (err, newGame) {
+    if (err) {
+      console.log(err);
+    } 
+  });
+}
 
 function searchQuestions(req, res) {
   try{
@@ -88,7 +155,6 @@ function searchQuestions(req, res) {
                 res.send(placeholder);
               }
             });
-            console.log("No questions found");
           }else{
             res.send(questions);
           }       
@@ -157,10 +223,9 @@ function searchUserQuestions(req, res) {
     .limit(questionLimit);
 }
 
-
 function addUserQuestion(req, res) {
   const userQuestion = new userQuestionModel({
-    id:countUserQuestions(),
+    id:countUserQuestions+1,
     clue: req.body.question,
     response: req.body.answer,
     category: req.body.category,
@@ -217,3 +282,86 @@ function sanitize(str) {
     return str.replaceAll("[-.\\+*?\\[^\\]$(){}=!<>|:\\\\]", "\\\\$0");
   }
 }
+
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+    userModel.findOne({ username: username }, function(err, user) {
+      if (err) { return done(err); }
+      if (!user) { return done(null, false, { message: 'Incorrect username.' }); }
+      if (!user.validPassword(password)) { return done(null, false, { message: 'Incorrect password.' }); }
+      return done(null, user);
+    });
+  }
+));
+
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
+});
+
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(session({ 
+  secret: 'your-secret-key',
+  resave: false,
+  saveUninitialized: false 
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+app.post('/login',
+  passport.authenticate('local', { successRedirect: '/',
+                                   failureRedirect: '/login',
+                                   failureFlash: false }) 
+);
+
+app.post('/signup', function(req, res, next) {
+  const { username, email, password } = req.body;
+
+  // Check if the username and email are already taken
+  userModel.findOne({ $or: [{ username }, { email }] }, function(err, user) {
+    if (err) {
+      return next(err);
+    }
+    if (user) {
+      return res.status(400).json({ message: 'Username or email already taken' });
+    }
+
+    // Create a new user object
+    const newUser = new userModel({ username, email, password });
+
+    // Save the user to the database
+    newUser.save(function(err) {
+      if (err) {
+        return next(err);
+      }
+
+      // Log in the user
+      req.login(newUser, function(err) {
+        if (err) {
+          return next(err);
+        }
+        return res.json({ message: 'User created and logged in' });
+      });
+    });
+  });
+});
+
+app.get('/logout', function(req, res) {
+  req.logout();
+  res.redirect('/');
+});
+
+app.get('/user', function(req, res) {
+  console.log(req.user);
+  res.json(req.user);
+});
