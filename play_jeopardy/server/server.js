@@ -23,25 +23,76 @@ const questionLimit = Number(process.env.QUESTION_LIMIT);
 app.use(express.json());
 
 // Add headers before the routes are defined
-app.use(function (req, res, next) {
 
-  // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', 'https://play-jeopardy.netlify.app');
-  res.setHeader('Access-Control-Allow-Origin', 'https://play-jeopardy.netlify.app');
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-  // Request methods you wish to allow
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
-  // Request headers you wish to allow
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
 
-  // Set to true if you need the website to include cookies in the requests sent
-  // to the API (e.g. in case you use sessions)
-  res.setHeader('Access-Control-Allow-Credentials', true);
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
 
-  // Pass to next layer of middleware
-  next();
+passport.use(new LocalStrategy({
+  usernameField: 'username',
+  passwordField: 'password',
+  passReqToCallback: true},
+  function(req, username, password, done) {
+    console.log(req.user);
+    userModel.findOne({ username: username }, function(err, user) {
+      if (err) { return done(err); }
+      if (!user) { return done(null, false, { message: 'Incorrect username.' }); }
+      if (!user.validPassword(password)) { return done(null, false, { message: 'Incorrect password.' }); }
+      return done(null, user);
+    });
+  }
+));
+
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
 });
+
+passport.deserializeUser(function(id, done) {
+   userModel.findById(id, function(err, user) {
+    if (err) { return done(err); }
+    if (!user) { return done(null, false); }
+    return done(null, user.toObject()); // Convert Mongoose document to plain object
+  });
+});
+
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(session({ 
+  secret: 'dy6J6GWJwHwmZohRTDHsPsSg1SsBivC1PxVFke1jec8',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: true,
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  },
+  store: new MongoDBStore({
+    uri: process.env.MONGODB_URI,
+    collection: 'sessions'
+  }),
+  genid: function(req) {
+    return uuidv4(); // Generate unique session ID using UUID
+  }
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+// Enable CORS for all origins with credentials
+
+var whitelist = ['http://localhost:3000', 'https://play-jeopardy.netlify.app']
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  },
+  credentials: true
+}));
+
 
 // play_jeopardy REST API
 app.get("/api/game", (req, res) => {
@@ -303,66 +354,6 @@ function sanitize(str) {
   }
 }
 
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-
-passport.use(new LocalStrategy({
-  usernameField: 'username',
-  passwordField: 'password',
-  passReqToCallback: true},
-  function(req, username, password, done) {
-    console.log(req.user);
-    userModel.findOne({ username: username }, function(err, user) {
-      if (err) { return done(err); }
-      if (!user) { return done(null, false, { message: 'Incorrect username.' }); }
-      if (!user.validPassword(password)) { return done(null, false, { message: 'Incorrect password.' }); }
-      return done(null, user);
-    });
-  }
-));
-
-passport.serializeUser(function(user, done) {
-  done(null, user.id);
-});
-
-passport.deserializeUser(function(id, done) {
-   userModel.findById(id, function(err, user) {
-    if (err) { return done(err); }
-    if (!user) { return done(null, false); }
-    return done(null, user.toObject()); // Convert Mongoose document to plain object
-  });
-});
-
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-app.use(session({ 
-  secret: 'dy6J6GWJwHwmZohRTDHsPsSg1SsBivC1PxVFke1jec8',
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    secure: true,
-    httpOnly: true,
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
-  },
-  store: new MongoDBStore({
-    uri: process.env.MONGODB_URI,
-    collection: 'sessions'
-  }),
-  genid: function(req) {
-    return uuidv4(); // Generate unique session ID using UUID
-  }
-}));
-
-app.use(passport.initialize());
-app.use(passport.session());
-// Enable CORS for all origins with credentials
-
-app.use(cors({
-  origin: function(origin, callback) {
-    callback(null, true);
-  },
-  credentials: true
-}));
 
 app.post('/login',function (req, res, next) {
   // call passport authentication passing the "local" strategy name and a callback function
