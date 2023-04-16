@@ -1,9 +1,7 @@
 import React from 'react';
-import { connect} from 'react-redux';
 import * as Spaces from 'react-spaces'
 import Tilt from 'react-parallax-tilt'
 import '../../styles/JeopardyBoard.css'
-import { answerQuestion, revealQuestion, updateScore } from '../../redux/gameSlice';
 import Question from './Question';
 //import { Zoom } from 'react-reveal';
 
@@ -36,9 +34,4 @@ const Category = (props) => {
         </>
     );
 };
-
-const mapStateToProps = (state) => ({
-    questionsAnswered: state.game.questionsAnswered,
-});
-
-export default connect(mapStateToProps, { answerQuestion, revealQuestion, updateScore })(Category);
+export default Category;

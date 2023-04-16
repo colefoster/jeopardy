@@ -12,7 +12,7 @@ const navigate = useNavigate();
         fontSize: 'calc(5vw + 5vh)',
         position: 'absolute',
         left: '2vw',
-        top: '2vh',
+        bottom: '-0.5vh',
         zIndex: '20',
     }}>
       &#x2190;

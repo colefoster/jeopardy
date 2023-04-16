@@ -6,12 +6,21 @@ import LoggedInStatusLabel from './LoggedInStatusLabel';
 import Toggle from 'react-toggle'
 import "react-toggle/style.css" // for ES6 modules
 
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleDistractors, toggleBackgroundMode } from '../redux/settingsSlice';
 
-function HiddenMenu(props){
+function HiddenMenu(){
     const [isOpen, setOpen] = useState(false)
 
-
-    
+    const dispatch = useDispatch();
+  
+    function handleDistractorsToggle() {
+      dispatch(toggleDistractors());
+    }
+  
+    function handleBackgroundModeChange() {
+      dispatch(toggleBackgroundMode());
+    }
 
     return (
         <><div style={{
@@ -51,7 +60,7 @@ function HiddenMenu(props){
 
             <br/><br/>
 
-            <button onClick={props.toggleBackgroundFunction}>
+            <button onClick={handleBackgroundModeChange}>
               Toggle Background
             </button>
         
@@ -62,8 +71,8 @@ function HiddenMenu(props){
             <br/><br/>
             
             <Toggle
-              defaultChecked={props.generateDistractors}
-              onChange={props.handleDistractorToggleChange}/>
+              defaultChecked={useSelector(state => state.settings.generateDistractors)}
+              onChange={handleDistractorsToggle}/>
               <span> Enable OPENAI Distractor Generation</span>
 
               </div>

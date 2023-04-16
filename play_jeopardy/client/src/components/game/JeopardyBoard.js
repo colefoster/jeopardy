@@ -20,8 +20,6 @@ const JeopardyBoard = (props) => {
     }, [startNewGameCallback]);
     
 
-    //const generateDistractors = props.generateDistractors;
-
     return (
         <>
          
@@ -29,8 +27,13 @@ const JeopardyBoard = (props) => {
             {categories.map((category, index) =>
                 <Spaces.Left size="16.668%" className='categoryColumn' key={index + "_space"}>
                     
-                <Category title={category.title} index={index} questions={questions[index]} key={category.title + "-column"}  />
-                
+                <Category 
+                title={category.title}
+                index={index}
+                questions={questions[index]}
+                key={category.title + "-column"}  
+                />
+                                
                 </Spaces.Left>
             )}
         </Spaces.Fill>

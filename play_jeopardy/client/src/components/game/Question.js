@@ -1,46 +1,38 @@
-import React, {useRef, useState} from 'react';
+import React, {useState, useRef} from 'react';
 import '../../styles/JeopardyBoard.css'
+import InputHandling from './InputHandling';
 import Tilt from 'react-parallax-tilt'
 import parse from 'html-react-parser';
-import AutosizeInput from 'react-input-autosize';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { addQuestionAnswered } from '../../redux/gameSlice';
 import * as Spaces from 'react-spaces';
-import Swal from 'sweetalert2'
-import 'sweetalert2/src/sweetalert2.scss'
+
 
 const Question = (props) => {
-  const [inputValue, setUserInput ] = useState("");
-  const [flipped, setFlipped] = useState(false);
-
+  const generateDistractors = useSelector(state => state.settings.generateDistractors);
+  const questionsAnswered = useSelector(state => state.game.questionsAnswered) ;
+  const [flipped, setFlipped] = useState(Array.isArray(questionsAnswered) 
+                              && questionsAnswered.includes(props.id));
   const questionCardRef = useRef(null);
-  const answerCardRef = useRef(null);
   const questionTextRef = useRef(null);
+  const answerCardRef = useRef(null);
   const inputRef = useRef(null);
+  
+  
+  const dispatch = useDispatch();
 
-  function checkAnswer(){
-    if(inputValue.toLowerCase() === props.answer.toLowerCase()){
-      Swal.fire({
-        title: 'Correct!',
-        text: 'You got it right!',
-        icon: 'success',
-        confirmButtonText: 'Cool'
-      })
-      //handleCloseCard();
-    } else {
-      Swal.fire({
-        title: 'Incorrect!',
-        text: 'You got it wrong!\nCorrect answer: ' + props.answer,
-        icon: 'error',
-        confirmButtonText: 'Cool'
-      })
-    }
-  }
+
+
+  
 
   function handleReveal(){
-    setFlipped(true)
-    inputRef.current.style.display = 'block';
-    questionCardRef.current.style.display = 'block';
-    inputRef.current.focus();
+    if(!flipped){
+      dispatch(addQuestionAnswered(props.id));
+      console.log(generateDistractors);
+      setFlipped(true);
+      questionCardRef.current.style.display = 'block';
+      inputRef.current.style.display = 'block';
+    }
   }
 
   function handleQuestionCardClick() {
@@ -56,16 +48,20 @@ const Question = (props) => {
   function handleCloseCard(event){
     questionCardRef.current.style.display = 'none';
     answerCardRef.current.style.display = 'none';
-    setFlipped(false);
     inputRef.current.style.display = 'none';
-
     event.stopPropagation();//Stops the other event handlers from firing, which messes up the card closing
   }
-  
-  
+ 
   return (
     <>
-    <Spaces.Top size="16.8%" key={props.id + "_space"} className="questionBox" onClick={handleReveal} >
+    <Spaces.Top
+     size="16.8%"
+     key={props.id + "_space"} 
+     className="questionBox" 
+     onClick={handleReveal} 
+     style={{
+      cursor: flipped ? 'default' : 'pointer',
+    }}>
       <Tilt scale={1.2}>
         <div style={{
           display: flipped ? 'none' : 'block',
@@ -76,68 +72,7 @@ const Question = (props) => {
       </Spaces.Top>
 
 
-      <div 
-      ref={inputRef}
-      style={{
-        display: flipped ? 'block' : 'none',
-        position: 'fixed',
-        bottom: '0px',
-        left: '50%',
-        height: '25%',
-        width: '60%',
-        zIndex: '5',
-        overflow: 'visible',
-        transform: 'translate(-50%, 50%)'
-
-     }}>
-
-      <AutosizeInput
-        
-        name="UserAnswerInput"
-        autoFocus
-        value={inputValue}
-        placeholder='Answer'
-        inputStyle={{
-          width: '100%',
-          textAlign: 'center',
-          flex: 'center',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-        style={{
-          display: flipped ? 'block' : 'none',
-          fontSize: '2em',
-          position: 'relative',
-          bottom: '-20px',
-          width: '10vw',
-         transform: 'translateX(250%)',
-          borderRadius: 5,
-          padding: 5,
-        }}
-        onChange={function(event) {
-          // event.target.value contains the new value
-          setUserInput(event.target.value);
-         
-        }}
-      />
-      <button
-            
-            style={{
-              display: flipped ? 'block' : 'none',
-          fontSize: '1.5em',
-          position: 'relative',
-          bottom: '-20px',
-          left: '43%',
-          height: '4vh',
-          width: '8vw',
-
-            }}
-            
-            onClick={checkAnswer}>
-            Check
-      </button>
-
-      </div>
+      <InputHandling inputRef={inputRef} answer={props.answer}/>
 
 
       <div ref={questionCardRef} className="card" onClick={handleQuestionCardClick} style={{

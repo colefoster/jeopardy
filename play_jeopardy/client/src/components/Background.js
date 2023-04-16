@@ -1,11 +1,15 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
 import HiddenMenu from './HiddenMenu';
 import BackButton from 'components/BackButton';
+import { useSelector } from 'react-redux';
 
+
+
+  
 function Background  (props) {
-  const [backgroundMode, setBackgroundMode] = useState('particles');
+
 
   const particlesInit = async (engine) => {
     await loadFull(engine);
@@ -119,25 +123,17 @@ function Background  (props) {
       <BackButton />
     <HiddenMenu 
 
-          generateDistractors={props.generateDistractors}
-
-          toggleDistractorsFunction={() => {
-            props.toggleDistractorsFunction();
-          }}
-
-          toggleBackgroundFunction={() => { 
-              setBackgroundMode((prevMode) => (prevMode === 'particles' ? 'picture' : 'particles'));  
-          }}
+          
         />
       <Particles
         id="tsparticles"
         init={particlesInit}
         loaded={particlesLoaded}
         options={particleOptions}
-        style={{ display: backgroundMode === 'particles' ? 'block' : 'none' }}
+        style={{ display: useSelector(state => state.settings.backgroundMode) === 'particles' ? 'block' : 'none' }}
       />
 
-      <div style={{ display: backgroundMode === 'picture' ? 'block' : 'none' }}>
+      <div style={{ display: useSelector(state => state.settings.backgroundMode) === 'picture' ? 'block' : 'none' }}>
         <div style={imageStyle}></div>
       </div>
     </>
