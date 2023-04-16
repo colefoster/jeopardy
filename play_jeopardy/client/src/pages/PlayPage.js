@@ -1,23 +1,27 @@
-import React from 'react';
+import React, {useState} from 'react';
 import JeopardyBoard from '../components/game/JeopardyBoard';
 import Background from '../components/Background';
 import * as Spaces from 'react-spaces'
 import BorderSpacer from 'components/BorderSpacer';
-import BackButton from 'components/BackButton';
-import SignedInStatusLabel from 'components/SignedInStatusLabel';
 
-function PlayPage(props){
-   
-    return (
+
+function PlayPage(){
+    const [generateDistractors , setGenerateDistractors] = useState(false)
+
+    function toggleDistractors(){
+       setGenerateDistractors(!generateDistractors);
+      }
+      return (
         <>
-        <BackButton />
-        <SignedInStatusLabel />
-        <Background enabled={true} mode={'picture'}/>
+        
+          <Background generateDistractors={generateDistractors} toggleDistractorsFunction={toggleDistractors} />
+            
+        
         <div>
             <Spaces.ViewPort>
             <BorderSpacer mode={'picture'}/>
            
-            <JeopardyBoard />
+            <JeopardyBoard generateDistractors={generateDistractors}/>
                 
             
             </Spaces.ViewPort>

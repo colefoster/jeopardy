@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as Spaces from 'react-spaces';
 import { startNewGame } from '../../redux/gameSlice';
 import Category from './Category';
-const JeopardyBoard = () => {
+const JeopardyBoard = (props) => {
     const categories = useSelector(state => state.game.categories);
     const questions = useSelector(state => state.game.questions);
     const dispatch = useDispatch();
@@ -19,6 +19,9 @@ const JeopardyBoard = () => {
         
     }, [startNewGameCallback]);
     
+
+    //const generateDistractors = props.generateDistractors;
+
     return (
         <>
          

@@ -1,31 +1,38 @@
 import React from 'react';
 import MainMenu from '../components/MainMenu';
-import Delayed from '../components/Delayed';
 import Background from '../components/Background';
 
-import BackgroundVideo from '../components/BackgroundVideo';
-import SignedInStatusLabel from 'components/SignedInStatusLabel';
-
+//import Delayed from '../components/Delayed';
+//import BackgroundVideo from '../components/BackgroundVideo';
 function HomePage(props){
-  if(props.intro === "on"){
+
+  
+
+  /* if(props.intro === "on"){
     return (
     <>
         <BackgroundVideo />
-        <SignedInStatusLabel />
+        <LoggedInStatusLabel />
+        <OffCanvasMenu 
+          toggleBackgroundButton={toggleBackground}
+        />
         <Delayed waitBeforeShow={5600}>
           <Background />
           <MainMenu />
         </Delayed>
     </>
     );
-  } else {
+  } else { */
+    
     return (
       <>
-        <Background enabled={true}/>
+      
+        <Background  />
+        
         <MainMenu />
       </>
     );
   }
-}
+
 
 export default HomePage;

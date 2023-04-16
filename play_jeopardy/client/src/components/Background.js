@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import Particles from 'react-tsparticles';
 import { loadFull } from 'tsparticles';
+import HiddenMenu from './HiddenMenu';
+import BackButton from 'components/BackButton';
 
-const Background = () => {
-  const [mode, setMode] = useState('particles');
+function Background  (props) {
+  const [backgroundMode, setBackgroundMode] = useState('particles');
 
   const particlesInit = async (engine) => {
     await loadFull(engine);
@@ -11,9 +13,7 @@ const Background = () => {
 
   const particlesLoaded = async (container) => {};
 
-  const handleToggle = () => {
-    setMode((prevMode) => (prevMode === 'particles' ? 'picture' : 'particles'));
-  };
+
 
   const particleOptions = {
     background: {
@@ -116,25 +116,30 @@ const Background = () => {
 
   return (
     <>
+      <BackButton />
+    <HiddenMenu 
+
+          generateDistractors={props.generateDistractors}
+
+          toggleDistractorsFunction={() => {
+            props.toggleDistractorsFunction();
+          }}
+
+          toggleBackgroundFunction={() => { 
+              setBackgroundMode((prevMode) => (prevMode === 'particles' ? 'picture' : 'particles'));  
+          }}
+        />
       <Particles
         id="tsparticles"
         init={particlesInit}
         loaded={particlesLoaded}
         options={particleOptions}
-        style={{ display: mode === 'particles' ? 'block' : 'none' }}
+        style={{ display: backgroundMode === 'particles' ? 'block' : 'none' }}
       />
 
-      <div style={{ display: mode === 'picture' ? 'block' : 'none' }}>
+      <div style={{ display: backgroundMode === 'picture' ? 'block' : 'none' }}>
         <div style={imageStyle}></div>
       </div>
-
-      <button onClick={handleToggle} style={{
-        flex: 1,
-        top: 50,
-        left: 50,
-        position:'relative',
-        zIndex:1,
-      }}>Toggle Background</button>
     </>
   );
 };

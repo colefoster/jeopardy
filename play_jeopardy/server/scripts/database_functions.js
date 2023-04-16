@@ -3,6 +3,7 @@ require("dotenv").config({ path: "./config.env" });
 const bcrypt = require('bcrypt');
 
 
+
 async function connectToDB(){
     //connect to the database
     try{
@@ -10,6 +11,7 @@ async function connectToDB(){
         await mongoose.connect(process.env.MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false});
         countGames();
         countUserQuestions();
+
         console.log("Connected to database\n\tReady to serve api requests on port " + process.env.PORT + "!");   
     }
     catch(err){

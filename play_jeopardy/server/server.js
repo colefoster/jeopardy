@@ -3,11 +3,13 @@ const session = require('express-session');
 const app = express();
 const cors = require("cors");
 
+const { v4: uuidv4 } = require('uuid');
+
+const MongoDBStore = require('connect-mongodb-session')(session);
+
 
 var Alea = require('alea')
-const bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+
 
 const {gameModel, catModel, questionModel, userQuestionModel, 
   userModel,
@@ -18,10 +20,28 @@ const port = process.env.PORT || 5000;
 const categoryLimit = Number(process.env.CATEGORY_LIMIT);
 const questionLimit = Number(process.env.QUESTION_LIMIT);
 
-app.use(cors());
 app.use(express.json());
 
+// Add headers before the routes are defined
+app.use(function (req, res, next) {
 
+  // Website you wish to allow to connect
+  res.setHeader('Access-Control-Allow-Origin', 'https://play-jeopardy.netlify.app');
+  res.setHeader('Access-Control-Allow-Origin', 'https://play-jeopardy.netlify.app');
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  // Request methods you wish to allow
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+  // Request headers you wish to allow
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+  // Set to true if you need the website to include cookies in the requests sent
+  // to the API (e.g. in case you use sessions)
+  res.setHeader('Access-Control-Allow-Credentials', true);
+
+  // Pass to next layer of middleware
+  next();
+});
 
 // play_jeopardy REST API
 app.get("/api/game", (req, res) => {
@@ -286,8 +306,12 @@ function sanitize(str) {
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 
-passport.use(new LocalStrategy(
-  function(username, password, done) {
+passport.use(new LocalStrategy({
+  usernameField: 'username',
+  passwordField: 'password',
+  passReqToCallback: true},
+  function(req, username, password, done) {
+    console.log(req.user);
     userModel.findOne({ username: username }, function(err, user) {
       if (err) { return done(err); }
       if (!user) { return done(null, false, { message: 'Incorrect username.' }); }
@@ -302,34 +326,74 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(id, done) {
-  User.findById(id, function(err, user) {
-    done(err, user);
+   userModel.findById(id, function(err, user) {
+    if (err) { return done(err); }
+    if (!user) { return done(null, false); }
+    return done(null, user.toObject()); // Convert Mongoose document to plain object
   });
 });
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(session({ 
-  secret: 'your-secret-key',
+  secret: 'dy6J6GWJwHwmZohRTDHsPsSg1SsBivC1PxVFke1jec8',
   resave: false,
-  saveUninitialized: false 
+  saveUninitialized: false,
+  cookie: {
+    secure: true,
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  },
+  store: new MongoDBStore({
+    uri: process.env.MONGODB_URI,
+    collection: 'sessions'
+  }),
+  genid: function(req) {
+    return uuidv4(); // Generate unique session ID using UUID
+  }
 }));
+
 app.use(passport.initialize());
 app.use(passport.session());
+// Enable CORS for all origins with credentials
 
+app.use(cors({
+  origin: function(origin, callback) {
+    callback(null, true);
+  },
+  credentials: true
+}));
 
-app.post('/login',
-  passport.authenticate('local', { successRedirect: '/',
-                                   failureRedirect: '/login',
-                                   failureFlash: false }) 
-);
+app.post('/login',function (req, res, next) {
+  // call passport authentication passing the "local" strategy name and a callback function
+  passport.authenticate('local', function (error, user, info) {
+    // this will execute in any case, even if a passport strategy will find an error
+    // log everything to console
+    console.log(error);
+    console.log(user);
+    console.log(info);
+
+    if (error) {
+      res.status(401).send(error);
+    } else if (!user) {
+      res.status(401).send(info);
+    } else {
+      next();
+    }
+
+    res.status(401).send(info);
+  })(req, res);
+}, function(req, res) {
+  res.json({ message: 'Login successful' });
+});
 
 app.post('/signup', function(req, res, next) {
   const { username, email, password } = req.body;
-
+  console.log(req.body);
   // Check if the username and email are already taken
   userModel.findOne({ $or: [{ username }, { email }] }, function(err, user) {
     if (err) {
+      console.log(err);
       return next(err);
     }
     if (user) {
@@ -342,12 +406,15 @@ app.post('/signup', function(req, res, next) {
     // Save the user to the database
     newUser.save(function(err) {
       if (err) {
+        console.log(err);
         return next(err);
+
       }
 
       // Log in the user
       req.login(newUser, function(err) {
         if (err) {
+          console.log(err);
           return next(err);
         }
         return res.json({ message: 'User created and logged in' });
@@ -361,7 +428,27 @@ app.get('/logout', function(req, res) {
   res.redirect('/');
 });
 
-app.get('/user', function(req, res) {
-  console.log(req.user);
+
+app.get('/api/user', function (req, res, next) {
+  // call passport authentication passing the "local" strategy name and a callback function
+  passport.authenticate('local', function (error, user, info) {
+    // this will execute in any case, even if a passport strategy will find an error
+    // log everything to console
+    console.log(error);
+    console.log(user);
+    console.log(info);
+
+    if (error) {
+      res.status(401).send(error);
+    } else if (!user) {
+      res.status(401).send(info);
+    } else {
+      next();
+    }
+
+    res.status(401).send(info);
+  })(req, res);
+}, function(req, res) {
+  console.log("User: " + req.user);
   res.json(req.user);
 });

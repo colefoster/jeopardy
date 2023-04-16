@@ -2,6 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate  } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import SERVER from 'server_address';
 
 
 function LoginForm() {
@@ -13,11 +14,16 @@ function LoginForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('/login', {
+      const response = await axios.post(SERVER.URL + '/login', {
         username,
         password,
       });
       console.log(response.data);
+      Swal.fire({
+        icon: 'success',
+        title:  'You\'re logged in!',
+        text:  'You can now play the game!',
+      });
       navigate('/');
       // redirect to the home page
     } catch (error) {
@@ -36,12 +42,12 @@ function LoginForm() {
     }}>
       <label>
         Username:
-        <input type="text" value={username} onChange={(event) => setUsername(event.target.value)} />
+        <input type="text" name='username' value={username} onChange={(event) => setUsername(event.target.value)} />
       </label>
       <br />
       <label>
         Password:
-        <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} />
+        <input type="password" name='password' value={password} onChange={(event) => setPassword(event.target.value)} />
       </label>
       <br />
       <button type="submit">Log In</button>
