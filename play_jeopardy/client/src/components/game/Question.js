@@ -17,7 +17,7 @@ const Question = (props) => {
   const questionTextRef = useRef(null);
   const answerCardRef = useRef(null);
   const inputRef = useRef(null);
-  
+  const dimmerRef = useRef(null);
   
   const dispatch = useDispatch();
 
@@ -32,6 +32,7 @@ const Question = (props) => {
       setFlipped(true);
       questionCardRef.current.style.display = 'block';
       inputRef.current.style.display = 'block';
+      dimmerRef.current.style.display = 'block';
     }
   }
 
@@ -49,6 +50,7 @@ const Question = (props) => {
     questionCardRef.current.style.display = 'none';
     answerCardRef.current.style.display = 'none';
     inputRef.current.style.display = 'none';
+    dimmerRef.current.style.display = 'none';
     event.stopPropagation();//Stops the other event handlers from firing, which messes up the card closing
   }
  
@@ -64,16 +66,22 @@ const Question = (props) => {
     }}>
       <Tilt scale={1.2}>
         <div style={{
-          display: flipped ? 'none' : 'block',
-        }}>
-        {`$${200 * (props.index + 1)}`}
+            display: flipped ? 'none' : 'block',
+          }}>
+          {`$${200 * (props.index + 1)}`}   {//dollar amount 
+                                            }
         </div>
       </Tilt>
-      </Spaces.Top>
+    </Spaces.Top>
 
+    <div ref={dimmerRef} className='dimBackground' style={{
+        display: 'none',
+        backgroundColor: 'rgba(0,0,0,0.5)',
+    }} />
 
-      <InputHandling inputRef={inputRef} answer={props.answer}/>
-
+      <InputHandling inputRef={inputRef} answer={props.answer}/> {//answer input box}
+                                                                //check answer button
+                                                                }
 
       <div ref={questionCardRef} className="card" onClick={handleQuestionCardClick} style={{
         display: flipped ? 'blocked' : 'none',

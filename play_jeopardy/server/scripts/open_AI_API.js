@@ -130,15 +130,15 @@ getDistractorsForQuestion = async (question, answer, category) => {
         prompt("Press enter to send davinci request");
         const response = await openai.createCompletion({
             model: "text-davinci-003",
-            prompt: `Produce believeable wrong answers for this jeopardy `+ 
+            prompt: `Produce 3 believeable wrong answers for this jeopardy `+ 
                 `question: ${cleanQuestion}`+
-                `, Category: ${category}` +
+                `, in Category: ${category}` +
                 `, Correct Answer: ${answer}` + 
-                `, Wrong Answers:`,
+                `, Wrong Answers (comma separated):`,
             max_tokens: 150,
-            temperature: 0.7,
+            temperature: 0.6,
         });
-        let distractors = response.data.choices[0].text.split('- ');
+        let distractors = response.data.choices[0].text.split(',');
 
         console.log("\nCategory:");
         console.log(category);

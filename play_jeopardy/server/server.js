@@ -36,6 +36,9 @@ passport.use(new LocalStrategy({
   function(req, username, password, done) {
     console.log(req.user);
     userModel.findOne({ username: username }, function(err, user) {
+      console.log(user);
+      console.log(username)
+      console.log(password);
       if (err) { return done(err); }
       if (!user) { return done(null, false, { message: 'Incorrect username.' }); }
       if (!user.validPassword(password)) { return done(null, false, { message: 'Incorrect password.' }); }
@@ -353,7 +356,28 @@ function sanitize(str) {
     return str.replaceAll("[-.\\+*?\\[^\\]$(){}=!<>|:\\\\]", "\\\\$0");
   }
 }
+app.get('/secrets',function (req, res, next) {
+  // call passport authentication passing the "local" strategy name and a callback function
+  passport.authenticate('local', function (error, user, info) {
+    // this will execute in any case, even if a passport strategy will find an error
+    // log everything to console
+    console.log(error);
+    console.log(user);
+    console.log(info);
 
+    if (error) {
+      res.status(401).send(error);
+    } else if (!user) {
+      res.status(401).send(info);
+    } else {
+      next();
+    }
+
+    res.status(401).send(info);
+  })(req, res);
+}, function(req, res) {
+  res.json({ message: 'Secrets here' });
+});
 
 app.post('/login',function (req, res, next) {
   // call passport authentication passing the "local" strategy name and a callback function
@@ -434,12 +458,44 @@ app.get('/api/user', function (req, res, next) {
     } else if (!user) {
       res.status(401).send(info);
     } else {
-      next();
+      next();res.status(401).send(info);
     }
 
-    res.status(401).send(info);
+    
   })(req, res);
 }, function(req, res) {
+  //console.log(req);
   console.log("User: " + req.user);
   res.json(req.user);
+});
+
+
+app.get('/api/distractors/', async function (req, res) {
+  //WHERE TO PUT API KEY?
+  const category = req.query.category;
+  const question = req.query.question.replace(/(\([^)]+\)|<[^>]*>)/g, "");
+  const answer = req.query.answer;
+  const apiKey = req.query.apiKey;
+
+  const { OpenAIApi, Configuration } = require('openai');
+
+  const configuration = new Configuration({
+    
+    organization: "org-QuAbMjgiJ0XJzR2aYWCQj9Jz",
+    apiKey: apiKey, 
+  });
+  const openai = new OpenAIApi(configuration);
+
+  const response = await openai.createCompletion({
+    model: "text-davinci-003",
+    prompt: `Produce 3 believeable wrong answers for this jeopardy `+ 
+        `question: ${cleanQuestion}`+
+        `, in Category: ${category}` +
+        `, Correct Answer: ${answer}` + 
+        `, Wrong Answers (comma separated):`,
+    max_tokens: 150,
+    temperature: 0.6,
+});
+let distractors = response.data.choices[0].text.split(',');
+  
 });

@@ -48,6 +48,7 @@ export default function InputHandling(props) {
         transform: 'translate(-50%, 50%)'
 
      }}>
+
       <button
             
         style={{
