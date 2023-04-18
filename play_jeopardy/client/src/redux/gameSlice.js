@@ -35,7 +35,8 @@ export const gameSlice = createSlice({
       flipped: false,
       distractors: [String],
     }],
-    players: [{ name: 'default', score: 0 }],
+    players: [{ name: 'default'}],
+    score: 0,
     questionsAnswered: [String],
   },
   reducers: {
@@ -44,10 +45,11 @@ export const gameSlice = createSlice({
       return { ...state, categories, questions, players, questionsAnswered , flipped};
     },
     
-    revealQuestion: (state, action) => {
-      
-      
+    adjustScore: (state, action) =>{
+      const amount = action.payload;
+      state.score += amount; 
     },
+   
     addQuestionAnswered: (state, action) => {
       
       if (Array.isArray(state.questionsAnswered)) {
@@ -56,15 +58,11 @@ export const gameSlice = createSlice({
         state.questionsAnswered = [action.payload];
       }
     },
-    updateScore: (state, action) => {
-      const { playerId, score } = action.payload;
-      const player = state.players[playerId];
-      player.score = score;
-    },
+    
   },
 });
 
-export const { setGameInfo, addQuestionAnswered,  revealQuestion, updateScore } = gameSlice.actions;
+export const { setGameInfo, addQuestionAnswered,   adjustScore } = gameSlice.actions;
 
 // Define a separate thunk function to fetch a new game and dispatch the setGameInfo action
 export const startNewGame = () => async (dispatch) => {

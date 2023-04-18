@@ -4,7 +4,9 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   generateDistractors: false,
-  backgroundMode: 'particles'
+  backgroundMode: 'particles',
+  model: 'gpt-3.5-turbo',
+  apiPrefix:''
 };
 
 const settingsSlice = createSlice({
@@ -16,10 +18,16 @@ const settingsSlice = createSlice({
     },
     toggleBackgroundMode(state) {
       state.backgroundMode = (state.backgroundMode === 'particles' ? 'picture' : 'particles');
-    }
+    },
+    setModel(state, action) {
+      state.model = action.payload;
+    },
+    setApiPrefix(state, action) {
+      state.apiPrefix = action.payload;
   }
+}
 });
 
-export const { toggleDistractors, toggleBackgroundMode } = settingsSlice.actions;
+export const { toggleDistractors, toggleBackgroundMode, setModel, setApiPrefix } = settingsSlice.actions;
 
 export default settingsSlice.reducer;

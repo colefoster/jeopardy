@@ -1,3 +1,5 @@
+import SelectSearch from 'react-select-search';
+import 'react-select-search/style.css';
 
 import React, { useState } from "react";
 import { OffCanvas, OffCanvasMenu } from "react-offcanvas";
@@ -7,11 +9,11 @@ import Toggle from 'react-toggle'
 import "react-toggle/style.css" // for ES6 modules
 
 import { useSelector, useDispatch } from 'react-redux';
-import { toggleDistractors, toggleBackgroundMode } from '../redux/settingsSlice';
+import { toggleDistractors, toggleBackgroundMode, setModel, setApiPrefix } from '../redux/settingsSlice';
+import AutosizeInput from 'react-input-autosize';
 
 function HiddenMenu(){
     const [isOpen, setOpen] = useState(false)
-
     const dispatch = useDispatch();
   
     function handleDistractorsToggle() {
@@ -22,6 +24,13 @@ function HiddenMenu(){
       dispatch(toggleBackgroundMode());
     }
 
+    function updateModel(value) {
+      dispatch(setModel(value));
+    }
+    const modelOptions = [
+      { name: '3.5 Turbo', value: 'gpt-3.5-turbo' },
+      { name: 'Davinci 3', value: 'text-davinci-003' }
+    ];
     return (
         <><div style={{
           color: 'white',
@@ -73,9 +82,22 @@ function HiddenMenu(){
             <Toggle
               defaultChecked={useSelector(state => state.settings.generateDistractors)}
               onChange={handleDistractorsToggle}/>
-              <span> Enable OPENAI Distractor Generation</span>
+              <span> Multiple Choice</span>
 
-              </div>
+
+            <div  style={{
+              display: useSelector(state => state.settings.generateDistractors) ? 'block' : 'none',}}>
+                <small>openai model:</small>
+              <SelectSearch options={modelOptions} onChange={updateModel} value="gpt-3.5-turbo"/>
+            
+            <small>api key prefix:<div style={{
+              fontSize: '0.5em',
+            }}>to stop people spamming api requests using my key, ask cole for password</div></small>
+            <AutosizeInput style={{
+                display: useSelector(state => state.settings.generateDistractors) ? 'block' : 'none',
+                background: 'transparent', borderRadius: 5, padding: 5,fontStyle: 'bold'
+            }} placeholder="key" onChange={function (event){dispatch(setApiPrefix(event.target.value))}} inputStyle={{ border: '1px solid #999', borderRadius: 3, padding: 3, fontSize: 25, fontWeight: 'bold', color:'black',alignContent: 'center', flex:'center', justifyContent: 'center' }}/>
+            </div></div>
         </OffCanvasMenu>
       </OffCanvas>
       </div>

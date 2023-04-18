@@ -471,31 +471,68 @@ app.get('/api/user', function (req, res, next) {
 
 
 app.get('/api/distractors/', async function (req, res) {
-  //WHERE TO PUT API KEY?
+  console.log("Distractors Requested");
+  const model = req.query.model;
   const category = req.query.category;
-  const question = req.query.question.replace(/(\([^)]+\)|<[^>]*>)/g, "");
+  const question = req.query.question
   const answer = req.query.answer;
-  const apiKey = req.query.apiKey;
-
+  const apiPrefix = req.query.apiPrefix;
   const { OpenAIApi, Configuration } = require('openai');
+
+  if(typeof (apiPrefix) === undefined){
+    res.json(
+     
+      {
+        
+        "choices": [{
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "No API Prefix  \nNo API Prefix  \nNo API Prefix  \nNo API Prefix  ",
+        }}],
+      });
+      
+      return
+  }
 
   const configuration = new Configuration({
     
     organization: "org-QuAbMjgiJ0XJzR2aYWCQj9Jz",
-    apiKey: apiKey, 
+    apiKey: apiPrefix + "296BCAAZYUy9X0yJg5hMT3BlbkFJDoCfUwp23bOfOIeCwVHv", 
   });
   const openai = new OpenAIApi(configuration);
 
-  const response = await openai.createCompletion({
-    model: "text-davinci-003",
-    prompt: `Produce 3 believeable wrong answers for this jeopardy `+ 
-        `question: ${cleanQuestion}`+
-        `, in Category: ${category}` +
-        `, Correct Answer: ${answer}` + 
-        `, Wrong Answers (comma separated):`,
+  if(model && model === "text-davinci-003"){
+    const response = await openai.createCompletion({
+      model: "text-davinci-003",
+      prompt: `Produce 3 believeable wrong answers for this jeopardy `+ 
+          `question: ${cleanQuestion}`+
+          `, in Category: ${category}` +
+          `, Correct Answer: ${answer}` + 
+          `, Wrong Answers (comma separated):`,
+      max_tokens: 150,
+      temperature: 0.0,
+    });
+    console.log(response.data)
+    res.json(response.data);
+  }
+
+  else if(model && model === "gpt-3.5-turbo"){
+    const completion = await openai.createChatCompletion({
+      model: "gpt-3.5-turbo",
+      messages: [
+        {"role": "system", "content": "You generate 3 plausible wrong answers for jeopardy questions based on the question, its category and its correct answer. Your replies are only the 3 wrong answers, comma separated, NOT in the form of a question. Format wrong answers like the correct answer."},
+        {"role": "user", "content": `Question: ${question} under the category ${category} with the correct answer being ${answer}.`},
+    ],
     max_tokens: 150,
-    temperature: 0.6,
-});
-let distractors = response.data.choices[0].text.split(',');
-  
+    temperature: 0.0,
+    });
+    console.log(completion.data.choices[0]);
+
+    res.json(completion.data);
+  }
+
+  else{
+    res.json({message: "Invalid model"});
+  }
 });
