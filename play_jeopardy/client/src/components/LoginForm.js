@@ -3,8 +3,13 @@ import axios from 'axios';
 import { useNavigate  } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import SERVER from 'server_address';
+
 import { useDispatch } from 'react-redux';
 import {setUser } from '../redux/settingsSlice';
+
+
+import "../styles/GeneralStyles.css"
+
 
 function LoginForm() {
   const [username, setUsername] = useState('');
@@ -42,17 +47,19 @@ function LoginForm() {
     <form onSubmit={handleSubmit} style={{
       color: 'white',
     }}>
-      <label>
-        Username:
-        <input type="text" name='username' value={username} onChange={(event) => setUsername(event.target.value)} />
-      </label>
-      <br />
-      <label>
-        Password:
-        <input type="password" name='password' value={password} onChange={(event) => setPassword(event.target.value)} />
-      </label>
-      <br />
-      <button type="submit">Log In</button>
+      <div className='box'>
+        <div className='userForm'>
+          <div style={{paddingRight: '20px', display: 'inline-block'}}>Username:</div>
+          <input type="text" name='username' value={username} onChange={(event) => setUsername(event.target.value)} />
+        </div>
+        <br />
+          <div className='userForm'>
+            <div style={{paddingRight: '20px', paddingLeft: '7px', display: 'inline-block'}}>Password:</div>
+            <input type="password" name='password' value={password} onChange={(event) => setPassword(event.target.value)} />
+          </div>
+        <br />
+        <button type="submit">Log In</button>
+      </div>
     </form>
   );
 }

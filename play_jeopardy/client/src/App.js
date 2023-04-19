@@ -15,7 +15,7 @@ import PlayPage from "./pages/PlayPage";
 import EditQuestionPage from "./pages/EditQuestionPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
-
+import LeaderboardPage from "pages/LeaderboardPage";
 
 const App = () => {
   return (
@@ -29,6 +29,7 @@ const App = () => {
         <Route path="/questions" element={<QuestionsPage />} />
         <Route path ="/categories" element={<CategoriesPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/leaderboard" element={<LeaderboardPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/create" element={<AddQuestionPage />} />
         <Route path="/userQuestions" element={<UserQuestionsPage />} />

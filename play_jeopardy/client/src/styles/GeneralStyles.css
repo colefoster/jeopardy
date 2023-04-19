@@ -1,0 +1,35 @@
+.box{
+    padding-top: 50px;
+    padding-bottom: 50px;
+    border-radius: 10px;
+    margin: auto;
+    width: 40%;
+    background-color: rgba(7, 18, 119, 0.75)
+}
+
+.userForm{
+    font-size: 30px;
+    font-family: 'Swis721 BlkCn BT';
+    text-shadow: 4px 2px black;
+}
+
+button {
+    background-color: #0D1557;
+    border-color: black;
+    border-radius: 10px;
+    color: white;
+    padding: 5px 32px;
+    text-align: center;
+    display: inline-block;
+    font-size: 25px;
+    font-family: 'Swis721 BlkCn BT';
+}
+
+.table {
+    color: white;
+    background-color: #0D1557;
+    font-family: 'Swis721 BlkCn BT';
+    font-size: 45px;
+    border: solid black;
+    text-shadow: 4px 2px black;
+}
