@@ -69,7 +69,17 @@ function HiddenMenu(){
 
             <br/><br/>
 
-            <button onClick={handleBackgroundModeChange}>
+            <button style={{
+          backgroundColor: '#0D1557',
+          borderColor: 'black',
+          borderRadius: '10px',
+          color: 'white',
+          padding: '5px 32px',
+          textAlign: 'center',
+          display: 'inline-block',
+          fontSize: '25px',
+          fontFamily: 'Swis721 BlkCn BT',
+        }} onClick={handleBackgroundModeChange}>
               Toggle Background
             </button>
         

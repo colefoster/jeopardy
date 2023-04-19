@@ -58,7 +58,17 @@ function LoginForm() {
             <input type="password" name='password' value={password} onChange={(event) => setPassword(event.target.value)} />
           </div>
         <br />
-        <button type="submit">Log In</button>
+        <button type="submit" style={{
+          backgroundColor: '#0D1557',
+          borderColor: 'black',
+          borderRadius: '10px',
+          color: 'white',
+          padding: '5px 32px',
+          textAlign: 'center',
+          display: 'inline-block',
+          fontSize: '25px',
+          fontFamily: 'Swis721 BlkCn BT',
+        }}>Log In</button>
       </div>
     </form>
   );

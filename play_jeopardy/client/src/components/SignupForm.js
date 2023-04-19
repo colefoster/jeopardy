@@ -63,7 +63,17 @@ function SignupForm() {
             <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} />
           </div>
         <br />
-        <button type="submit">Sign Up</button>
+        <button type="submit" style={{
+          backgroundColor: '#0D1557',
+          borderColor: 'black',
+          borderRadius: '10px',
+          color: 'white',
+          padding: '5px 32px',
+          textAlign: 'center',
+          display: 'inline-block',
+          fontSize: '25px',
+          fontFamily: 'Swis721 BlkCn BT',
+        }}>Sign Up</button>
       </div>
     </form>
   );

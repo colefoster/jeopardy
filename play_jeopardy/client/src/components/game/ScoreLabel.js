@@ -8,7 +8,7 @@ function ScoreLabel() {
     <div style={{
         position: 'absolute',
         left: '50%',
-        transform: 'translate(-50%, 0)',
+        transform: 'translate(-50%, -10%)',
         fontFamily: 'Dollar-Amount',
         fontWeight: '100',
         color: '#f9c145',
