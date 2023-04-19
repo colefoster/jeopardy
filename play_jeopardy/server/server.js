@@ -34,11 +34,7 @@ passport.use(new LocalStrategy({
   passwordField: 'password',
   passReqToCallback: true},
   function(req, username, password, done) {
-    console.log(req.user);
     userModel.findOne({ username: username }, function(err, user) {
-      console.log(user);
-      console.log(username)
-      console.log(password);
       if (err) { return done(err); }
       if (!user) { return done(null, false, { message: 'Incorrect username.' }); }
       if (!user.validPassword(password)) { return done(null, false, { message: 'Incorrect password.' }); }
@@ -66,7 +62,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: true,
+    secure: false,
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
   },
@@ -356,50 +352,27 @@ function sanitize(str) {
     return str.replaceAll("[-.\\+*?\\[^\\]$(){}=!<>|:\\\\]", "\\\\$0");
   }
 }
-app.get('/secrets',function (req, res, next) {
-  // call passport authentication passing the "local" strategy name and a callback function
-  passport.authenticate('local', function (error, user, info) {
-    // this will execute in any case, even if a passport strategy will find an error
-    // log everything to console
-    console.log(error);
-    console.log(user);
-    console.log(info);
-
-    if (error) {
-      res.status(401).send(error);
-    } else if (!user) {
-      res.status(401).send(info);
-    } else {
-      next();
-    }
-
-    res.status(401).send(info);
-  })(req, res);
-}, function(req, res) {
-  res.json({ message: 'Secrets here' });
-});
 
 app.post('/login',function (req, res, next) {
+  
   // call passport authentication passing the "local" strategy name and a callback function
   passport.authenticate('local', function (error, user, info) {
     // this will execute in any case, even if a passport strategy will find an error
     // log everything to console
-    console.log(error);
-    console.log(user);
-    console.log(info);
+    
 
     if (error) {
       res.status(401).send(error);
     } else if (!user) {
       res.status(401).send(info);
     } else {
-      next();
+      req.login(user, next)
     }
 
-    res.status(401).send(info);
-  })(req, res);
+  })(req, res, next);
 }, function(req, res) {
-  res.json({ message: 'Login successful' });
+  res.json(req.user);
+  console.log(req.user);
 });
 
 app.post('/signup', function(req, res, next) {
@@ -432,7 +405,7 @@ app.post('/signup', function(req, res, next) {
           console.log(err);
           return next(err);
         }
-        return res.json({ message: 'User created and logged in' });
+        return res.json(newUser);
       });
     });
   });
@@ -444,29 +417,8 @@ app.get('/logout', function(req, res) {
 });
 
 
-app.get('/api/user', function (req, res, next) {
-  // call passport authentication passing the "local" strategy name and a callback function
-  passport.authenticate('local', function (error, user, info) {
-    // this will execute in any case, even if a passport strategy will find an error
-    // log everything to console
-    console.log(error);
-    console.log(user);
-    console.log(info);
-
-    if (error) {
-      res.status(401).send(error);
-    } else if (!user) {
-      res.status(401).send(info);
-    } else {
-      next();res.status(401).send(info);
-    }
-
-    
-  })(req, res);
-}, function(req, res) {
-  //console.log(req);
-  console.log("User: " + req.user);
-  res.json(req.user);
+app.get('/api/user', function(req, res) {
+  console.log(req)
 });
 
 
@@ -521,11 +473,11 @@ app.get('/api/distractors/', async function (req, res) {
     const completion = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: [
-        {"role": "system", "content": "You generate 3 plausible wrong answers for jeopardy questions based on the question, its category and its correct answer. Your replies are only the 3 wrong answers, comma separated, NOT in the form of a question. Format wrong answers like the correct answer."},
+        {"role": "system", "content": "You generate 3 plausible wrong answers for jeopardy questions based on the question, its category and its correct answer. Your replies are only the 3 wrong answers, comma separated, NOT in the form of a question. Format wrong answers like the correct answer (e.g. If the answer is prefixed with 'a ' or 'the ' or 'to ', include the same prefix in your answers)."},
         {"role": "user", "content": `Question: ${question} under the category ${category} with the correct answer being ${answer}.`},
     ],
     max_tokens: 150,
-    temperature: 0.0,
+    temperature: 0.5,
     });
     console.log(completion.data.choices[0]);
 

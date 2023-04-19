@@ -2,11 +2,12 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
-  generateDistractors: false,
+const initialState = {  //DEFAULT SETTINGS FOR THE APP
+  generateDistractors: true,
   backgroundMode: 'particles',
   model: 'gpt-3.5-turbo',
-  apiPrefix:''
+  apiPrefix:'sk-',
+  user: null,
 };
 
 const settingsSlice = createSlice({
@@ -24,10 +25,13 @@ const settingsSlice = createSlice({
     },
     setApiPrefix(state, action) {
       state.apiPrefix = action.payload;
-  }
+  },
+  setUser(state, action) {
+    state.user = action.payload;
+  },
 }
 });
 
-export const { toggleDistractors, toggleBackgroundMode, setModel, setApiPrefix } = settingsSlice.actions;
+export const { setUser, toggleDistractors, toggleBackgroundMode, setModel, setApiPrefix } = settingsSlice.actions;
 
 export default settingsSlice.reducer;

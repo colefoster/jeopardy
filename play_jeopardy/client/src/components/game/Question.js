@@ -6,8 +6,10 @@ import parse from 'html-react-parser';
 import { useSelector, useDispatch } from 'react-redux';
 import { addQuestionAnswered } from '../../redux/gameSlice';
 import * as Spaces from 'react-spaces';
+import '@fortawesome/fontawesome-free/css/all.css';
 
 import SERVER from '../../server_address';
+import Swal from 'sweetalert2';
 
 const Question = (props) => {
   const generateDistractors = useSelector(state => state.settings.generateDistractors);
@@ -55,7 +57,7 @@ const apiPrefix = useSelector(state => state.settings.apiPrefix)
         const generateDistractors =async () =>{
           const question = props.question.replace(/(\([^)]+\)|<[^>]*>)/g, "");
           const category = props.category;
-          const answer = props.answer;
+          const answer = props.answer.replace(/\\'/g, "'");
           console.log("Getting wrong answers for question: " + question);
           const response = await fetch(SERVER.URL + `/api/distractors?category=${category}&question=${question}&answer=${answer}&model=${model}&apiPrefix=${apiPrefix}`);
         
@@ -63,13 +65,10 @@ const apiPrefix = useSelector(state => state.settings.apiPrefix)
           if(response.status === 200){
           const data = await response.json();
           var tempDistractors = data.choices[0].message.content;
-          tempDistractors= tempDistractors.replace(/\d\. /g, "").replace(/\\'/g, "'").replace(/\d\) /g, "").replace(".", "").replace(/\\'/g, "'");
+          tempDistractors= tempDistractors.replace(/\d\. /g, "").replace(/\\'/g, "'").replace(/\d\) /g, "").replace(".", "").replace(/\\'/g, "'").replace('"', '');
           tempDistractors = tempDistractors.split(", ");
-          console.log(tempDistractors)
           tempDistractors.push(answer);
-          tempDistractors = shuffle(tempDistractors);
-          console.log(tempDistractors)
-          setDistractors(tempDistractors);
+          setDistractors(shuffle(tempDistractors));
           };
         };
         generateDistractors();
@@ -82,15 +81,24 @@ const apiPrefix = useSelector(state => state.settings.apiPrefix)
       dimmerRef.current.style.display = 'block';
     }
   }
-
-  function handleQuestionCardClick() {
-    questionCardRef.current.style.display = 'none';
-    answerCardRef.current.style.display = 'block';
-  }
-
-  function handleAnswerCardClick() {
-    answerCardRef.current.style.display = 'none';
-    questionCardRef.current.style.display = 'block';
+  async function handleQuestionCardClick() {
+    await Swal.fire({//show answer?
+      title: 'Reveal Answer?',
+      icon: 'question',
+      html: 'You will not lose or gain points',
+      showCloseButton: true,
+      showCancelButton: true,
+      reverseButtons: true,
+      focusConfirm: false,
+      confirmButtonText: '<i class="fas fa-thumbs-up"></i>',
+      cancelButtonText: '<i class="fas fa-thumbs-down"></i>'
+    }).then((result) => {
+    if(result.isConfirmed){
+      answerCardRef.current.style.display = 'block';
+      questionCardRef.current.style.display = 'none';
+      inputRef.current.style.display = 'none';
+    }
+  });
   }
   
   function handleCloseCard(event){
@@ -98,7 +106,10 @@ const apiPrefix = useSelector(state => state.settings.apiPrefix)
     answerCardRef.current.style.display = 'none';
     inputRef.current.style.display = 'none';
     dimmerRef.current.style.display = 'none';
-    event.stopPropagation();//Stops the other event handlers from firing, which messes up the card closing
+    
+    try{
+      event.stopPropagation();//Stops the other event handlers from firing, which messes up the card closing
+    }catch{}
   }
  
   return (
@@ -126,7 +137,7 @@ const apiPrefix = useSelector(state => state.settings.apiPrefix)
         backgroundColor: 'rgba(0,0,0,0.5)',
     }} />
 
-      <InputHandling flipped={flipped} inputRef={inputRef} distractors={distractors}{...props} /> {//answer input box
+      <InputHandling flipped={flipped} inputRef={inputRef} distractors={distractors}{...props} closeCardFunction={handleCloseCard} /> {//answer input box
                                                                                                                                                               // and check answer button
                                                                                                                                                                 }
 
@@ -143,7 +154,7 @@ const apiPrefix = useSelector(state => state.settings.apiPrefix)
       </div>
 
 
-      <div ref={answerCardRef} className="card" onClick={handleAnswerCardClick} style={{
+      <div ref={answerCardRef} className="card" onClick={handleCloseCard} style={{
         display: 'none',
         overflow: 'visible',
         

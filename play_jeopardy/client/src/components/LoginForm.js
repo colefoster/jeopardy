@@ -3,12 +3,13 @@ import axios from 'axios';
 import { useNavigate  } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import SERVER from 'server_address';
-
+import { useDispatch } from 'react-redux';
+import {setUser } from '../redux/settingsSlice';
 
 function LoginForm() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
+  const dispatch = useDispatch(); 
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -25,6 +26,7 @@ function LoginForm() {
         text:  'You can now play the game!',
       });
       navigate('/');
+      dispatch(setUser(response.data));
       // redirect to the home page
     } catch (error) {
       console.error(error);

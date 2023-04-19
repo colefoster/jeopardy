@@ -3,12 +3,15 @@ import axios from 'axios';
 import SERVER from '../server_address'
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import {setUser } from '../redux/settingsSlice';
 
 function SignupForm() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -26,6 +29,7 @@ function SignupForm() {
         text:  'Thanks for signing up! Welcome to \'Play Jeopardy\'!'});
 
       navigate('/');
+        dispatch(setUser(response.data));
     } catch (error) {
       console.error(error);
       Swal.fire({

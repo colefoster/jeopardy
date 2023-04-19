@@ -7,14 +7,14 @@ function ScoreLabel() {
   return (
     <div style={{
         position: 'absolute',
-        top: '10vh',
-        left: '.5vw',
+        left: '50%',
+        transform: 'translate(-50%, 0)',
         fontFamily: 'Dollar-Amount',
-        fontWeight: 'bold',
+        fontWeight: '100',
         color: '#f9c145',
-        fontSize: 'calc(2.5vh + 2.5vw)',
+        fontSize: 'calc(3.5vh + 3.5vw)',
         textShadow:'4px 2px #000000',
-        zIndex: '1',
+        zIndex: '0',
     }}>
         Score: {score}
     </div>

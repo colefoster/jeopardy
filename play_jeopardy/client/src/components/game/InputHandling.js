@@ -42,6 +42,9 @@ const InputHandling = (props)=> {
       dispatch(adjustScore(-props.value))
     }
     
+
+    //close question here
+    props.closeCardFunction();
   }
 
   function checkMultipleChoiceAnswer(guess){
@@ -50,18 +53,27 @@ const InputHandling = (props)=> {
         title: 'Correct!',
         text: 'You got it right!',
         icon: 'success',
-        confirmButtonText: 'Cool'
-      })
+        timer: 5000,
+        timerProgressBar: true,
+
+      }).then(props.closeCardFunction());
       dispatch(adjustScore(props.value))
     } else {
       Swal.fire({
         title: 'Incorrect!',
         text: 'You got it wrong!\nCorrect answer: ' + props.answer,
         icon: 'error',
-        confirmButtonText: 'Cool'
-      })
-      dispatch(adjustScore(-props.value))
+        timer: 5000,
+        timerProgressBar: true,
+        didClose: () => {
+          console.log('The alert was closed by the timer');
+          props.closeCardFunction();
+          dispatch(adjustScore(-props.value))
+        }
+      })      
     }
+
+    
   }
   
 
