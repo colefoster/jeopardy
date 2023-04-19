@@ -18,7 +18,7 @@ function Leaderboard() {
 
   return (
     <div style={{paddingLeft: '5%', paddingRight: '5%', width: '70%', margin: 'auto'}}>
-            <Table className='table' striped bordered hover>
+            <Table className='leaderboard' striped bordered hover>
                 <thead style={{backgroundColor: '#050A36'}}>
                     <th>Rank</th>
                     <th>Username</th>
