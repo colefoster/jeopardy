@@ -12,7 +12,7 @@ function SignupPage(props){
         <Background enabled={true} mode={'picture'}/>
         <BackButton />
         <div>
-            <Spaces.Fixed  height={400}>
+            <Spaces.Fixed  height={600}>
                 
                 <Spaces.Centered>
                 <Tilt trackOnWindow={true} tiltMaxAngleY={25} tiltMaxAngleX={25} scale={1.3}>

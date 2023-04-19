@@ -4,6 +4,8 @@ import SERVER from '../server_address'
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 
+import "../styles/GeneralStyles.css"
+
 function SignupForm() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -38,23 +40,27 @@ function SignupForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Username:
-        <input type="text" value={username} onChange={(event) => setUsername(event.target.value)} />
-      </label>
-      <br />
-      <label>
-        Email:
-        <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} />
-      </label>
-      <br />
-      <label>
-        Password:
-        <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} />
-      </label>
-      <br />
-      <button type="submit">Sign Up</button>
+    <form onSubmit={handleSubmit}style={{
+      color: 'white',
+    }}>
+      <div className='box'>
+        <div className='userForm'>
+          <div style={{paddingRight: '20px', display: 'inline-block'}}>Username:</div>
+          <input type="text" value={username} onChange={(event) => setUsername(event.target.value)} />
+        </div>
+        <br />
+        <div className='userForm'>
+          <div style={{paddingRight: '20px', paddingLeft: '42px', display: 'inline-block'}}>Email:</div>
+          <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} />
+        </div>
+        <br />
+          <div className='userForm'>
+            <div style={{paddingRight: '20px', display: 'inline-block'}}>Password:</div>
+            <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} />
+          </div>
+        <br />
+        <button type="submit">Sign Up</button>
+      </div>
     </form>
   );
 }

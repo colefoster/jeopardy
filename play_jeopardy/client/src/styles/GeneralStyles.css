@@ -1,0 +1,25 @@
+.box{
+    padding-top: 50px;
+    padding-bottom: 50px;
+    border-radius: 10px;
+    margin: auto;
+    width: 40%;
+    background-color: rgba(7, 18, 119, 0.75)
+}
+
+.userForm{
+    font-size: 25px;
+    font-family: 'Swis721 BlkCn BT';
+}
+
+button {
+    background-color: #0D1557;
+    border-color: black;
+    border-radius: 10px;
+    color: white;
+    padding: 5px 32px;
+    text-align: center;
+    display: inline-block;
+    font-size: 25px;
+    font-family: 'Swis721 BlkCn BT';
+  }
