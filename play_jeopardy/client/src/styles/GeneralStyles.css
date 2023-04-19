@@ -8,8 +8,9 @@
 }
 
 .userForm{
-    font-size: 25px;
+    font-size: 30px;
     font-family: 'Swis721 BlkCn BT';
+    text-shadow: 4px 2px black;
 }
 
 button {
@@ -24,14 +25,11 @@ button {
     font-family: 'Swis721 BlkCn BT';
 }
 
-  
-.app {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-Table {
-    margin: auto;
-    background-color: white;
+.table {
+    color: white;
+    background-color: #0D1557;
+    font-family: 'Swis721 BlkCn BT';
+    font-size: 45px;
+    border: solid black;
+    text-shadow: 4px 2px black;
 }

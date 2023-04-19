@@ -29,9 +29,6 @@ const MainMenu = () => {
       <Link to="/leaderboard"  style={{ textDecoration: 'none' }}>
         <div className="keen-slider__slide number-slide1">LEADERBOARD</div>
       </Link>
-      <Link to="/options"  style={{ textDecoration: 'none' }}>
-        <div className="keen-slider__slide number-slide1">OPTIONS</div>
-      </Link>
       <Link to="/questions"  style={{ textDecoration: 'none' }}>
         <div className="keen-slider__slide number-slide1">QUESTIONS</div>
       </Link>

@@ -50,7 +50,7 @@ function SignupForm() {
         </div>
         <br />
         <div className='userForm'>
-          <div style={{paddingRight: '20px', paddingLeft: '42px', display: 'inline-block'}}>Email:</div>
+          <div style={{paddingRight: '20px', paddingLeft: '50px', display: 'inline-block'}}>Email:</div>
           <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} />
         </div>
         <br />

@@ -14,7 +14,7 @@ function LeaderboardPage(props){
         <BackButton />
         <LoggedInStatusLabel />
         <div>
-            <Spaces.Fixed  height={700}>
+            <Spaces.Fixed  height={800}>
                 
                 <Spaces.Centered>
                 <Tilt trackOnWindow={true} tiltMaxAngleY={25} tiltMaxAngleX={25} scale={1.3}>

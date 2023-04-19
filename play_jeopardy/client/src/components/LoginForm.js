@@ -48,7 +48,7 @@ function LoginForm() {
         </div>
         <br />
           <div className='userForm'>
-            <div style={{paddingRight: '20px', display: 'inline-block'}}>Password:</div>
+            <div style={{paddingRight: '20px', paddingLeft: '7px', display: 'inline-block'}}>Password:</div>
             <input type="password" name='password' value={password} onChange={(event) => setPassword(event.target.value)} />
           </div>
         <br />
