@@ -22,4 +22,16 @@ button {
     display: inline-block;
     font-size: 25px;
     font-family: 'Swis721 BlkCn BT';
-  }
+}
+
+  
+.app {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+Table {
+    margin: auto;
+    background-color: white;
+}

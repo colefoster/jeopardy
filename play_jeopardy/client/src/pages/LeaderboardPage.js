@@ -14,7 +14,7 @@ function LeaderboardPage(props){
         <BackButton />
         <LoggedInStatusLabel />
         <div>
-            <Spaces.Fixed  height={400}>
+            <Spaces.Fixed  height={700}>
                 
                 <Spaces.Centered>
                 <Tilt trackOnWindow={true} tiltMaxAngleY={25} tiltMaxAngleX={25} scale={1.3}>
@@ -29,7 +29,6 @@ function LeaderboardPage(props){
         </div>
         </>
     );
-  
 }
 
 export default LeaderboardPage;
