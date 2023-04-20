@@ -473,7 +473,7 @@ app.get('/api/distractors/', async function (req, res) {
     const completion = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: [
-        {"role": "system", "content": "You generate 3 plausible wrong answers for jeopardy questions based on the question, its category and its correct answer. Your replies are only the 3 wrong answers, comma separated, NOT in the form of a question. Format wrong answers like the correct answer (e.g. If the answer is prefixed with 'a ' or 'the ' or 'to ', include the same prefix in your answers)."},
+        {"role": "system", "content": "You generate 3 plausible wrong answers for jeopardy questions based on the question, its category and its correct answer. Your replies are ONLY ever the 3 wrong answers, comma separated, NOT in the form of a question. Format wrong answers like the correct answer (e.g. If the answer is prefixed with 'a ' or 'the ' or 'to ', include the same prefix in your answers)."},
         {"role": "user", "content": `Question: ${question} under the category ${category} with the correct answer being ${answer}.`},
     ],
     max_tokens: 150,
@@ -487,4 +487,26 @@ app.get('/api/distractors/', async function (req, res) {
   else{
     res.json({message: "Invalid model"});
   }
+});
+
+app.get('/api/leaderboard/', async function (req, res) {
+
+  const leaderboard = await gameModel.find({}).sort({score: -1}).limit(10);
+  res.json(leaderboard);
+});
+
+app.post('/api/save/', async function (req, res) {
+  console.log(req.body)
+  gameModel.find({id: req.body.id}, function(err, game) {
+    if (err || !game) {
+      console.log(err);
+      res.status(500).send();
+    } 
+    else {
+      game.score = req.body.score;
+      game.user = req.body.username;
+      game.save();
+      res.status(200).json(game);
+    }
+  });
 });

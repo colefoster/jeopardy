@@ -28,6 +28,7 @@ const Question = (props) => {
   
   const dispatch = useDispatch();
 
+  const endGameButton = document.getElementById('end-game-button');
 
   function shuffle(array) {
     let currentIndex = array.length,  randomIndex;
@@ -47,13 +48,15 @@ const Question = (props) => {
     return array;
   }
   
-const apiPrefix = useSelector(state => state.settings.apiPrefix)
+  const apiPrefix = useSelector(state => state.settings.apiPrefix)
+  const id = useSelector(state => state.game.id)
+  const user= useSelector(state => state.settings.user)
   function handleReveal(){
-    if(!flipped){
-      console.log(apiPrefix)
-      if(generateDistractors){
-        console.log("Generating distractors")
-        
+    if(!flipped){ //if question has not been answered
+      console.log(id)
+      console.log(user)
+      endGameButton.style.display = 'none';
+      if(generateDistractors){     
         const generateDistractors =async () =>{
           const question = props.question.replace(/(\([^)]+\)|<[^>]*>)/g, "");
           const category = props.category;
@@ -106,7 +109,7 @@ const apiPrefix = useSelector(state => state.settings.apiPrefix)
     answerCardRef.current.style.display = 'none';
     inputRef.current.style.display = 'none';
     dimmerRef.current.style.display = 'none';
-    
+    endGameButton.style.display = 'block';
     try{
       event.stopPropagation();//Stops the other event handlers from firing, which messes up the card closing
     }catch{}
@@ -139,8 +142,8 @@ const apiPrefix = useSelector(state => state.settings.apiPrefix)
 
       <InputHandling flipped={flipped} inputRef={inputRef} distractors={distractors}{...props} closeCardFunction={handleCloseCard} /> {//answer input box
                                                                                                                                                               // and check answer button
-                                                                                                                                                                }
-
+                                                                                                                                              }
+      
       <div ref={questionCardRef} className="card" onClick={handleQuestionCardClick} style={{
         display: flipped ? 'blocked' : 'none',
       }}>

@@ -7,7 +7,7 @@ const initialState = {  //DEFAULT SETTINGS FOR THE APP
   backgroundMode: 'particles',
   model: 'gpt-3.5-turbo',
   apiPrefix:'sk-',
-  user: null,
+  user: "Guest",
 };
 
 const settingsSlice = createSlice({

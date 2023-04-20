@@ -37,7 +37,7 @@ function HiddenMenu(){
           border: 'none',
           fontSize: 'calc(1vw + 1vh)',
           position: 'absolute',
-          left: '2vw',
+          right: '2vw',
           top: '2vh',
           zIndex: '20',
         }}>
@@ -58,7 +58,9 @@ function HiddenMenu(){
         
         <OffCanvasMenu  style={{
           border: '1px solid white',
+          top: '10vh',
           margin: '0px',
+          width: '15%',
         }}>
           <div style={{
             alignContent: 'center',

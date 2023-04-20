@@ -1,20 +1,21 @@
+import React from 'react'
 import Table from 'react-bootstrap/Table';
 import "../styles/GeneralStyles.css"
+import SERVER from '../server_address';
+import { useEffect, useState } from 'react';
 
-const data = [
-    { rank: 1, username: "Cherry", score: 10000 },
-    { rank: 2, username: "Orange", score: 9500 },
-    { rank: 3, username: "Kiwi", score: 9200},
-    { rank: 4, username: "Apple", score: 8900},
-    { rank: 5, username: "Grape", score: 8400},
-    //{ rank: 6, username: "Yuzu", score: 8300 },
-    //{ rank: 7, username: "Fig", score: 8000 },
-    //{ rank: 8, username: "Dragonfruit", score: 7600},
-    //{ rank: 9, username: "Cranberry", score: 7100},
-    //{ rank: 10, username: "Lychee", score: 6800},
-  ]
 
 function Leaderboard() {
+  const [leaderboard, setLeaderboard] = useState[{}];
+
+  useEffect(() => {
+    async function fetchLeaderboard() {
+      const response = await fetch(SERVER.url + '/api/leaderboard');
+      const data = await response.json();
+      setLeaderboard(data);
+    }
+    fetchLeaderboard();
+  }, [setLeaderboard]);
 
   return (
     <div style={{paddingLeft: '5%', paddingRight: '5%', width: '70%', margin: 'auto'}}>
@@ -25,7 +26,7 @@ function Leaderboard() {
                     <th>Score</th>
                 </thead>
                 <tbody>
-                    {data.map((val, key) => {
+                    {leaderboard.map((val, key) => {
                     return (
                         <tr key={key}>
                         <td>{val.rank}</td>

@@ -66,6 +66,7 @@ const gameSchema = new mongoose.Schema({
     questions: [[mongoose.Schema.Types.questionModel]],
     date: Date,
     score: Number,
+    user: String,
     isComplete: Boolean,
 });
 const gameModel = mongoose.model("games", gameSchema);
