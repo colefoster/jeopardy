@@ -10,7 +10,7 @@ function EndGameButton() {
     async function endGame(){
         let username = currentUser.username;
         console.log(currentUser)
-        if( currentUser === "Guest"){
+        if( username === "Guest"){
             const { value: name } = await Swal.fire({
                 icon: 'info',
                 title: 'Enter a name to save your score!',
