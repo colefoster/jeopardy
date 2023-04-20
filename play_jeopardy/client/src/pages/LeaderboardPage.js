@@ -5,6 +5,7 @@ import * as Spaces from 'react-spaces'
 import Tilt from 'react-parallax-tilt';
 import BackButton from 'components/BackButton';
 import LoggedInStatusLabel from 'components/LoggedInStatusLabel';
+import ScrollToTop from "react-scroll-to-top";
 
 function LeaderboardPage(props){
    
@@ -14,7 +15,7 @@ function LeaderboardPage(props){
         <BackButton />
         <LoggedInStatusLabel />
         <div>
-            <Spaces.Fixed  height={800}>
+            <Spaces.Fixed  height={1300}>
                 
                 <Spaces.Centered>
                 <Tilt trackOnWindow={true} tiltMaxAngleY={25} tiltMaxAngleX={25} scale={1.3}>
@@ -26,6 +27,7 @@ function LeaderboardPage(props){
                     <Leaderboard/>
                 </Spaces.Centered>
             </Spaces.Fixed>
+            <ScrollToTop smooth />
         </div>
         </>
     );

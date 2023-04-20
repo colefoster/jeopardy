@@ -61,6 +61,7 @@ function HiddenMenu(){
           top: '10vh',
           margin: '0px',
           width: '15%',
+          background: 'rgba(0, 0, 0, 0.6)'
         }}>
           <div style={{
             alignContent: 'center',
