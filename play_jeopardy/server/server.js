@@ -490,7 +490,7 @@ app.get('/api/distractors/', async function (req, res) {
 });
 
 app.get('/api/leaderboard/', async function (req, res) {
-  const limit = req.query.limit || 5;
+  const limit = req.query.limit || 10;
   const leaderboard = await gameModel.find({}).sort({score: -1}).limit(limit);
   res.json(leaderboard);
 });
