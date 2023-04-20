@@ -16,6 +16,7 @@ function ScoreLabel() {
         fontSize: 'calc(3.5vh + 3.5vw)',
         textShadow:'4px 2px #000000',
         zIndex: '0',
+        paddingBottom: '5%'
     }}>
         Score: {score}
     </div>

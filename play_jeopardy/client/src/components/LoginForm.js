@@ -50,12 +50,12 @@ function LoginForm() {
       <div className='box'>
         <div className='userForm'>
           <div style={{paddingRight: '20px', display: 'inline-block'}}>Username:</div>
-          <input type="text" name='username' value={username} onChange={(event) => setUsername(event.target.value)} />
+          <input type="text" name='username' value={username} onChange={(event) => setUsername(event.target.value)} style={{borderRadius: '5px'}}/>
         </div>
         <br />
           <div className='userForm'>
-            <div style={{paddingRight: '20px', paddingLeft: '7px', display: 'inline-block'}}>Password:</div>
-            <input type="password" name='password' value={password} onChange={(event) => setPassword(event.target.value)} />
+            <div style={{paddingRight: '20px', paddingLeft: '5px', display: 'inline-block'}}>Password:</div>
+            <input type="password" name='password' value={password} onChange={(event) => setPassword(event.target.value)} style={{borderRadius: '5px'}}/>
           </div>
         <br />
         <button type="submit" style={{
