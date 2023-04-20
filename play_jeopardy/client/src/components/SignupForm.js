@@ -50,17 +50,17 @@ function SignupForm() {
       <div className='box'>
         <div className='userForm'>
           <div style={{paddingRight: '20px', display: 'inline-block'}}>Username:</div>
-          <input type="text" value={username} onChange={(event) => setUsername(event.target.value)} />
+          <input type="text" value={username} onChange={(event) => setUsername(event.target.value)} style={{borderRadius: '5px'}} />
         </div>
         <br />
         <div className='userForm'>
-          <div style={{paddingRight: '20px', paddingLeft: '50px', display: 'inline-block'}}>Email:</div>
-          <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} />
+          <div style={{paddingRight: '20px', paddingLeft: '53px', display: 'inline-block'}}>Email:</div>
+          <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} style={{borderRadius: '5px'}} />
         </div>
         <br />
           <div className='userForm'>
             <div style={{paddingRight: '20px', display: 'inline-block'}}>Password:</div>
-            <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} />
+            <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} style={{borderRadius: '5px'}} />
           </div>
         <br />
         <button type="submit" style={{

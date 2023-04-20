@@ -36,10 +36,12 @@ function HiddenMenu(){
           color: 'white',
           border: 'none',
           fontSize: 'calc(1vw + 1vh)',
-          position: 'absolute',
+          position: 'sticky',
+          float: 'right',
           right: '2vw',
           top: '2vh',
           zIndex: '20',
+          paddingTop: '15px'
         }}>
         <Hamburger toggled={isOpen} toggle={setOpen} size={48}/>
     
