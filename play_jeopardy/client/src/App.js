@@ -1,8 +1,8 @@
 import React from "react";
 
 // We use Route in order to define the different routes of our application
-import { Route, Routes } from "react-router-dom";
-
+import { Route, Routes,  useLocation } from "react-router-dom";
+import { useEffect  } from "react";
 // We import all the components we need in our app
 
 import OldHomePage from "./pages/OldHomePage"
@@ -18,6 +18,19 @@ import SignupPage from "./pages/SignupPage";
 import LeaderboardPage from "pages/LeaderboardPage";
 
 const App = () => {
+  const location = useLocation();
+  useEffect(() => {
+    // Store the current route in local storage when the page is about to be unloaded
+    window.addEventListener('beforeunload', () => {
+      localStorage.setItem('lastRoute', location.pathname);
+    });
+
+    return () => {
+      // Remove the event listener when the component unmounts
+      window.removeEventListener('beforeunload', () => {});
+    };
+  }, [location]);
+
   return (
     <div>
       
