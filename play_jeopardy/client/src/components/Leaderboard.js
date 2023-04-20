@@ -34,10 +34,11 @@ function Leaderboard() {
                 <tbody>
                 {leaderboard.map((val, key) => {
                     return (
-                        <tr key={key}>
-                        <td>{moment(val.date).format("MMMM Do, h:mm a")}</td>
-                        <td>{val.user || "Guest"}</td>
-                        <td style={{color: '#f9c145', fontFamily: 'Dollar-Amount', textShadow:'4px 2px #000000'}}>${val.score}</td>
+                        <tr key={key} className= {key % 2 !== 0 ? 'even' : ''}>
+                        <td style={{border: '2px solid black'}}>{moment(val.date).format("MMMM Do, h:mm a")}</td>
+                        <td style={{border: '2px solid black'}}>{val.user || "Guest"}</td>
+                        <td style={{color: '#f9c145', fontFamily: 'Dollar-Amount', textShadow:'4px 2px #000000', border: '2px solid black'}}>
+                          ${val.score}</td>
                         </tr>
                     )
                     })}

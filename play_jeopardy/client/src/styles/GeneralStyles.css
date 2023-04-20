@@ -16,9 +16,13 @@
 
 .leaderboard {
     color: white;
-    background-color: #0D1557;
+    background-color: #081161;
     font-family: 'Swis721 BlkCn BT';
     font-size: 45px;
     border: solid black;
     text-shadow: 4px 2px black;
+}
+
+.even {
+    background-color: #142195;
 }
