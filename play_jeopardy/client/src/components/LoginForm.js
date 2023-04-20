@@ -11,7 +11,7 @@ import {setUser } from '../redux/settingsSlice';
 import "../styles/GeneralStyles.css"
 
 
-function LoginForm() {
+const LoginForm = () =>{
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch(); 

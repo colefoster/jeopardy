@@ -8,7 +8,7 @@ import {setUser } from '../redux/settingsSlice';
 
 import "../styles/GeneralStyles.css"
 
-function SignupForm() {
+const SignupForm =() =>{
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

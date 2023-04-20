@@ -7,8 +7,8 @@ import Store from "../src/redux/store";
 
 const lastRoute = localStorage.getItem('lastRoute') || '/';
 
-if (window.location.pathname !== lastRoute) {
-  window.location.href = lastRoute;
+if (window.location.pathname !== lastRoute && window.location.pathname !== '/') {
+  //window.location.href = lastRoute; disable during presentation
 } else {
 
   ReactDOM.render(

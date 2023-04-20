@@ -3,7 +3,8 @@ import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import SERVER from '../../server_address'
-function EndGameButton() {
+
+const EndGameButton =() =>{
     const currentUser = useSelector(state => state.settings.user);
     const score = useSelector(state => state.game.score);
     const id = useSelector(state => state.game.id);
