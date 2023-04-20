@@ -5,16 +5,8 @@ const LoggedInStatusLabel = () => {
 
   const currentUser = useSelector(state => state.settings.user);
   console.log(currentUser);
-  let username;
-  let email;
-  try{
-    username = currentUser.username;
-    email = currentUser.email;
-  }
-  catch{
-    username= "Guest";
-    email = "";
-  }
+  let username = currentUser.username;
+  let email = currentUser.email;
   
   return (
     <div>

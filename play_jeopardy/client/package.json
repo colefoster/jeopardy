@@ -22,6 +22,7 @@
     "hamburger-react": "^2.5.0",
     "html-react-parser": "^3.0.15",
     "keen-slider": "^6.8.5",
+    "moment": "^2.29.4",
     "mongoose": "^7.0.3",
     "react": "^17.0.2",
     "react-blur": "^1.1.1",

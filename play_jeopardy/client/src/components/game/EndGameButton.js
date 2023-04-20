@@ -8,7 +8,8 @@ function EndGameButton() {
     const score = useSelector(state => state.game.score);
     const id = useSelector(state => state.game.id);
     async function endGame(){
-        let username = currentUser;
+        let username = currentUser.username;
+        console.log(currentUser)
         if( currentUser === "Guest"){
             const { value: name } = await Swal.fire({
                 icon: 'info',
@@ -31,7 +32,7 @@ function EndGameButton() {
 
         //save game here
         const response = await axios.post(SERVER.URL + '/api/save', {
-            username: username,
+            user: username,
             score: score,
             id: id, }
         );
@@ -39,9 +40,9 @@ function EndGameButton() {
         if(response.status === 200){
             Swal.fire({
                 icon: 'success',
-                title:  'Your score has been saved!',
+                title:  `Your score of ${score} been saved!`,
                 text:  'You can now view your score on the leaderboard!',
-                timer: 2000,
+                timer: 3000,
                 timerProgressBar: true,
             });
         }

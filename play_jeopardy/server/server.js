@@ -490,23 +490,21 @@ app.get('/api/distractors/', async function (req, res) {
 });
 
 app.get('/api/leaderboard/', async function (req, res) {
-
-  const leaderboard = await gameModel.find({}).sort({score: -1}).limit(10);
+  const limit = req.query.limit || 10;
+  const leaderboard = await gameModel.find({}).sort({score: -1}).limit(limit);
   res.json(leaderboard);
 });
 
 app.post('/api/save/', async function (req, res) {
   console.log(req.body)
-  gameModel.find({id: req.body.id}, function(err, game) {
+  gameModel.updateOne({id: req.body.id}, {user:req.body.user, score:req.body.score}, function(err, game) {
     if (err || !game) {
       console.log(err);
       res.status(500).send();
     } 
     else {
-      game.score = req.body.score;
-      game.user = req.body.username;
-      game.save();
-      res.status(200).json(game);
+     
+      res.status(200).send(req.body);
     }
   });
 });
