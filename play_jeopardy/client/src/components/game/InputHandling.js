@@ -126,38 +126,43 @@ const InputHandling = (props)=> {
         display: 'none',
         position: 'fixed',
         left: '50%',
-        bottom:'10%',
+        bottom:'12%',
         zIndex: '5',
         overflow: 'visible',
         transform: 'translate(-50%, 50%)'
 
       }}>
 
-      <button
-            
-        style={{
-          display: 'inline',
-          fontSize: '1.5em',
-          float: 'left',
-          left: '43%',
-          height: '55px',
-          width: '80px',
-
-            }}
-            
-            onClick={checkAnswer}>
-            Check
-      </button>
-      &nbsp;
       <AutosizeInput
           placeholder="What is...?"
           minWidth={150}
+          maxLength={75}
           value={inputValue}
           onChange={function (event){setUserInput(event.target.value)}}
-          style={{ background: '#eee', borderRadius: 5, padding: 5,fontStyle: 'bold'  }}
+          style={{ background: '#eee', borderRadius: 5, padding: 5, fontStyle: 'bold'  }}
           inputStyle={{ border: '1px solid #999', borderRadius: 3, padding: 3, fontSize: 25, fontWeight: 'bold', color:'black' }}
         />
-      
+
+      <div style={{display: 'inline', paddingRight: '10px'}}></div>
+
+      <button
+            style={{
+              display: 'inline',
+              fontSize: '1.5em',
+              float: 'right',
+              height: '55px',
+              width: '100px',
+              backgroundColor: '#0D1557',
+              borderColor: 'black',
+              borderRadius: '10px',
+              color: 'white',
+              fontFamily: 'Swis721 BlkCn BT',
+                }}
+                
+                onClick={checkAnswer}>
+                Check
+          </button>
+          &nbsp;
 
       </div>
     )

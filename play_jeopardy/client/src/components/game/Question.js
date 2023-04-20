@@ -137,7 +137,7 @@ const Question = (props) => {
 
     <div ref={dimmerRef} className='dimBackground' style={{
         display: 'none',
-        backgroundColor: 'rgba(0,0,0,0.5)',
+        backgroundColor: 'rgba(0,0,0,0.65)',
     }} />
 
       <InputHandling flipped={flipped} inputRef={inputRef} distractors={distractors}{...props} closeCardFunction={handleCloseCard} /> {//answer input box
