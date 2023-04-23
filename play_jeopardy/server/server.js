@@ -136,6 +136,28 @@ app.listen(port, () => {
   connectToDB();
 });
 
+app.get("/api/widget", async (req, res) => {
+  //WIDGET LOGIC
+  //Get random category from past year
+  //Get 1 of each value question from that category
+  //Return as JSON
+
+  const rng = new Alea(Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15));
+  
+
+  questionModel.find({}, (err, questions) => {
+    if(err){
+      console.log(err);
+    }
+    else{
+      const randomCategory = questions[Math.floor(rng() * questions.length)].category;
+      res.json(questions.filter(question => question.category === randomCategory).slice(0,5));
+
+  }}).sort({airdate :-1}).limit(100);
+  
+});
+
+
 async function generateGame(req, res) {
   const nCats = Number(process.env.GAME_SIZE_CATEGORIES) || 6;
   const nQs = Number(process.env.GAME_SIZE_QUESTIONS) || 5;
