@@ -150,10 +150,13 @@ app.get("/api/widget", async (req, res) => {
       console.log(err);
     }
     else{
-      const randomCategory = questions[Math.floor(rng() * questions.length)].category;
-      res.json(questions.filter(question => question.category === randomCategory).slice(0,5));
-
-  }}).sort({airdate :-1}).limit(100);
+      let fiveQuestions = [];
+      while(fiveQuestions.length < 5){
+        const randomCategory = questions[Math.floor(rng() * questions.length)].category;
+        fiveQuestions = questions.filter(question => question.category === randomCategory).slice(0,5);
+      }
+      res.json(fiveQuestions);
+  }}).sort({airdate :-1}).limit(200);
   
 });
 
