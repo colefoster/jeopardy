@@ -156,7 +156,7 @@ app.get("/api/widget", async (req, res) => {
         fiveQuestions = questions.filter(question => question.category === randomCategory).slice(0,5);
       }
       res.json(fiveQuestions);
-  }}).sort({airdate :-1}).limit(200);
+  }}).sort({airdate :-1}).limit(9000);
   
 });
 
