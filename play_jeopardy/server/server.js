@@ -79,7 +79,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 // Enable CORS for all origins with credentials
 
-var whitelist = ['http://localhost:3000', 'https://play-jeopardy.netlify.app', 'https://cole-portfolio.netlify.app', ];
+var whitelist = ['http://localhost:3000', 'https://play-jeopardy.netlify.app', 'https://cole-portfolio.netlify.app',  'https://cole-portfolio.netlify.app/*'];
 
 app.use(cors({
   origin: function (origin, callback) {
